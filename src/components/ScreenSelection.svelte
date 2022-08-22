@@ -7,6 +7,11 @@
     });
     $displayPreview.srcObject = $displayStream;
     grabDimensions();
+
+    $displayStream.getVideoTracks()[0].onended = () => {
+      $displayPreview.srcObject = null;
+      $displayStream = null;
+    };
   };
 
   const grabDimensions = () => {

@@ -5,7 +5,10 @@
     displayPreview,
     displayDimensions,
     webcamPreview,
-    webcamDimensions, canvasStream
+    webcamDimensions,
+    canvasStream,
+    webcamStream,
+    displayStream,
   } from "../stores";
   import { roundedRectClip } from "../drawUtils";
 
@@ -36,7 +39,7 @@
   onMount(() => {
     measure();
     ctx ||= canvas.getContext("2d");
-    $canvasStream = canvas.captureStream(60);
+    $canvasStream = canvas.captureStream(15);
     draw();
   });
 
@@ -61,7 +64,7 @@
       ctx.restore();
     }
 
-    DrawDisplay: {
+    if ($displayStream) {
       const pad = 100;
       const { width, height } = $displayDimensions;
 
@@ -75,7 +78,7 @@
       });
     }
 
-    DrawWebcam: {
+    if ($webcamStream) {
       const pad = 100;
       const { width, height } = $webcamDimensions;
 
@@ -131,6 +134,7 @@
       width="{$canvasDimensions.width}px"
       height="{$canvasDimensions.height}px"
       style="transform: scale({scale}); transform-origin: top left;"
-      bind:this={canvas}></canvas>
+      bind:this={canvas}
+    />
   </div>
 </div>

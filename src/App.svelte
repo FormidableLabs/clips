@@ -6,37 +6,17 @@
 
   let isRecording = false;
   let recorder: MediaRecorder;
-  let chunks: Blob[] = [];
+  const chunks: Blob[] = [];
   const onDataAvailable = (e: BlobEvent) => {
+    console.log("ON DATA", e);
     chunks.push(e.data);
   };
 
-  $: {
-    if ($canvasStream) {
-      console.log("SETTING")
-      recorder ||= new MediaRecorder($canvasStream, {
-        mimeType: "video/webm; codecs=vp9"
-      });
-      recorder.ondataavailable = onDataAvailable;
-    }
-  }
-
-  const startRecording = () => {
-    console.log("STARTING");
-    isRecording = true;
-    chunks = [];
-    recorder.start();
-  };
-
-  const endRecording = () => {
-    console.log("ENDING");
-    isRecording = false;
-    recorder.stop();
-
-    console.log(chunks);
-
-    const completeBlob = new Blob(chunks, { type: "video/webm" });
+  const onRecorderStop = () => {
+    const completeBlob = new Blob(chunks, { type: chunks[0].type });
     const data = URL.createObjectURL(completeBlob);
+
+    console.log(data);
 
     const link = document.createElement("a");
     link.href = data;
@@ -45,7 +25,7 @@
       new MouseEvent("click", {
         bubbles: true,
         cancelable: false,
-        view: window
+        view: window,
       })
     );
 
@@ -55,8 +35,29 @@
     }, 500);
   };
 
+  $: {
+    if ($canvasStream) {
+      console.log("SETTING");
+      recorder ||= new MediaRecorder($canvasStream, {
+        mimeType: "video/webm; codecs=vp9",
+      });
+      recorder.ondataavailable = onDataAvailable;
+      recorder.onstop = onRecorderStop;
+    }
+  }
+
+  const startRecording = () => {
+    console.log("STARTING");
+    isRecording = true;
+    chunks.length = 0;
+    recorder.start();
+  };
+  const stopRecording = () => {
+    isRecording = false;
+    recorder.stop();
+  };
   const onRecordButtonPress = () => {
-    if (isRecording) endRecording();
+    if (isRecording) stopRecording();
     else startRecording();
   };
 
@@ -84,7 +85,7 @@
       class:bg-red-500={isRecording}
       class:bg-gray-600={!isRecording}
       on:click={onRecordButtonPress}
-    ></div>
+    />
   </main>
   <div class="bg-blue-300 w-64 flex-shrink-0">
     <ScreenSelection />

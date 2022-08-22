@@ -1,9 +1,11 @@
 <script lang="ts">
   import { webcamStream, webcamPreview, webcamDimensions } from "../stores";
 
-  const promptWebcam = async () => {
+  const promptWebcam = async (deviceId: string) => {
     $webcamStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
+      video: {
+        deviceId: { exact: deviceId },
+      },
     });
     $webcamPreview.srcObject = $webcamStream;
     grabDimensions();
@@ -16,12 +18,36 @@
       $webcamDimensions.height = height;
     }
   };
+
+  const devices = navigator.mediaDevices
+    .enumerateDevices()
+    .then((devices) => devices.filter((dev) => dev.kind === "videoinput"));
+
+  const stopWebcam = () => {
+    $webcamStream?.getVideoTracks()[0].stop();
+    $webcamStream = null;
+    $webcamPreview.srcObject = null;
+  };
 </script>
 
-<div>
-  <button class="w-full border p-3 rounded" on:click={promptWebcam}
-    >Select Webcam</button
-  >
+<div class="border">
+  {#await devices}
+    <p>... fetching devices</p>
+  {:then devices}
+    {#each devices as device}
+      <button
+        class="p-1 m-1 border"
+        on:click={() => promptWebcam(device.deviceId)}
+      >
+        {device.kind} - {device.label}
+      </button>
+    {/each}
+  {/await}
+
+  {#if $webcamStream}
+    <button on:click={stopWebcam}>Stop video</button>
+  {/if}
+
   <video
     class="w-full h-full"
     bind:this={$webcamPreview}
