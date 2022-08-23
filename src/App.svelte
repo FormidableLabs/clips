@@ -2,6 +2,10 @@
   import Preview from "./components/Preview.svelte";
   import { canvasStream, micStream } from "./stores";
   import ActionBar from "./components/ActionBar.svelte";
+  import SidebarCanvasSection from "./components/SidebarCanvasSection.svelte";
+  import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
+  import SidebarBackgroundSection from "./components/SidebarBackgroundSection.svelte";
+  import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
 
   let isRecording = false;
   let recorder: MediaRecorder;
@@ -67,14 +71,20 @@
       </div>
       <ActionBar {isRecording} on:record={onRecordButtonPress} />
     </div>
-    <div class="bg-gray-200 w-64 flex-shrink-0 rounded overflow-auto">
-      Configuration...
+    <div
+      class="bg-gray-200 w-64 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
+    >
+      <SidebarCanvasSection />
+      <SidebarThemeSection />
+      <SidebarBackgroundSection />
+      <SidebarLayoutSection />
     </div>
   </div>
 </div>
 
 <style>
   .container {
-    max-height: 800px;
+    height: 1000px;
+    max-height: 100%;
   }
 </style>

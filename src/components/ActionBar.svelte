@@ -8,7 +8,9 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div class="rounded bg-gray-200 flex justify-center items-center p-2 gap-4">
+<div
+  class="rounded bg-gray-200 flex justify-center items-center p-2 gap-4 flex-shrink-0"
+>
   <!-- TODO: Move into its own component? -->
   <button
     class="w-16 h-16 shadow rounded-full cursor-pointer border-4 border-gray-500 p-1 flex items-center justify-center group"

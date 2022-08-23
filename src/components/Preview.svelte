@@ -9,13 +9,14 @@
     canvasStream,
     webcamStream,
     displayStream,
+    activeTheme,
   } from "../stores";
   import { roundedRectClip } from "../drawUtils";
 
   // Container measurements
-  let container: HTMLDivElement;
-  let containerWidth = 100,
-    containerHeight = 100;
+  let wrapper: HTMLDivElement;
+  let containerWidth = 0,
+    containerHeight = 0;
   let scale = 0;
 
   // Canvas tracking
@@ -24,10 +25,35 @@
 
   // Track container sizing, so we can scale accordingly.
   const measure = () => {
-    const { width, height } = container.getBoundingClientRect();
-    [containerWidth, containerHeight] = [width, height];
+    // const { width, height } = container.getBoundingClientRect();
+    // [containerWidth, containerHeight] = [width, height];
+    // scale = containerWidth / $canvasDimensions.width;
+
+    const { width, height } = wrapper.getBoundingClientRect();
+    if (($canvasDimensions.height / $canvasDimensions.width) * width > height) {
+      containerHeight = height;
+      containerWidth =
+        height / ($canvasDimensions.height / $canvasDimensions.width);
+    } else {
+      containerWidth = width;
+      containerHeight =
+        width * ($canvasDimensions.height / $canvasDimensions.width);
+    }
+
     scale = containerWidth / $canvasDimensions.width;
+
+    // if (wrapper) {
+    //   const { width, height } = wrapper.getBoundingClientRect();
+    //   fillClass =
+    //     ($canvasDimensions.height / $canvasDimensions.width) * width > height
+    //       ? "h-full"
+    //       : "w-full";
+    // }
   };
+
+  $: if (wrapper && $canvasDimensions) {
+    measure();
+  }
 
   /**
    * On mount:
@@ -37,7 +63,6 @@
    * - Fix off render loop
    */
   onMount(() => {
-    measure();
     ctx ||= canvas.getContext("2d");
     $canvasStream = canvas.captureStream(15);
     draw();
@@ -55,8 +80,8 @@
         canvas.width,
         canvas.height
       );
-      lingrad.addColorStop(0, "#ff0000");
-      lingrad.addColorStop(1, "#ff00ff");
+      lingrad.addColorStop(0, $activeTheme.primary);
+      lingrad.addColorStop(1, $activeTheme.secondary);
 
       ctx.fillStyle = lingrad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -105,13 +130,7 @@
 
       // Draw a circle around the image to hide lack of antialiasing
       ctx.save();
-
-      const rg = ctx.createLinearGradient(0, 500, 0, 0);
-      rg.addColorStop(0, "#ff0000");
-      rg.addColorStop(1, "#00ff00");
-
       ctx.lineWidth = 20;
-      ctx.strokeStyle = rg;
       ctx.beginPath();
       ctx.arc(x0, y0, r, 0, 2 * Math.PI);
       ctx.stroke();
@@ -124,11 +143,10 @@
 
 <svelte:window on:resize={measure} />
 
-<div class="w-full h-full flex justify-center items-center">
+<div class="w-full h-full flex justify-center items-center" bind:this={wrapper}>
   <div
-    class="bg-green-400 w-full overflow-hidden rounded shadow-lg"
-    style="aspect-ratio: {$canvasDimensions.width}/{$canvasDimensions.height};"
-    bind:this={container}
+    class="bg-green-400 overflow-hidden rounded shadow-lg"
+    style="aspect-ratio: {$canvasDimensions.width}/{$canvasDimensions.height}; width: {containerWidth}px; height: {containerHeight}px"
   >
     <canvas
       width="{$canvasDimensions.width}px"
