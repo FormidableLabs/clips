@@ -1,9 +1,7 @@
 <script lang="ts">
   import Preview from "./components/Preview.svelte";
-  import ScreenSelection from "./components/ScreenSelection.svelte";
-  import WebcamSelection from "./components/WebcamSelection.svelte";
   import { canvasStream, micStream } from "./stores";
-  import MicSelection from "./components/MicSelection.svelte";
+  import ActionBar from "./components/ActionBar.svelte";
 
   let isRecording = false;
   let recorder: MediaRecorder;
@@ -32,16 +30,6 @@
       link.remove();
     }, 500);
   };
-
-  // $: {
-  //   if ($canvasStream) {
-  //     recorder ||= new MediaRecorder($canvasStream, {
-  //       mimeType: "video/webm; codecs=vp9",
-  //     });
-  //     recorder.ondataavailable = onDataAvailable;
-  //     recorder.onstop = onRecorderStop;
-  //   }
-  // }
 
   const startRecording = () => {
     isRecording = true;
@@ -77,25 +65,16 @@
       <div class="flex-grow">
         <Preview />
       </div>
-      <div class="rounded bg-green-500 flex justify-center p-2">
-        <div
-          class="w-12 h-12 bg-red-500 shadow rounded-full cursor-pointer"
-          class:bg-red-500={isRecording}
-          class:bg-gray-600={!isRecording}
-          on:click={onRecordButtonPress}
-        />
-      </div>
+      <ActionBar {isRecording} on:record={onRecordButtonPress} />
     </div>
-    <div class="bg-blue-300 w-64 flex-shrink-0">
-      <ScreenSelection />
-      <WebcamSelection />
-      <MicSelection />
+    <div class="bg-gray-200 w-64 flex-shrink-0 rounded overflow-auto">
+      Configuration...
     </div>
   </div>
 </div>
 
-<!-- <main class="bg-red-300 flex-grow relative overflow-hidden">
-      <Preview />
-
-    </main>
-     -->
+<style>
+  .container {
+    max-height: 800px;
+  }
+</style>

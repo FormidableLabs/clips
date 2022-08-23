@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { webcamStream, webcamPreview, webcamDimensions } from "../stores";
+  import ActionButton from "./ActionButton.svelte";
+  import Camera from "./icons/camera.icon.svelte";
+  import { webcamDimensions, webcamPreview, webcamStream } from "../stores";
 
   const promptWebcam = async (deviceId: string) => {
     $webcamStream = await navigator.mediaDevices.getUserMedia({
@@ -30,30 +32,35 @@
   };
 </script>
 
-<div class="border">
-  {#await devices}
-    <p>... fetching devices</p>
-  {:then devices}
-    {#each devices as device}
-      <button
-        class="p-1 m-1 border"
-        on:click={() => promptWebcam(device.deviceId)}
-      >
-        {device.label}
-      </button>
-    {/each}
-  {/await}
+<ActionButton
+  hasPopupContent
+  on:deactivate={stopWebcam}
+  isActive={Boolean($webcamStream)}
+>
+  <!-- Popup content -->
+  <div slot="popupContent" class="p-2">
+    {#await devices}
+      <p>... fetching devices</p>
+    {:then devices}
+      {#each devices as device}
+        <button
+          class="p-1 m-1 border"
+          on:click={() => promptWebcam(device.deviceId)}
+        >
+          {device.label}
+        </button>
+      {/each}
+    {/await}
+  </div>
 
-  {#if $webcamStream}
-    <button on:click={stopWebcam}>Stop video</button>
-  {/if}
+  <Camera />
 
   <video
-    class="w-full h-full"
+    class="invisible absolute"
     bind:this={$webcamPreview}
     autoplay
     playsinline
     muted
     on:resize={grabDimensions}
   />
-</div>
+</ActionButton>
