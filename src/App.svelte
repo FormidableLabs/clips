@@ -2,21 +2,19 @@
   import Preview from "./components/Preview.svelte";
   import ScreenSelection from "./components/ScreenSelection.svelte";
   import WebcamSelection from "./components/WebcamSelection.svelte";
-  import { canvasStream } from "./stores";
+  import { canvasStream, micStream } from "./stores";
+  import MicSelection from "./components/MicSelection.svelte";
 
   let isRecording = false;
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
   const onDataAvailable = (e: BlobEvent) => {
-    console.log("ON DATA", e);
     chunks.push(e.data);
   };
 
   const onRecorderStop = () => {
     const completeBlob = new Blob(chunks, { type: chunks[0].type });
     const data = URL.createObjectURL(completeBlob);
-
-    console.log(data);
 
     const link = document.createElement("a");
     link.href = data;
@@ -35,21 +33,30 @@
     }, 500);
   };
 
-  $: {
-    if ($canvasStream) {
-      console.log("SETTING");
-      recorder ||= new MediaRecorder($canvasStream, {
-        mimeType: "video/webm; codecs=vp9",
-      });
-      recorder.ondataavailable = onDataAvailable;
-      recorder.onstop = onRecorderStop;
-    }
-  }
+  // $: {
+  //   if ($canvasStream) {
+  //     recorder ||= new MediaRecorder($canvasStream, {
+  //       mimeType: "video/webm; codecs=vp9",
+  //     });
+  //     recorder.ondataavailable = onDataAvailable;
+  //     recorder.onstop = onRecorderStop;
+  //   }
+  // }
 
   const startRecording = () => {
-    console.log("STARTING");
     isRecording = true;
     chunks.length = 0;
+
+    const combinedStream = new MediaStream([
+      ...($canvasStream?.getTracks() || []),
+      ...($micStream?.getTracks() || []),
+    ]);
+    recorder = new MediaRecorder(combinedStream, {
+      mimeType: "video/webm; codecs=vp9",
+    });
+    recorder.ondataavailable = onDataAvailable;
+    recorder.onstop = onRecorderStop;
+
     recorder.start();
   };
   const stopRecording = () => {
@@ -60,35 +67,35 @@
     if (isRecording) stopRecording();
     else startRecording();
   };
-
-  /**
-   * <button on:click={startStream}>Start</button>
-
-   <!-- <canvas width="400px" height="400px" bind:this={canvas} /> -->
-   <video bind:this={screenDisplay} autoplay style="display: none;" />
-   <video bind:this={webcamDisplay} autoplay style="display: none;" />
-
-   <canvas
-   bind:this={canvas}
-   width="3840px"
-   height="2160px"
-   style="transform: scale(0.15); transform-origin: top left;"
-   />
-   */
 </script>
 
-<div class="w-screen h-screen flex">
-  <main class="bg-red-300 flex-grow relative overflow-hidden">
-    <Preview />
-    <div
-      class="absolute bottom-4 right-4 w-12 h-12 bg-red-500 shadow rounded-full cursor-pointer"
-      class:bg-red-500={isRecording}
-      class:bg-gray-600={!isRecording}
-      on:click={onRecordButtonPress}
-    />
-  </main>
-  <div class="bg-blue-300 w-64 flex-shrink-0">
-    <ScreenSelection />
-    <WebcamSelection />
+<div
+  class="w-screen h-screen overflow-hidden bg-gray-100 p-0 sm:p-3 md:p-6 flex items-center"
+>
+  <div class="container flex gap-3">
+    <div class="flex-grow relative overflow-hidden flex flex-col gap-3">
+      <div class="flex-grow">
+        <Preview />
+      </div>
+      <div class="rounded bg-green-500 flex justify-center p-2">
+        <div
+          class="w-12 h-12 bg-red-500 shadow rounded-full cursor-pointer"
+          class:bg-red-500={isRecording}
+          class:bg-gray-600={!isRecording}
+          on:click={onRecordButtonPress}
+        />
+      </div>
+    </div>
+    <div class="bg-blue-300 w-64 flex-shrink-0">
+      <ScreenSelection />
+      <WebcamSelection />
+      <MicSelection />
+    </div>
   </div>
 </div>
+
+<!-- <main class="bg-red-300 flex-grow relative overflow-hidden">
+      <Preview />
+
+    </main>
+     -->

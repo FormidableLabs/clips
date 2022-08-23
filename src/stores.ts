@@ -13,5 +13,8 @@ export const webcamStream = writable<MediaStream>(null);
 export const webcamPreview = writable<HTMLVideoElement>(null);
 export const webcamDimensions = writable({ width: 0, height: 0 });
 
+// Mic stream
+export const micStream = writable<MediaStream>(null);
+
 // Canvas stream
 export const canvasStream = writable<MediaStream>(null);

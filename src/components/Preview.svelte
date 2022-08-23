@@ -124,7 +124,7 @@
 
 <svelte:window on:resize={measure} />
 
-<div class="w-full h-full flex justify-center items-center p-3">
+<div class="w-full h-full flex justify-center items-center">
   <div
     class="bg-green-400 w-full overflow-hidden rounded shadow-lg"
     style="aspect-ratio: {$canvasDimensions.width}/{$canvasDimensions.height};"

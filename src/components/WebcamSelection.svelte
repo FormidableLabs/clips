@@ -24,7 +24,7 @@
     .then((devices) => devices.filter((dev) => dev.kind === "videoinput"));
 
   const stopWebcam = () => {
-    $webcamStream?.getVideoTracks()[0].stop();
+    $webcamStream.getTracks().forEach((track) => track.stop());
     $webcamStream = null;
     $webcamPreview.srcObject = null;
   };
@@ -39,7 +39,7 @@
         class="p-1 m-1 border"
         on:click={() => promptWebcam(device.deviceId)}
       >
-        {device.kind} - {device.label}
+        {device.label}
       </button>
     {/each}
   {/await}
