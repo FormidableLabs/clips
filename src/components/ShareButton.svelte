@@ -35,8 +35,7 @@
 
 <ActionButton
   isActive={$displayStream !== null}
-  on:activate={promptDisplay}
-  on:deactivate={stopSharing}
+  on:click={handleActionButtonClick}
 >
   <ShareIcon />
   <video

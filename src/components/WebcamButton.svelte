@@ -2,8 +2,14 @@
   import ActionButton from "./ActionButton.svelte";
   import Camera from "./icons/camera.icon.svelte";
   import { webcamDimensions, webcamPreview, webcamStream } from "../stores";
+  import PopupContainer from "./PopupContainer.svelte";
+  import TextButton from "./TextButton.svelte";
+
+  let isPopupOpen = false;
 
   const promptWebcam = async (deviceId: string) => {
+    isPopupOpen = false;
+
     $webcamStream = await navigator.mediaDevices.getUserMedia({
       video: {
         deviceId: { exact: deviceId },
@@ -30,28 +36,36 @@
     $webcamStream = null;
     $webcamPreview.srcObject = null;
   };
+
+  const handleActionButtonClick = () => {
+    if ($webcamStream) {
+      stopWebcam();
+    } else {
+      isPopupOpen = true;
+    }
+  };
 </script>
 
 <ActionButton
-  hasPopupContent
-  on:deactivate={stopWebcam}
   isActive={Boolean($webcamStream)}
+  {isPopupOpen}
+  on:popupDismiss={() => (isPopupOpen = false)}
+  on:click={handleActionButtonClick}
 >
   <!-- Popup content -->
-  <div slot="popupContent" class="p-2">
+  <PopupContainer slot="popupContent" title="Select a webcam">
     {#await devices}
       <p>... fetching devices</p>
     {:then devices}
-      {#each devices as device}
-        <button
-          class="p-1 m-1 border"
-          on:click={() => promptWebcam(device.deviceId)}
-        >
-          {device.label}
-        </button>
-      {/each}
+      <div class="flex flex-col gap-1">
+        {#each devices as device}
+          <TextButton on:click={() => promptWebcam(device.deviceId)}>
+            {device.label}
+          </TextButton>
+        {/each}
+      </div>
     {/await}
-  </div>
+  </PopupContainer>
 
   <Camera />
 

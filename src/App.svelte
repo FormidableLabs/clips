@@ -60,8 +60,8 @@
 <div
   class="w-screen h-screen overflow-hidden bg-gray-100 p-0 sm:p-3 md:p-6 flex items-center"
 >
-  <div class="container flex gap-3">
-    <div class="flex-grow relative overflow-hidden flex flex-col gap-3">
+  <div class="container flex gap-4">
+    <div class="flex-grow relative overflow-hidden flex flex-col gap-4">
       <div class="flex-grow">
         <Preview />
       </div>

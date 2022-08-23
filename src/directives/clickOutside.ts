@@ -5,7 +5,10 @@ export const clickOutside = (node: HTMLElement) => {
         node.dispatchEvent(new CustomEvent("outclick"));
       }
 
+      // Stop event propagation when action button is pressed
       if (
+        node.closest(".action_button_popup") !==
+          evt.target.closest(".action_button_popup") &&
         node.closest(".action_button") === evt.target.closest(".action_button")
       ) {
         evt.stopPropagation();

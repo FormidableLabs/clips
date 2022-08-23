@@ -4,38 +4,28 @@
   import { createEventDispatcher } from "svelte";
 
   export let isActive: boolean = false;
-  export let hasPopupContent: boolean = false;
+  export let isPopupOpen: boolean = false;
 
-  let isModalActive = false;
   const dispatch = createEventDispatcher();
-
-  const handleClick = () => {
-    if (isActive) {
-      dispatch("deactivate");
-    } else if (hasPopupContent) {
-      isModalActive = !isModalActive;
-    } else {
-      dispatch("activate");
-    }
-  };
 </script>
 
 <div class="relative action_button">
-  {#if isModalActive && hasPopupContent}
+  {#if isPopupOpen}
     <div
-      class="w-64 absolute bg-white bottom-14 -left-24 rounded shadow-xl"
+      class="w-64 absolute bg-white bottom-14 -left-24 rounded shadow-xl action_button_popup"
       transition:fade={{ duration: 150 }}
       use:clickOutside
-      on:outclick={() => (isModalActive = false)}
+      on:outclick={() => dispatch("popupDismiss")}
     >
       <slot name="popupContent" />
     </div>
   {/if}
+
   <button
-    class="border rounded-full aspect-square h-12 flex items-center justify-center p-1 {isActive
-      ? 'bg-primary-600'
+    class="border border-gray-300 rounded-full aspect-square h-12 flex items-center justify-center p-1.5 hover:bg-primary-200 hover:shadow transition transition-colors transition-shadow duration-200 ease-in-out {isActive
+      ? 'bg-primary-200'
       : ''}"
-    on:click={handleClick}
+    on:click
   >
     <slot />
   </button>
