@@ -1,6 +1,11 @@
 <script lang="ts">
   import Preview from "./components/Preview.svelte";
-  import { canvasStream, isRecording, micStream } from "./stores";
+  import {
+    canvasStream,
+    isRecording,
+    micStream,
+    recordingStartTime,
+  } from "./stores";
   import ActionBar from "./components/ActionBar.svelte";
   import SidebarCanvasSection from "./components/SidebarCanvasSection.svelte";
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
@@ -16,6 +21,8 @@
   const onRecorderStop = () => {
     const completeBlob = new Blob(chunks, { type: chunks[0].type });
     const data = URL.createObjectURL(completeBlob);
+
+    return;
 
     const link = document.createElement("a");
     link.href = data;
@@ -35,7 +42,7 @@
   };
 
   const startRecording = () => {
-    $isRecording = true;
+    $recordingStartTime = new Date();
     chunks.length = 0;
 
     const combinedStream = new MediaStream([
@@ -51,7 +58,7 @@
     recorder.start();
   };
   const stopRecording = () => {
-    $isRecording = false;
+    $recordingStartTime = null;
     recorder.stop();
   };
   const onRecordButtonPress = () => {

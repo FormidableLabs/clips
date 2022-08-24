@@ -1,9 +1,40 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 
 /**
  * Recording state
  */
-export const isRecording = writable(false);
+export const recordingStartTime = writable<Date | null>(null);
+export const isRecording = derived(
+  recordingStartTime,
+  ($startTime) => $startTime !== null
+);
+export const recordingDuration = derived(
+  recordingStartTime,
+  ($startTime, set) => {
+    if (!$startTime) return null;
+
+    const setDuration = () => {
+      const s = Math.floor(
+        (new Date().getTime() - $startTime.getTime()) / 1000
+      );
+
+      const numMins = Math.floor(s / 60);
+      const numSecs = s % 60;
+
+      set(`${numMins}:${String(numSecs).padStart(2, "0")}`);
+    };
+
+    setDuration();
+    const interval = setInterval(setDuration, 500);
+
+    return () => {
+      set(null);
+      clearInterval(interval);
+    };
+  },
+  null
+);
+
 export const recordingFPS = (() => {
   const initFps = localStorage.getItem("recordingFps");
   const store = writable(Number(initFps) || 30);

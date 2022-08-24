@@ -1,30 +1,47 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  import { fade } from "svelte/transition";
   import ShareButton from "./ShareButton.svelte";
   import WebcamButton from "./WebcamButton.svelte";
   import MicButton from "./MicButton.svelte";
-  import { isRecording } from "../stores.js";
+  import { isRecording, recordingDuration } from "../stores.js";
 
   const dispatch = createEventDispatcher();
 </script>
 
 <div
-  class="rounded bg-gray-200 flex justify-center items-center p-2 gap-4 flex-shrink-0"
+  class="flex-shrink-0 rounded bg-gray-200 p-3 flex justify-center items-center"
 >
-  <!-- TODO: Move into its own component? -->
-  <button
-    class="w-16 h-16 shadow rounded-full cursor-pointer border-4 border-gray-500 p-1 flex items-center justify-center group"
-    on:click={() => {
-      dispatch("record");
-    }}
+  <div
+    class="gap-4 grid grid-cols-[repeat(3,50px)_70px_repeat(3,50px)] items-center"
   >
-    <div
-      class="bg-red-500 transition transition-all duration-300 ease-in-out {$isRecording
-        ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
-        : 'w-full h-full rounded-[100%]'}"
-    />
-  </button>
-  <ShareButton />
-  <WebcamButton />
-  <MicButton />
+    <div class="col-span-3" />
+
+    <div class="relative">
+      {#if $recordingDuration !== null}
+        <div
+          class="absolute w-[100px] -left-[15px] bg-white bottom-[75px] rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
+          transition:fade={{ duration: 300 }}
+        >
+          {$recordingDuration}
+        </div>
+      {/if}
+
+      <button
+        class="w-full aspect-square shadow rounded-full cursor-pointer border-4 border-gray-500 p-1 flex items-center justify-center group"
+        on:click={() => {
+          dispatch("record");
+        }}
+      >
+        <div
+          class="bg-red-500 transition transition-all duration-300 ease-in-out {$isRecording
+            ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
+            : 'w-full h-full rounded-[100%]'}"
+        />
+      </button>
+    </div>
+    <ShareButton />
+    <WebcamButton />
+    <MicButton />
+  </div>
 </div>
