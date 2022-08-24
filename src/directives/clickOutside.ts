@@ -1,4 +1,6 @@
-export const clickOutside = (node: HTMLElement) => {
+import type { Action } from "svelte/action";
+
+export const clickOutside: Action = (node) => {
   const handleGlobalClick = (evt: Event) => {
     if (evt.target instanceof Node && evt.target instanceof Element) {
       if (!node.contains(evt.target)) {

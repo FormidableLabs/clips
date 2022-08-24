@@ -22,7 +22,7 @@
     const completeBlob = new Blob(chunks, { type: chunks[0].type });
     const data = URL.createObjectURL(completeBlob);
 
-    return;
+    // return;
 
     const link = document.createElement("a");
     link.href = data;

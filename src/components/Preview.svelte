@@ -10,7 +10,11 @@
     webcamStream,
     displayStream,
     activeTheme,
+    activeBackground,
+    activeLayout,
+    recordingFPS,
   } from "../stores";
+  import type { DrawArgs } from "../stores";
   import { roundedRectClip } from "../drawUtils";
 
   // Container measurements
@@ -64,44 +68,56 @@
    */
   onMount(() => {
     ctx ||= canvas.getContext("2d");
-    $canvasStream = canvas.captureStream(15);
+    // $canvasStream = canvas.captureStream(15);
     draw();
   });
+
+  $: if (canvas) {
+    if ($canvasStream) {
+      $canvasStream.getTracks().forEach((track) => track.stop());
+    }
+    $canvasStream = canvas.captureStream($recordingFPS);
+  }
+
+  // Track drawArgs
+  let drawArgs: DrawArgs = {
+    ctx,
+    theme: $activeTheme,
+    canvasSize: $canvasDimensions,
+    displayStream: $displayStream,
+    displayDimensions: $displayDimensions,
+    displayPreview: $displayPreview,
+  };
+  $: {
+    drawArgs.ctx = ctx;
+    drawArgs.theme = $activeTheme;
+    drawArgs.canvasSize = $canvasDimensions;
+    drawArgs.displayStream = $displayStream;
+    drawArgs.displayDimensions = $displayDimensions;
+    drawArgs.displayPreview = $displayPreview;
+  }
 
   const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    DrawBackground: {
-      ctx.save();
-
-      const lingrad = ctx.createLinearGradient(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-      lingrad.addColorStop(0, $activeTheme.primary);
-      lingrad.addColorStop(1, $activeTheme.secondary);
-
-      ctx.fillStyle = lingrad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.restore();
+    if (drawArgs.ctx) {
+      $activeBackground?.draw(drawArgs);
+      $activeLayout?.draw(drawArgs);
     }
 
-    if ($displayStream) {
-      const pad = 100;
-      const { width, height } = $displayDimensions;
-
-      const x0 = pad,
-        y0 = pad,
-        w = (width / height) * canvas.height - 2 * pad,
-        h = canvas.height - 2 * pad;
-
-      roundedRectClip(ctx, x0, y0, w, h, 20, () => {
-        ctx.drawImage($displayPreview, x0, y0, w, h);
-      });
-    }
+    // if ($displayStream) {
+    //   const pad = 100;
+    //   const { width, height } = $displayDimensions;
+    //
+    //   const x0 = pad,
+    //     y0 = pad,
+    //     w = (width / height) * canvas.height - 2 * pad,
+    //     h = canvas.height - 2 * pad;
+    //
+    //   roundedRectClip(ctx, x0, y0, w, h, 20, () => {
+    //     ctx.drawImage($displayPreview, x0, y0, w, h);
+    //   });
+    // }
 
     if ($webcamStream) {
       const pad = 100;
@@ -145,7 +161,7 @@
 
 <div class="w-full h-full flex justify-center items-center" bind:this={wrapper}>
   <div
-    class="bg-green-400 overflow-hidden rounded shadow-lg"
+    class="bg-gray-300 overflow-hidden rounded shadow-lg"
     style="aspect-ratio: {$canvasDimensions.width}/{$canvasDimensions.height}; width: {containerWidth}px; height: {containerHeight}px"
   >
     <canvas

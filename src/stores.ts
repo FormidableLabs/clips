@@ -1,4 +1,6 @@
 import { derived, writable } from "svelte/store";
+import { createLinearGradientBackground } from "./utils/backgroundDrawers";
+import { screenshareOnlyLayout, webcamOnlyLayout } from "./utils/layoutDrawers";
 
 /**
  * Recording state
@@ -110,11 +112,22 @@ export type Theme = {
   title: string;
   primary: string;
   secondary: string;
+  accent: string;
 };
 export const themes: Theme[] = [
-  { title: "Basic", primary: "#ff0000", secondary: "#ff00ff" },
-  { title: "Green", primary: "#354735", secondary: "#acea88" },
-  { title: "Sun", primary: "#e78e47", secondary: "#f7d570" },
+  {
+    title: "Basic",
+    primary: "#ff0000",
+    secondary: "#ff00ff",
+    accent: "#ffffff",
+  },
+  {
+    title: "Green",
+    primary: "#354735",
+    secondary: "#acea88",
+    accent: "#ffffff",
+  },
+  { title: "Sun", primary: "#e78e47", secondary: "#f7d570", accent: "#ffffff" },
 ];
 
 export const activeTheme = (() => {
@@ -138,12 +151,89 @@ export const activeTheme = (() => {
  * Background/layout drawing stuff
  * ------------------------------
  */
-type DrawFn = (args: {}) => void;
+export type DrawArgs = {
+  ctx: CanvasRenderingContext2D;
+  theme: Theme;
+  canvasSize: CanvasSize;
+  displayDimensions: { width: number; height: number } | null | undefined;
+  displayStream: MediaStream | null | undefined;
+  displayPreview: HTMLVideoElement | null | undefined;
+};
+export type DrawFn = (args: DrawArgs) => void;
 
 /**
  * Background
  */
 type Background = {
   title: string;
-  draw: () => void;
+  draw: DrawFn;
 };
+
+export const backgrounds: Background[] = [
+  {
+    title: "Gradient (to bottom right)",
+    draw: createLinearGradientBackground("bottom_right"),
+  },
+  {
+    title: "Gradient (to top)",
+    draw: createLinearGradientBackground("top"),
+  },
+  {
+    title: "Gradient (to bottom)",
+    draw: createLinearGradientBackground("bottom"),
+  },
+  {
+    title: "Gradient (to left)",
+    draw: createLinearGradientBackground("left"),
+  },
+  {
+    title: "Gradient (to right)",
+    draw: createLinearGradientBackground("right"),
+  },
+];
+
+export const activeBackground = (() => {
+  const initBackgroundTitle = localStorage.getItem("background");
+  const initBackground =
+    backgrounds.find(
+      (background) => background.title === initBackgroundTitle
+    ) || backgrounds[0];
+  const store = writable<Background>(initBackground);
+
+  const _set = store.set;
+  store.set = (background) => {
+    localStorage.setItem("background", background.title);
+    _set(background);
+  };
+
+  return store;
+})();
+
+/**
+ * Layouts
+ */
+
+type Layout = Background;
+
+export const layouts: Layout[] = [
+  { title: "Webcam Only", draw: webcamOnlyLayout },
+  {
+    title: "Screenshare only",
+    draw: screenshareOnlyLayout,
+  },
+];
+
+export const activeLayout = (() => {
+  const initLayoutTitle = localStorage.getItem("layout");
+  const initLayout =
+    layouts.find((layout) => layout.title === initLayoutTitle) || layouts[0];
+  const store = writable<Layout>(initLayout);
+
+  const _set = store.set;
+  store.set = (layout) => {
+    localStorage.setItem("layout", layout.title);
+    _set(layout);
+  };
+
+  return store;
+})();
