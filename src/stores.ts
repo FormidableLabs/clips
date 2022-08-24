@@ -1,5 +1,10 @@
+import type { Readable } from "svelte/store";
 import { derived, writable } from "svelte/store";
-import { createLinearGradientBackground } from "./utils/backgroundDrawers";
+import {
+  createAudioWaveBackground,
+  createLinearGradientBackground,
+  createSolidBackground,
+} from "./utils/backgroundDrawers";
 import {
   createScreenAndCamLayout,
   screenshareOnlyLayout,
@@ -72,6 +77,19 @@ export const webcamDimensions = writable({ width: 0, height: 0 });
  * Mic stream
  */
 export const micStream = writable<MediaStream>(null);
+
+export const micAnalyzer = derived(micStream, ($stream) => {
+  if (!$stream) return null;
+  const context = new AudioContext();
+  const analyser = context.createAnalyser();
+  analyser.fftSize = 64;
+  const source = context.createMediaStreamSource($stream);
+  source.connect(analyser);
+
+  let freqs = new Uint8Array(analyser.frequencyBinCount);
+
+  return { freqs, analyser };
+});
 
 /**
  * Canvas stream
@@ -165,6 +183,7 @@ export type DrawArgs = {
   webcamDimensions: { width: number; height: number } | null | undefined;
   webcamStream: MediaStream | null | undefined;
   webcamPreview: HTMLVideoElement | null | undefined;
+  micAnalyzer: null | { freqs: Uint8Array; analyser: AnalyserNode };
 };
 export type DrawFn = (args: DrawArgs) => void;
 
@@ -177,6 +196,10 @@ type Background = {
 };
 
 export const backgrounds: Background[] = [
+  {
+    title: "Audio Visualizer",
+    draw: createAudioWaveBackground(),
+  },
   {
     title: "Gradient (to bottom right)",
     draw: createLinearGradientBackground("bottom_right"),
@@ -196,6 +219,14 @@ export const backgrounds: Background[] = [
   {
     title: "Gradient (to right)",
     draw: createLinearGradientBackground("right"),
+  },
+  {
+    title: "Solid (primary)",
+    draw: createSolidBackground("primary"),
+  },
+  {
+    title: "Solid (secondary)",
+    draw: createSolidBackground("secondary"),
   },
 ];
 

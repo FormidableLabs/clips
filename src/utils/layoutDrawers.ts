@@ -153,7 +153,7 @@ export const createScreenAndCamLayout = ({
       // Accent ring around webcam feed?
       ctx.globalCompositeOperation = "destination-out";
       ctx.save();
-      ctx.lineWidth = Math.max(width, height) / 100;
+      ctx.lineWidth = Math.max(width, height) / 80; // TODO: Make customizable...
       ctx.strokeStyle = theme.accent;
       ctx.beginPath();
       ctx.arc(x0, y0, webcamRadius, 0, 2 * Math.PI);

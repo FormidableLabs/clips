@@ -1,6 +1,5 @@
 <script lang="ts">
   import SidebarSection from "./SidebarSection.svelte";
-  import TextButton from "./TextButton.svelte";
   import {
     canvasDimensions,
     canvasSizes,
@@ -8,20 +7,21 @@
     recordingFPS,
   } from "../stores.js";
   import FormField from "./FormField.svelte";
+  import Select from "./Select.svelte";
 </script>
 
-<!-- TODO: Recording FPS -->
 <SidebarSection title="Canvas">
-  <div class="flex flex-col gap-1">
-    {#each canvasSizes as size}
-      <TextButton
-        on:click={() => ($canvasDimensions = size)}
-        extraClasses={size === $canvasDimensions ? "bg-primary-200" : ""}
-        isDisabled={$isRecording}
-      >
-        {size.title} ({size.width}x{size.height})
-      </TextButton>
-    {/each}
+  <div class="flex flex-col gap-2">
+    <Select
+      title="Canvas Size"
+      name="canvasSize"
+      options={canvasSizes.map((size) => ({
+        title: `${size.title} (${size.width}x${size.height})`,
+        value: size,
+      }))}
+      bind:value={$canvasDimensions}
+      isDisabled={$isRecording}
+    />
 
     <FormField
       title="Recording FPS"

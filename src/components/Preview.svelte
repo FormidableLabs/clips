@@ -13,9 +13,9 @@
     activeBackground,
     activeLayout,
     recordingFPS,
+    micAnalyzer,
   } from "../stores";
   import type { DrawArgs } from "../stores";
-  import { roundedRectClip } from "../drawUtils";
 
   // Container measurements
   let wrapper: HTMLDivElement;
@@ -29,10 +29,6 @@
 
   // Track container sizing, so we can scale accordingly.
   const measure = () => {
-    // const { width, height } = container.getBoundingClientRect();
-    // [containerWidth, containerHeight] = [width, height];
-    // scale = containerWidth / $canvasDimensions.width;
-
     const { width, height } = wrapper.getBoundingClientRect();
     if (($canvasDimensions.height / $canvasDimensions.width) * width > height) {
       containerHeight = height;
@@ -45,14 +41,6 @@
     }
 
     scale = containerWidth / $canvasDimensions.width;
-
-    // if (wrapper) {
-    //   const { width, height } = wrapper.getBoundingClientRect();
-    //   fillClass =
-    //     ($canvasDimensions.height / $canvasDimensions.width) * width > height
-    //       ? "h-full"
-    //       : "w-full";
-    // }
   };
 
   $: if (wrapper && $canvasDimensions) {
@@ -68,10 +56,10 @@
    */
   onMount(() => {
     ctx ||= canvas.getContext("2d");
-    // $canvasStream = canvas.captureStream(15);
     draw();
   });
 
+  // Setting up canvas capture stream
   $: if (canvas) {
     if ($canvasStream) {
       $canvasStream.getTracks().forEach((track) => track.stop());
@@ -90,6 +78,7 @@
     webcamStream: $webcamStream,
     webcamDimensions: $webcamDimensions,
     webcamPreview: $webcamPreview,
+    micAnalyzer: $micAnalyzer,
   };
   $: {
     drawArgs.ctx = ctx;
@@ -101,6 +90,11 @@
     drawArgs.webcamStream = $webcamStream;
     drawArgs.webcamDimensions = $webcamDimensions;
     drawArgs.webcamPreview = $webcamPreview;
+    drawArgs.micAnalyzer = $micAnalyzer;
+  }
+
+  $: {
+    console.log($micAnalyzer);
   }
 
   const draw = () => {
