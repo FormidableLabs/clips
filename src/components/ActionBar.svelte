@@ -3,8 +3,8 @@
   import ShareButton from "./ShareButton.svelte";
   import WebcamButton from "./WebcamButton.svelte";
   import MicButton from "./MicButton.svelte";
+  import { isRecording } from "../stores.js";
 
-  export let isRecording: boolean;
   const dispatch = createEventDispatcher();
 </script>
 
@@ -19,7 +19,7 @@
     }}
   >
     <div
-      class="bg-red-500 transition transition-all duration-300 ease-in-out {isRecording
+      class="bg-red-500 transition transition-all duration-300 ease-in-out {$isRecording
         ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
         : 'w-full h-full rounded-[100%]'}"
     />

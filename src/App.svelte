@@ -1,13 +1,12 @@
 <script lang="ts">
   import Preview from "./components/Preview.svelte";
-  import { canvasStream, micStream } from "./stores";
+  import { canvasStream, isRecording, micStream } from "./stores";
   import ActionBar from "./components/ActionBar.svelte";
   import SidebarCanvasSection from "./components/SidebarCanvasSection.svelte";
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
   import SidebarBackgroundSection from "./components/SidebarBackgroundSection.svelte";
   import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
 
-  let isRecording = false;
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
   const onDataAvailable = (e: BlobEvent) => {
@@ -36,7 +35,7 @@
   };
 
   const startRecording = () => {
-    isRecording = true;
+    $isRecording = true;
     chunks.length = 0;
 
     const combinedStream = new MediaStream([
@@ -52,11 +51,11 @@
     recorder.start();
   };
   const stopRecording = () => {
-    isRecording = false;
+    $isRecording = false;
     recorder.stop();
   };
   const onRecordButtonPress = () => {
-    if (isRecording) stopRecording();
+    if ($isRecording) stopRecording();
     else startRecording();
   };
 </script>
@@ -69,7 +68,7 @@
       <div class="flex-grow">
         <Preview />
       </div>
-      <ActionBar {isRecording} on:record={onRecordButtonPress} />
+      <ActionBar on:record={onRecordButtonPress} />
     </div>
     <div
       class="bg-gray-200 w-64 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"

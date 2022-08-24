@@ -1,6 +1,23 @@
 import { writable } from "svelte/store";
 
 /**
+ * Recording state
+ */
+export const isRecording = writable(false);
+export const recordingFPS = (() => {
+  const initFps = localStorage.getItem("recordingFps");
+  const store = writable(Number(initFps) || 30);
+
+  const _set = store.set;
+  store.set = (fps) => {
+    localStorage.setItem("recordingFps", String(fps));
+    _set(fps);
+  };
+
+  return store;
+})();
+
+/**
  * Track video stream
  */
 export const displayStream = writable<MediaStream>(null);
@@ -84,3 +101,18 @@ export const activeTheme = (() => {
 
   return store;
 })();
+
+/**
+ * ------------------------------
+ * Background/layout drawing stuff
+ * ------------------------------
+ */
+type DrawFn = (args: {}) => void;
+
+/**
+ * Background
+ */
+type Background = {
+  title: string;
+  draw: () => void;
+};
