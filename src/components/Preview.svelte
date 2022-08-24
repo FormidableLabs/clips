@@ -87,6 +87,9 @@
     displayStream: $displayStream,
     displayDimensions: $displayDimensions,
     displayPreview: $displayPreview,
+    webcamStream: $webcamStream,
+    webcamDimensions: $webcamDimensions,
+    webcamPreview: $webcamPreview,
   };
   $: {
     drawArgs.ctx = ctx;
@@ -95,62 +98,22 @@
     drawArgs.displayStream = $displayStream;
     drawArgs.displayDimensions = $displayDimensions;
     drawArgs.displayPreview = $displayPreview;
+    drawArgs.webcamStream = $webcamStream;
+    drawArgs.webcamDimensions = $webcamDimensions;
+    drawArgs.webcamPreview = $webcamPreview;
   }
 
   const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.imageSmoothingQuality = "high";
+    ctx.globalCompositeOperation = "source-over";
 
     if (drawArgs.ctx) {
-      $activeBackground?.draw(drawArgs);
       $activeLayout?.draw(drawArgs);
-    }
 
-    // if ($displayStream) {
-    //   const pad = 100;
-    //   const { width, height } = $displayDimensions;
-    //
-    //   const x0 = pad,
-    //     y0 = pad,
-    //     w = (width / height) * canvas.height - 2 * pad,
-    //     h = canvas.height - 2 * pad;
-    //
-    //   roundedRectClip(ctx, x0, y0, w, h, 20, () => {
-    //     ctx.drawImage($displayPreview, x0, y0, w, h);
-    //   });
-    // }
-
-    if ($webcamStream) {
-      const pad = 100;
-      const { width, height } = $webcamDimensions;
-
-      const _w = 1200;
-      const _h = (height / width) * _w;
-      const r = Math.min(_w, _h) / 2;
-
-      // Center of where video should go
-      const x0 = canvas.width - pad - r;
-      const y0 = canvas.height - pad - r;
-
-      // Clip to a circle
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(x0, y0, r, 0, 2 * Math.PI);
-      ctx.clip();
-
-      ctx.globalCompositeOperation = "source-atop";
-
-      // Draw in the image
-      ctx.drawImage($webcamPreview, x0 - _w / 2, y0 - _h / 2, _w, _h);
-      // And restore.
-      ctx.restore();
-
-      // Draw a circle around the image to hide lack of antialiasing
-      ctx.save();
-      ctx.lineWidth = 20;
-      ctx.beginPath();
-      ctx.arc(x0, y0, r, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.restore();
+      // Background gets drawn last
+      ctx.globalCompositeOperation = "destination-over";
+      $activeBackground?.draw(drawArgs);
     }
 
     requestAnimationFrame(draw);

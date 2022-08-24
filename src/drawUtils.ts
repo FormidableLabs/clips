@@ -25,3 +25,23 @@ export const roundedRectClip = (
 
   ctx.restore();
 };
+
+/**
+ * Circle clip
+ */
+export const circleClip = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+  cb: () => void
+) => {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, 2 * Math.PI);
+  ctx.clip();
+
+  cb();
+
+  ctx.restore();
+};

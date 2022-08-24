@@ -1,6 +1,10 @@
 import { derived, writable } from "svelte/store";
 import { createLinearGradientBackground } from "./utils/backgroundDrawers";
-import { screenshareOnlyLayout, webcamOnlyLayout } from "./utils/layoutDrawers";
+import {
+  createScreenAndCamLayout,
+  screenshareOnlyLayout,
+  webcamOnlyLayout,
+} from "./utils/layoutDrawers";
 
 /**
  * Recording state
@@ -158,6 +162,9 @@ export type DrawArgs = {
   displayDimensions: { width: number; height: number } | null | undefined;
   displayStream: MediaStream | null | undefined;
   displayPreview: HTMLVideoElement | null | undefined;
+  webcamDimensions: { width: number; height: number } | null | undefined;
+  webcamStream: MediaStream | null | undefined;
+  webcamPreview: HTMLVideoElement | null | undefined;
 };
 export type DrawFn = (args: DrawArgs) => void;
 
@@ -220,6 +227,34 @@ export const layouts: Layout[] = [
   {
     title: "Screenshare only",
     draw: screenshareOnlyLayout,
+  },
+  {
+    title: "Screen+Cam (left/bottom)",
+    draw: createScreenAndCamLayout({
+      camAlignHoriz: "left",
+      camAlignVert: "bottom",
+    }),
+  },
+  {
+    title: "Screen+Cam (left/top)",
+    draw: createScreenAndCamLayout({
+      camAlignHoriz: "left",
+      camAlignVert: "top",
+    }),
+  },
+  {
+    title: "Screen+Cam (right/bottom)",
+    draw: createScreenAndCamLayout({
+      camAlignHoriz: "right",
+      camAlignVert: "bottom",
+    }),
+  },
+  {
+    title: "Screen+Cam (right/top)",
+    draw: createScreenAndCamLayout({
+      camAlignHoriz: "right",
+      camAlignVert: "top",
+    }),
   },
 ];
 
