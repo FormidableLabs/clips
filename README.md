@@ -17,3 +17,5 @@ This repo is an active experiment. The primary goal of this app is to make it ea
 End result is an interface that looks something like this:
 
 ![Sample screenshot](./docs/sample.jpg)
+
+(Still in progress, working on improving the UI and screen recording styling/layouts/presets.)
