@@ -437,6 +437,11 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+fix-webm-duration@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/fix-webm-duration/-/fix-webm-duration-1.0.5.tgz#da4558a92196a677302bfc54780b494dd5336a96"
+  integrity sha512-b6oula3OfSknx0aWoLsxvp4DVIYbwsf+UAkr6EDAK3iuMYk/OSNKzmeSI61GXK0MmFTEuzle19BPvTxMIKjkZg==
+
 fraction.js@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.2.0.tgz#448e5109a313a3527f5a3ab2119ec4cf0e0e2950"

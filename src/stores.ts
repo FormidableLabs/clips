@@ -14,7 +14,7 @@ import {
 /**
  * Recording state
  */
-export const recordingStartTime = writable<Date | null>(null);
+export const recordingStartTime = writable<number | null>(null);
 export const isRecording = derived(
   recordingStartTime,
   ($startTime) => $startTime !== null
@@ -25,9 +25,7 @@ export const recordingDuration = derived(
     if (!$startTime) return null;
 
     const setDuration = () => {
-      const s = Math.floor(
-        (new Date().getTime() - $startTime.getTime()) / 1000
-      );
+      const s = Math.floor((Date.now() - $startTime) / 1000);
 
       const numMins = Math.floor(s / 60);
       const numSecs = s % 60;
@@ -82,7 +80,7 @@ export const micAnalyzer = derived(micStream, ($stream) => {
   if (!$stream) return null;
   const context = new AudioContext();
   const analyser = context.createAnalyser();
-  analyser.fftSize = 64;
+  analyser.fftSize = 32;
   const source = context.createMediaStreamSource($stream);
   source.connect(analyser);
 
@@ -107,8 +105,9 @@ export type CanvasSize = {
 
 export const canvasSizes: CanvasSize[] = [
   { title: "4K", width: 3840, height: 2160 },
+  { title: "2K", width: 2560, height: 1440 },
   { title: "1080p", width: 1920, height: 1080 },
-  { title: "Square", width: 1000, height: 1000 },
+  { title: "Square", width: 1920, height: 1920 },
   { title: "Portrait", width: 1000, height: 1800 },
 ];
 

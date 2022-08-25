@@ -93,10 +93,6 @@
     drawArgs.micAnalyzer = $micAnalyzer;
   }
 
-  $: {
-    console.log($micAnalyzer);
-  }
-
   const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.imageSmoothingQuality = "high";

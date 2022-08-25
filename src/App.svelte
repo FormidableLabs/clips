@@ -11,6 +11,7 @@
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
   import SidebarBackgroundSection from "./components/SidebarBackgroundSection.svelte";
   import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
+  import { patchBlob } from "./utils/blobHelpers";
 
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
@@ -18,9 +19,13 @@
     chunks.push(e.data);
   };
 
-  const onRecorderStop = () => {
+  const onRecorderStop = async () => {
+    const duration = Date.now() - $recordingStartTime;
+    $recordingStartTime = null;
+
     const completeBlob = new Blob(chunks, { type: chunks[0].type });
-    const data = URL.createObjectURL(completeBlob);
+    const newBlob = await patchBlob(completeBlob, duration);
+    const data = URL.createObjectURL(newBlob);
 
     // return;
 
@@ -42,15 +47,18 @@
   };
 
   const startRecording = () => {
-    $recordingStartTime = new Date();
+    $recordingStartTime = Date.now();
     chunks.length = 0;
 
     const combinedStream = new MediaStream([
       ...($canvasStream?.getTracks() || []),
       ...($micStream?.getTracks() || []),
     ]);
+    // TODO: dynamic bits per second based on resolution...
     recorder = new MediaRecorder(combinedStream, {
-      mimeType: "video/webm; codecs=vp9",
+      audioBitsPerSecond: 128000, // 128 kbps
+      videoBitsPerSecond: 5 * 1000 * 1000, // N mbps
+      mimeType: "video/webm;codecs=vp9",
     });
     recorder.ondataavailable = onDataAvailable;
     recorder.onstop = onRecorderStop;
@@ -58,7 +66,6 @@
     recorder.start();
   };
   const stopRecording = () => {
-    $recordingStartTime = null;
     recorder.stop();
   };
   const onRecordButtonPress = () => {

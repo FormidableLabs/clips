@@ -4,6 +4,7 @@
   import { webcamDimensions, webcamPreview, webcamStream } from "../stores";
   import PopupContainer from "./PopupContainer.svelte";
   import TextButton from "./TextButton.svelte";
+  import { onMount } from "svelte";
 
   let isPopupOpen = false;
 
@@ -44,6 +45,11 @@
       isPopupOpen = true;
     }
   };
+
+  // TODO: need to actually fix permissions prompting, so first launch you can get webcams
+  onMount(() => {
+    // navigator.mediaDevices.getUserMedia({ video: true });
+  });
 </script>
 
 <ActionButton
