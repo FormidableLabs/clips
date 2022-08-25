@@ -1,6 +1,7 @@
 import type { Readable } from "svelte/store";
 import { derived, writable } from "svelte/store";
 import {
+  createAudioBarBackground,
   createAudioWaveBackground,
   createLinearGradientBackground,
   createSolidBackground,
@@ -80,7 +81,7 @@ export const micAnalyzer = derived(micStream, ($stream) => {
   if (!$stream) return null;
   const context = new AudioContext();
   const analyser = context.createAnalyser();
-  analyser.fftSize = 32;
+  analyser.fftSize = 128;
   const source = context.createMediaStreamSource($stream);
   source.connect(analyser);
 
@@ -138,8 +139,8 @@ export type Theme = {
 export const themes: Theme[] = [
   {
     title: "Basic",
-    primary: "#ff0000",
-    secondary: "#ff00ff",
+    primary: "#32056f",
+    secondary: "#7139e6",
     accent: "#ffffff",
   },
   {
@@ -149,6 +150,12 @@ export const themes: Theme[] = [
     accent: "#ffffff",
   },
   { title: "Sun", primary: "#e78e47", secondary: "#f7d570", accent: "#ffffff" },
+  {
+    title: "White and Blue",
+    primary: "#ffffff",
+    secondary: "#3638dc",
+    accent: "#ffffff",
+  },
 ];
 
 export const activeTheme = (() => {
@@ -198,6 +205,18 @@ export const backgrounds: Background[] = [
   {
     title: "Audio Wave",
     draw: createAudioWaveBackground(),
+  },
+  {
+    title: "Audio Bars (Thin)",
+    draw: createAudioBarBackground({ N: 2 }),
+  },
+  {
+    title: "Audio Bars (Medium)",
+    draw: createAudioBarBackground({ N: 4 }),
+  },
+  {
+    title: "Audio Bars (Thick)",
+    draw: createAudioBarBackground({ N: 8 }),
   },
   {
     title: "Gradient (to bottom right)",

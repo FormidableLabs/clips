@@ -66,7 +66,7 @@ export const createAudioWaveBackground = (): DrawFn => {
     ctx.save();
     const { width, height } = canvasSize;
 
-    const lingrad = ctx.createLinearGradient(0, 0, 0, height);
+    const lingrad = ctx.createLinearGradient(0, -height / 4, 0, height);
     lingrad.addColorStop(0, theme.secondary);
     lingrad.addColorStop(1, theme.primary);
 
@@ -76,9 +76,15 @@ export const createAudioWaveBackground = (): DrawFn => {
 
       // Let's only take every-other frequency?
       let modFreqs = [];
-      const N = 4;
-      for (let i = 0; i < freqs.length; i += N) {
-        modFreqs.push(freqs[i]);
+      const N = 16;
+      let acc = 0;
+      for (let i = 0; i < freqs.length; i++) {
+        acc += freqs[i];
+
+        if ((i + 1) % N === 0) {
+          modFreqs.push(acc / N);
+          acc = 0;
+        }
       }
 
       const dx = width / modFreqs.length;
@@ -109,7 +115,58 @@ export const createAudioWaveBackground = (): DrawFn => {
 
     ctx.fillStyle = theme.primary;
     ctx.fillRect(0, 0, width, height);
+
     ctx.restore();
+  };
+};
+
+/**
+ * Audio bar background
+ */
+export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
+  return ({ ctx, canvasSize, theme, micAnalyzer }) => {
+    ctx.save();
+    const { width, height } = canvasSize;
+
+    const lingrad = ctx.createLinearGradient(0, -height / 3, 0, height);
+    lingrad.addColorStop(0, theme.secondary);
+    lingrad.addColorStop(1, theme.primary);
+
+    if (micAnalyzer) {
+      let { freqs, analyser } = micAnalyzer;
+      analyser.getByteFrequencyData(freqs);
+
+      // Let's only take every-other frequency?
+      let modFreqs = [];
+      let acc = 0;
+      for (let i = 0; i < freqs.length; i++) {
+        acc += freqs[i];
+
+        if ((i + 1) % N === 0) {
+          modFreqs.push(acc / N);
+          acc = 0;
+        }
+      }
+
+      const gap = width / 100;
+      const barWidth = (width - (modFreqs.length + 1) * gap) / modFreqs.length;
+
+      const dx = width / modFreqs.length;
+
+      ctx.fillStyle = lingrad;
+      let x0, y0, w, h;
+      for (let i = 0; i < modFreqs.length - 1; i++) {
+        x0 = gap + (barWidth + gap) * i;
+        h = (modFreqs[i] / 255) * height;
+        y0 = height - h;
+
+        ctx.fillRect(x0, y0, barWidth, h);
+      }
+    }
+
+    // Background
+    ctx.fillStyle = theme.primary;
+    ctx.fillRect(0, 0, width, height);
 
     ctx.restore();
   };

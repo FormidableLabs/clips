@@ -92,9 +92,11 @@ export const screenshareOnlyLayout: DrawFn = ({
 export const createScreenAndCamLayout = ({
   camAlignHoriz,
   camAlignVert,
+  webcamAccentWidth = 0.02,
 }: {
   camAlignHoriz: "left" | "right";
   camAlignVert: "top" | "bottom";
+  webcamAccentWidth?: number;
 }): DrawFn => {
   return (args) => {
     const { width, height } = args.canvasSize;
@@ -153,7 +155,7 @@ export const createScreenAndCamLayout = ({
       // Accent ring around webcam feed?
       ctx.globalCompositeOperation = "destination-out";
       ctx.save();
-      ctx.lineWidth = Math.max(width, height) / 80; // TODO: Make customizable...
+      ctx.lineWidth = webcamAccentWidth * Math.max(width, height);
       ctx.strokeStyle = theme.accent;
       ctx.beginPath();
       ctx.arc(x0, y0, webcamRadius, 0, 2 * Math.PI);
