@@ -203,10 +203,6 @@ type Background = {
 
 export const backgrounds: Background[] = [
   {
-    title: "Audio Wave",
-    draw: createAudioWaveBackground(),
-  },
-  {
     title: "Audio Bars (Thin)",
     draw: createAudioBarBackground({ N: 2 }),
   },
@@ -217,6 +213,10 @@ export const backgrounds: Background[] = [
   {
     title: "Audio Bars (Thick)",
     draw: createAudioBarBackground({ N: 8 }),
+  },
+  {
+    title: "Audio Wave",
+    draw: createAudioWaveBackground(),
   },
   {
     title: "Gradient (to bottom right)",
@@ -272,11 +272,6 @@ export const activeBackground = (() => {
 type Layout = Background;
 
 export const layouts: Layout[] = [
-  { title: "Webcam Only", draw: webcamOnlyLayout },
-  {
-    title: "Screenshare only",
-    draw: screenshareOnlyLayout,
-  },
   {
     title: "Screen+Cam (left/bottom)",
     draw: createScreenAndCamLayout({
@@ -304,6 +299,11 @@ export const layouts: Layout[] = [
       camAlignHoriz: "right",
       camAlignVert: "top",
     }),
+  },
+  { title: "Webcam Only", draw: webcamOnlyLayout },
+  {
+    title: "Screenshare only",
+    draw: screenshareOnlyLayout,
   },
 ];
 
