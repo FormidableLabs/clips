@@ -196,7 +196,7 @@ type Background = {
 
 export const backgrounds: Background[] = [
   {
-    title: "Audio Visualizer",
+    title: "Audio Wave",
     draw: createAudioWaveBackground(),
   },
   {

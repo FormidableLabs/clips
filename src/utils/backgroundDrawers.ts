@@ -73,16 +73,25 @@ export const createAudioWaveBackground = (): DrawFn => {
     if (micAnalyzer) {
       let { freqs, analyser } = micAnalyzer;
       analyser.getByteFrequencyData(freqs);
+
+      // Let's only take every-other frequency?
+      let modFreqs = [];
+      const N = 4;
+      for (let i = 0; i < freqs.length; i += N) {
+        modFreqs.push(freqs[i]);
+      }
+
+      const dx = width / modFreqs.length;
+
       const p = new Path2D();
-      p.moveTo(0, height);
+      p.moveTo(0, height - modFreqs[0] / 255);
 
-      const dx = width / freqs.length;
-
-      let nextValue: [number, number] = [0, height],
-        thisValue: [number, number];
-      for (let i = 0; i < freqs.length - 1; i++) {
+      let nextValue: [number, number], thisValue: [number, number];
+      for (let i = 0; i < modFreqs.length - 1; i++) {
         thisValue = nextValue;
-        nextValue = [(i + 1) * dx, (1 - freqs[i + 1] / 255) * height];
+        nextValue = [i * dx, (1 - modFreqs[i] / 255) * height];
+
+        if (!thisValue) continue;
 
         const x_mid = (thisValue[0] + nextValue[0]) / 2;
         const y_mid = (thisValue[1] + nextValue[1]) / 2;
