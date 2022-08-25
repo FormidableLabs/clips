@@ -13,10 +13,12 @@
   class="flex-shrink-0 rounded bg-gray-200 p-3 flex justify-center items-center"
 >
   <div
-    class="gap-4 grid grid-cols-[repeat(3,50px)_70px_repeat(3,50px)] items-center"
+    class="gap-4 grid grid-cols-[repeat(2,50px)_70px_repeat(2,50px)] items-center"
   >
-    <div class="col-span-3" />
+    <div />
+    <ShareButton />
 
+    <!-- Recording button -->
     <div class="relative">
       {#if $recordingDuration !== null}
         <div
@@ -26,7 +28,6 @@
           {$recordingDuration}
         </div>
       {/if}
-
       <button
         class="w-full aspect-square shadow rounded-full cursor-pointer border-4 border-gray-500 p-1 flex items-center justify-center group"
         on:click={() => {
@@ -40,7 +41,7 @@
         />
       </button>
     </div>
-    <ShareButton />
+
     <WebcamButton />
     <MicButton />
   </div>

@@ -78,7 +78,9 @@
   class="w-screen h-screen overflow-hidden bg-gray-100 p-0 sm:p-3 md:p-6 flex items-center"
 >
   <div class="container flex gap-4">
-    <div class="flex-grow relative flex flex-col gap-4">
+    <div
+      class="relative flex flex-col gap-4 flex-grow max-w-[calc(100%-250px)]"
+    >
       <div class="flex-grow overflow-hidden">
         <Preview />
       </div>
