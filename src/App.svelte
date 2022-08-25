@@ -79,7 +79,7 @@
 >
   <div class="container flex gap-4">
     <div class="flex-grow relative flex flex-col gap-4">
-      <div class="flex-grow">
+      <div class="flex-grow overflow-hidden">
         <Preview />
       </div>
       <ActionBar on:record={onRecordButtonPress} />

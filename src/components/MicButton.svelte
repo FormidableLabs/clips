@@ -4,6 +4,7 @@
   import { micStream } from "../stores";
   import PopupContainer from "./PopupContainer.svelte";
   import TextButton from "./TextButton.svelte";
+  import Loader from "./Loader.svelte";
 
   let isPopupOpen = false;
 
@@ -17,11 +18,29 @@
     });
   };
 
-  const audioDevices = Promise.resolve().then(() =>
-    navigator.mediaDevices
-      .enumerateDevices()
-      .then((devices) => devices.filter((dev) => dev.kind === "audioinput"))
-  );
+  let audioDevices;
+  let hasMicPermission = false;
+
+  $: {
+    if (isPopupOpen) {
+      const prom = hasMicPermission
+        ? Promise.resolve()
+        : navigator.mediaDevices
+            .getUserMedia({
+              video: false,
+              audio: true,
+            })
+            .then((stream) => {
+              hasMicPermission = true;
+              stream.getTracks().forEach((track) => track.stop());
+              return;
+            });
+
+      audioDevices = prom
+        .then(() => navigator.mediaDevices.enumerateDevices())
+        .then((devices) => devices.filter((dev) => dev.kind === "audioinput"));
+    }
+  }
 
   const stopMic = () => {
     $micStream.getTracks().forEach((track) => track.stop());
@@ -46,7 +65,9 @@
   <!-- Popup content -->
   <PopupContainer slot="popupContent" title="Select a mic">
     {#await audioDevices}
-      <p>... fetching audio devices</p>
+      <div class="flex justify-center p-3">
+        <Loader>Fetching mics...</Loader>
+      </div>
     {:then devices}
       <div class="flex flex-col gap-1">
         {#each devices as device}

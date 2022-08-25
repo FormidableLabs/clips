@@ -4,7 +4,7 @@
   import { webcamDimensions, webcamPreview, webcamStream } from "../stores";
   import PopupContainer from "./PopupContainer.svelte";
   import TextButton from "./TextButton.svelte";
-  import { onMount } from "svelte";
+  import Loader from "./Loader.svelte";
 
   let isPopupOpen = false;
 
@@ -28,9 +28,28 @@
     }
   };
 
-  const devices = navigator.mediaDevices
-    .enumerateDevices()
-    .then((devices) => devices.filter((dev) => dev.kind === "videoinput"));
+  let devices;
+  let hasWebcamPermissions = false;
+  $: {
+    if (isPopupOpen) {
+      const prom = hasWebcamPermissions
+        ? Promise.resolve()
+        : navigator.mediaDevices
+            .getUserMedia({
+              video: true,
+              audio: false,
+            })
+            .then((stream) => {
+              hasWebcamPermissions = true;
+              stream.getTracks().forEach((track) => track.stop());
+              return;
+            });
+
+      devices = prom
+        .then(() => navigator.mediaDevices.enumerateDevices())
+        .then((devices) => devices.filter((dev) => dev.kind === "videoinput"));
+    }
+  }
 
   const stopWebcam = () => {
     $webcamStream.getTracks().forEach((track) => track.stop());
@@ -45,11 +64,6 @@
       isPopupOpen = true;
     }
   };
-
-  // TODO: need to actually fix permissions prompting, so first launch you can get webcams
-  onMount(() => {
-    // navigator.mediaDevices.getUserMedia({ video: true });
-  });
 </script>
 
 <ActionButton
@@ -61,7 +75,9 @@
   <!-- Popup content -->
   <PopupContainer slot="popupContent" title="Select a webcam">
     {#await devices}
-      <p>... fetching devices</p>
+      <div class="flex justify-center p-3">
+        <Loader>Fetching cams...</Loader>
+      </div>
     {:then devices}
       <div class="flex flex-col gap-1">
         {#each devices as device}
