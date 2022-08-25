@@ -100,8 +100,9 @@ export const createScreenAndCamLayout = ({
 }): DrawFn => {
   return (args) => {
     const { width, height } = args.canvasSize;
-    const pad = Math.max(width, height) / 75;
-    const r = Math.max(width, height) / 100;
+    const m = Math.max(width, height);
+    const pad = m / 75;
+    const r = m / 100;
 
     // Screen
     if (args.displayStream) {
@@ -139,7 +140,7 @@ export const createScreenAndCamLayout = ({
       const { ctx, webcamDimensions, webcamPreview, theme } = args;
 
       // TODO: Make this ratio configurable...
-      const _w = Math.max(width, height) / 4;
+      const _w = Math.max(width, height) / 3.5;
       const _h = (_w * webcamDimensions.height) / webcamDimensions.width;
       const webcamRadius = Math.min(_w, _h) / 2;
 
@@ -155,7 +156,8 @@ export const createScreenAndCamLayout = ({
       // Accent ring around webcam feed?
       ctx.globalCompositeOperation = "destination-out";
       ctx.save();
-      ctx.lineWidth = webcamAccentWidth * Math.max(width, height);
+      // ctx.lineWidth = webcamAccentWidth * Math.max(width, height);
+      ctx.lineWidth = 2 * pad;
       ctx.strokeStyle = theme.accent;
       ctx.beginPath();
       ctx.arc(x0, y0, webcamRadius, 0, 2 * Math.PI);
