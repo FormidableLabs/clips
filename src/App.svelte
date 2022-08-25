@@ -11,6 +11,8 @@
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
   import SidebarBackgroundSection from "./components/SidebarBackgroundSection.svelte";
   import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
+  import FormidableIcon from "./components/icons/formidable.icon.svelte";
+  import GithubIcon from "./components/icons/github.icon.svelte";
   import { patchBlob } from "./utils/blobHelpers";
 
   let recorder: MediaRecorder;
@@ -75,7 +77,7 @@
 </script>
 
 <div
-  class="w-screen h-screen overflow-hidden bg-gray-100 p-0 sm:p-3 md:p-6 flex items-center"
+  class="w-screen h-screen overflow-hidden bg-fmd-gray2 p-0 sm:p-3 md:p-6 flex items-center relative"
 >
   <div class="container flex gap-4">
     <div
@@ -87,13 +89,34 @@
       <ActionBar on:record={onRecordButtonPress} />
     </div>
     <div
-      class="bg-gray-200 w-64 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
+      class="bg-fmd-gray w-64 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
     >
       <SidebarCanvasSection />
       <SidebarThemeSection />
       <SidebarBackgroundSection />
       <SidebarLayoutSection />
     </div>
+  </div>
+
+  <div class="absolute top-0 left-0 p-4 flex gap-4 items-center text-fmd-navy">
+    <a
+      class="w-10 hover:text-fmd-sky transition transition-colors duration-100 ease-in-out"
+      aria-label="Formidable logo"
+      href="https://formidable.com"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <FormidableIcon />
+    </a>
+    <a
+      class="w-7 hover:text-fmd-sky transition transition-colors duration-100 ease-in-out"
+      aria-label="GitHub logo"
+      href="https://github.com/FormidableLabs/clips"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <GithubIcon />
+    </a>
   </div>
 </div>
 

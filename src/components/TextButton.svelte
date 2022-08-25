@@ -7,7 +7,7 @@
   on:click
   class="rounded {isDisabled
     ? 'bg-opacity-30'
-    : 'hover:bg-primary-200'} px-3 py-2 text-left transition transition-colors duration-150 ease-in-out {extraClasses}"
+    : 'hover:bg-fmd-yellow'} px-3 py-2 text-left transition transition-colors duration-150 ease-in-out {extraClasses}"
   disabled={isDisabled}
 >
   <slot />

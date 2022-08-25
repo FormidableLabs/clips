@@ -2,8 +2,8 @@
   export let title: string;
 </script>
 
-<div class="p-2 flex flex-col gap-2">
-  <div class="font-bold text-lg text-gray-700">{title}</div>
+<div class="p-3 flex flex-col gap-3">
+  <div class="font-bold text-lg text-fmd-navy">{title}</div>
   <div class="">
     <slot />
   </div>

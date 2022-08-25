@@ -10,7 +10,7 @@
 </script>
 
 <div
-  class="flex-shrink-0 rounded bg-gray-200 p-3 flex justify-center items-center"
+  class="flex-shrink-0 rounded bg-fmd-gray p-3 flex justify-center items-center"
 >
   <div
     class="gap-4 grid grid-cols-[repeat(2,50px)_70px_repeat(2,50px)] items-center"
@@ -35,7 +35,7 @@
         }}
       >
         <div
-          class="bg-red-500 transition transition-all duration-300 ease-in-out {$isRecording
+          class="bg-fmd-red transition transition-all duration-300 ease-in-out {$isRecording
             ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
             : 'w-full h-full rounded-[100%]'}"
         />
