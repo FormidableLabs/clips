@@ -14,10 +14,10 @@
   {#each verticalAlignmentOptions as vertOp}
     {#each horizontalAlignmentOptions as horOp}
       <button
-        class="h-6 rounded-sm text-xs overflow-hidden {horizAlign === horOp &&
-        vertAlign === vertOp
+        class="h-6 rounded-sm border-fmd-gray_darker border text-xs overflow-hidden hover:bg-fmd-yellow transition transition-colors duration-100 ease-in-out {horizAlign ===
+          horOp && vertAlign === vertOp
           ? 'bg-fmd-yellow'
-          : 'bg-fmd-gray_darker'}"
+          : 'bg-fmd-gray'}"
         on:click={() => {
           horizAlign = horOp;
           vertAlign = vertOp;
