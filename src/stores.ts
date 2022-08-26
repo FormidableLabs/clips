@@ -70,10 +70,14 @@ export const webcamDimensions = writable({ width: 0, height: 0 });
 /**
  * Mic stream
  */
-export const micStream = writable<MediaStream>(null);
+export const micState = writable<{
+  stream?: MediaStream | null;
+  deviceId?: string | null;
+}>({});
 
-export const micAnalyzer = derived(micStream, ($stream) => {
-  if (!$stream) return null;
+export const micAnalyzer = derived(micState, ($micState) => {
+  if (!$micState.stream) return null;
+  const $stream = $micState.stream;
   const context = new AudioContext();
   const analyser = context.createAnalyser();
   analyser.fftSize = 128;

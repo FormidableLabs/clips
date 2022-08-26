@@ -3,7 +3,7 @@
   import {
     canvasStream,
     isRecording,
-    micStream,
+    micState,
     recordingStartTime,
   } from "./stores";
   import ActionBar from "./components/ActionBar.svelte";
@@ -56,7 +56,7 @@
 
     const combinedStream = new MediaStream([
       ...($canvasStream?.getTracks() || []),
-      ...($micStream?.getTracks() || []),
+      ...($micState.stream?.getTracks() || []),
     ]);
     // TODO: dynamic bits per second based on resolution...
     recorder = new MediaRecorder(combinedStream, {

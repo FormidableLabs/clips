@@ -1,8 +1,9 @@
 <script lang="ts">
+  import CheckIcon from "./icons/check.icon.svelte";
   import { slide } from "svelte/transition";
   import ActionButton from "./ActionButton.svelte";
   import Mic from "./icons/mic.icon.svelte";
-  import { micStream } from "../stores";
+  import { micState } from "../stores";
   import PopupContainer from "./PopupContainer.svelte";
   import TextButton from "./TextButton.svelte";
   import Loader from "./Loader.svelte";
@@ -13,11 +14,16 @@
     stopMic();
     isPopupOpen = false;
 
-    $micStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        deviceId: { exact: deviceId },
-      },
-    });
+    try {
+      $micState.deviceId = deviceId;
+      $micState.stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: { exact: deviceId },
+        },
+      });
+    } catch {
+      $micState = {};
+    }
   };
 
   let audioDevices;
@@ -45,9 +51,10 @@
   }
 
   const stopMic = () => {
-    if ($micStream) {
-      $micStream.getTracks().forEach((track) => track.stop());
-      $micStream = null;
+    if ($micState.stream) {
+      $micState.stream.getTracks().forEach((track) => track.stop());
+      $micState.stream = null;
+      $micState.deviceId = null;
     }
   };
 
@@ -57,7 +64,7 @@
 </script>
 
 <ActionButton
-  isActive={Boolean($micStream)}
+  isActive={Boolean($micState.stream)}
   {isPopupOpen}
   on:popupDismiss={() => (isPopupOpen = false)}
   on:click={handleActionButtonClick}
@@ -70,17 +77,22 @@
       </div>
     {:then devices}
       <div class="flex flex-col gap-1">
-        {#each devices as device}
-          <TextButton on:click={() => onPromptDevice(device.deviceId)}
-            >{device.label}
+        {#each devices as device (device.deviceId)}
+          <TextButton
+            on:click={() => onPromptDevice(device.deviceId)}
+            hasCheck={$micState.deviceId === device.deviceId}
+          >
+            {device.label}
             {#if device.deviceId === "default"}<span>(Default)</span>{/if}
           </TextButton>
         {/each}
 
-        {#if $micStream}
+        {#if $micState.stream}
           <div transition:slide={{ duration: 150 }} class="w-full block">
-            <TextButton on:click={stopMic} extraClasses="bg-fmd-gray w-full"
-              >Stop Mic</TextButton
+            <TextButton
+              on:click={stopMic}
+              extraClasses="bg-fmd-gray_lighter w-full"
+              hasClose>Stop Mic</TextButton
             >
           </div>
         {/if}
