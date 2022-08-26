@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { slide } from "svelte/transition";
   import ActionButton from "./ActionButton.svelte";
   import Mic from "./icons/mic.icon.svelte";
   import { micStream } from "../stores";
@@ -9,6 +10,7 @@
   let isPopupOpen = false;
 
   const onPromptDevice = async (deviceId: string) => {
+    stopMic();
     isPopupOpen = false;
 
     $micStream = await navigator.mediaDevices.getUserMedia({
@@ -43,16 +45,14 @@
   }
 
   const stopMic = () => {
-    $micStream.getTracks().forEach((track) => track.stop());
-    $micStream = null;
+    if ($micStream) {
+      $micStream.getTracks().forEach((track) => track.stop());
+      $micStream = null;
+    }
   };
 
   const handleActionButtonClick = () => {
-    if ($micStream) {
-      stopMic();
-    } else {
-      isPopupOpen = true;
-    }
+    isPopupOpen = true;
   };
 </script>
 
@@ -76,6 +76,14 @@
             {#if device.deviceId === "default"}<span>(Default)</span>{/if}
           </TextButton>
         {/each}
+
+        {#if $micStream}
+          <div transition:slide={{ duration: 150 }} class="w-full block">
+            <TextButton on:click={stopMic} extraClasses="bg-fmd-gray w-full"
+              >Stop Mic</TextButton
+            >
+          </div>
+        {/if}
       </div>
     {/await}
   </PopupContainer>
