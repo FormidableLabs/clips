@@ -275,6 +275,10 @@ export enum VertAlign {
   center = "center",
   bottom = "bottom",
 }
+export enum WebcamShape {
+  initial = "initial",
+  circle = "circle",
+}
 
 export const horizontalAlignmentOptions = [
   HorizAlign.left,
@@ -286,6 +290,10 @@ export const verticalAlignmentOptions = [
   VertAlign.center,
   VertAlign.bottom,
 ] as const;
+export const webcamShapeOptions = [
+  WebcamShape.initial,
+  WebcamShape.circle,
+] as const;
 
 const webcamStateSchema = z.object({
   horizAlign: z
@@ -296,6 +304,8 @@ const webcamStateSchema = z.object({
     .enum(verticalAlignmentOptions)
     .optional()
     .default(VertAlign.bottom),
+  shape: z.enum(webcamShapeOptions).optional().default(WebcamShape.circle),
+  size: z.number().optional().default(0.5),
   // TODO: Shape, circle | rect
   // TODO: border radius?
 });

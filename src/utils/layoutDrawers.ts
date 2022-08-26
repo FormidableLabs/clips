@@ -1,5 +1,5 @@
 import type { DrawFn } from "../stores";
-import { HorizAlign, VertAlign } from "../stores";
+import { HorizAlign, VertAlign, WebcamShape } from "../stores";
 import { circleClip, roundedRectClip } from "../drawUtils";
 
 export const drawWebcam: DrawFn = (args) => {
@@ -12,48 +12,62 @@ export const drawWebcam: DrawFn = (args) => {
       webcamLayoutState,
       canvasSize,
     } = args;
-    const { horizAlign, vertAlign } = webcamLayoutState;
+    const { horizAlign, vertAlign, size, shape } = webcamLayoutState;
 
     const { width, height } = canvasSize;
     const m = Math.max(width, height);
     const pad = m / 75;
     const r = m / 100;
 
-    // TODO: Make this ratio configurable...
-    const _w = Math.max(width, height) / 3.5;
-    const _h = (_w * webcamDimensions.height) / webcamDimensions.width;
-    const webcamRadius = Math.min(_w, _h) / 2;
+    // Circle webcam
+    if (shape === WebcamShape.circle) {
+      // Determine diameter of resulting circle
+      const maxD = Math.min(width, height) - 2 * pad;
+      const diam = size * maxD;
+      const aR = webcamDimensions.height / webcamDimensions.width;
 
-    // Anchor points (for circle). Might have to change with rectangles?
-    let x0 = pad + webcamRadius;
-    if (horizAlign === HorizAlign.center) {
-      x0 = width / 2;
-    } else if (horizAlign === HorizAlign.right) {
-      x0 = width - pad - webcamRadius;
+      let _w = diam,
+        _h = _w * aR;
+      if (webcamDimensions.width > webcamDimensions.height) {
+        _h = diam;
+        _w = _h / aR;
+      }
+
+      const webcamRadius = diam / 2;
+
+      // Anchor points (for circle). Might have to change with rectangles?
+      let x0 = pad + webcamRadius;
+      if (horizAlign === HorizAlign.center) {
+        x0 = width / 2;
+      } else if (horizAlign === HorizAlign.right) {
+        x0 = width - pad - webcamRadius;
+      }
+
+      let y0 = pad + webcamRadius;
+      if (vertAlign === VertAlign.center) {
+        y0 = height / 2;
+      } else if (vertAlign === VertAlign.bottom) {
+        y0 = height - pad - webcamRadius;
+      }
+
+      // Accent ring around webcam feed?
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.save();
+      // ctx.lineWidth = webcamAccentWidth * Math.max(width, height);
+      ctx.lineWidth = 2 * pad; // TODO: Make this a setting, padding in general probably ought to be a setting.
+      ctx.strokeStyle = theme.accent;
+      ctx.beginPath();
+      ctx.arc(x0, y0, webcamRadius, 0, 2 * Math.PI);
+      ctx.stroke();
+      ctx.restore();
+      ctx.globalCompositeOperation = "source-over";
+
+      circleClip(ctx, x0, y0, webcamRadius, () => {
+        ctx.drawImage(webcamPreview, x0 - _w / 2, y0 - _h / 2, _w, _h);
+      });
+    } else if (shape === WebcamShape.initial) {
+      // TODO:
     }
-
-    let y0 = pad + webcamRadius;
-    if (vertAlign === VertAlign.center) {
-      y0 = height / 2;
-    } else if (vertAlign === VertAlign.bottom) {
-      y0 = height - pad - webcamRadius;
-    }
-
-    // Accent ring around webcam feed?
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.save();
-    // ctx.lineWidth = webcamAccentWidth * Math.max(width, height);
-    ctx.lineWidth = 2 * pad;
-    ctx.strokeStyle = theme.accent;
-    ctx.beginPath();
-    ctx.arc(x0, y0, webcamRadius, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.restore();
-    ctx.globalCompositeOperation = "source-over";
-
-    circleClip(ctx, x0, y0, webcamRadius, () => {
-      ctx.drawImage(webcamPreview, x0 - _w / 2, y0 - _h / 2, _w, _h);
-    });
   }
 };
 
