@@ -251,7 +251,7 @@ export const activeBackground = (() => {
   const initBackground =
     backgrounds.find(
       (background) => background.title === initBackgroundTitle
-    ) || backgrounds[0];
+    ) || backgrounds[1];
   const store = writable<Background>(initBackground);
 
   const _set = store.set;
@@ -267,18 +267,18 @@ export const activeBackground = (() => {
  * General layout state
  */
 const generalLayoutStateSchema = z.object({
-  padding: z.number().min(0).max(1).optional().default(0.2),
+  padding: z.number().min(0).max(1).optional().default(0.1),
 });
 type GeneralLayoutState = z.infer<typeof generalLayoutStateSchema>;
 
 export const generalLayoutState = (() => {
-  let initGeneralLayoutState: GeneralLayoutState = {
-    padding: 0.2,
-  };
+  let initGeneralLayoutState: GeneralLayoutState = {};
   try {
     const storedWebcamState = localStorage.getItem("generalLayoutState");
     initGeneralLayoutState = generalLayoutStateSchema.parse(
-      JSON.parse(storedWebcamState)
+      storedWebcamState
+        ? JSON.parse(storedWebcamState)
+        : generalLayoutStateSchema.parse({})
     );
   } catch {}
 
@@ -334,25 +334,26 @@ const webcamStateSchema = z.object({
   horizAlign: z
     .enum(horizontalAlignmentOptions)
     .optional()
-    .default(HorizAlign.left),
+    .default(HorizAlign.right),
   vertAlign: z
     .enum(verticalAlignmentOptions)
     .optional()
     .default(VertAlign.bottom),
   shape: z.enum(webcamShapeOptions).optional().default(WebcamShape.circle),
-  size: z.number().min(0).max(1).optional().default(0.5),
+  size: z.number().min(0).max(1).optional().default(0.4),
   borderRadius: z.number().min(0).max(1).optional().default(0.05),
 });
 type WebcamState = z.infer<typeof webcamStateSchema>;
 
 export const webcamLayoutState = (() => {
-  let initWebcamState: WebcamState = {
-    horizAlign: HorizAlign.left,
-    vertAlign: VertAlign.bottom,
-  };
+  let initWebcamState: WebcamState = {};
   try {
     const storedWebcamState = localStorage.getItem("webcamState");
-    initWebcamState = webcamStateSchema.parse(JSON.parse(storedWebcamState));
+    initWebcamState = webcamStateSchema.parse(
+      storedWebcamState
+        ? JSON.parse(storedWebcamState)
+        : webcamStateSchema.parse({})
+    );
   } catch {}
 
   const store = writable<WebcamState>(initWebcamState);
