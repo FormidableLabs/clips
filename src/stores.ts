@@ -64,6 +64,7 @@ export const displayDimensions = writable({ width: 0, height: 0 });
  * Track webcam stream
  */
 type WebcamState = {
+  deviceId?: string | null;
   stream?: MediaStream | null;
   preview?: HTMLVideoElement | null;
   width: number;

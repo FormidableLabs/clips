@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { slide } from "svelte/transition";
   import ActionButton from "./ActionButton.svelte";
   import Camera from "./icons/camera.icon.svelte";
   import { webcamState } from "../stores";
@@ -9,8 +10,10 @@
   let isPopupOpen = false;
 
   const promptWebcam = async (deviceId: string) => {
+    stopWebcam();
     isPopupOpen = false;
 
+    $webcamState.deviceId = deviceId;
     $webcamState.stream = await navigator.mediaDevices.getUserMedia({
       video: {
         deviceId: { exact: deviceId },
@@ -54,17 +57,16 @@
   }
 
   const stopWebcam = () => {
-    $webcamState.stream.getTracks().forEach((track) => track.stop());
-    $webcamState.stream = null;
-    $webcamState.preview.srcObject = null;
+    if ($webcamState.stream) {
+      $webcamState.stream.getTracks().forEach((track) => track.stop());
+      $webcamState.stream = null;
+      $webcamState.deviceId = null;
+      $webcamState.preview.srcObject = null;
+    }
   };
 
   const handleActionButtonClick = () => {
-    if ($webcamState.stream) {
-      stopWebcam();
-    } else {
-      isPopupOpen = true;
-    }
+    isPopupOpen = true;
   };
 </script>
 
@@ -83,10 +85,23 @@
     {:then devices}
       <div class="flex flex-col gap-1">
         {#each devices as device}
-          <TextButton on:click={() => promptWebcam(device.deviceId)}>
+          <TextButton
+            on:click={() => promptWebcam(device.deviceId)}
+            hasCheck={device.deviceId === $webcamState.deviceId}
+          >
             {device.label}
           </TextButton>
         {/each}
+
+        {#if $webcamState.stream}
+          <div transition:slide={{ duration: 150 }} class="w-full block">
+            <TextButton
+              on:click={stopWebcam}
+              extraClasses="bg-fmd-gray_lighter w-full"
+              hasClose>Stop Mic</TextButton
+            >
+          </div>
+        {/if}
       </div>
     {/await}
   </PopupContainer>
