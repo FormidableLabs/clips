@@ -63,9 +63,13 @@ export const displayDimensions = writable({ width: 0, height: 0 });
 /**
  * Track webcam stream
  */
-export const webcamStream = writable<MediaStream>(null);
-export const webcamPreview = writable<HTMLVideoElement>(null);
-export const webcamDimensions = writable({ width: 0, height: 0 });
+type WebcamState = {
+  stream?: MediaStream | null;
+  preview?: HTMLVideoElement | null;
+  width: number;
+  height: number;
+};
+export const webcamState = writable<WebcamState>({ width: 0, height: 0 });
 
 /**
  * Mic stream
@@ -185,12 +189,10 @@ export type DrawArgs = {
   displayDimensions: { width: number; height: number } | null | undefined;
   displayStream: MediaStream | null | undefined;
   displayPreview: HTMLVideoElement | null | undefined;
-  webcamDimensions: { width: number; height: number } | null | undefined;
-  webcamStream: MediaStream | null | undefined;
-  webcamPreview: HTMLVideoElement | null | undefined;
+  webcamState: WebcamState;
   micAnalyzer: null | { freqs: Uint8Array; analyser: AnalyserNode };
   generalLayoutState: GeneralLayoutState;
-  webcamLayoutState: WebcamState;
+  webcamLayoutState: WebcamLayoutState;
   screenLayoutState: ScreenState;
 };
 export type DrawFn = (args: DrawArgs) => void;
@@ -347,10 +349,10 @@ const webcamStateSchema = z.object({
   size: z.number().min(0).max(1).optional().default(0.4),
   borderRadius: z.number().min(0).max(1).optional().default(0.05),
 });
-type WebcamState = z.infer<typeof webcamStateSchema>;
+type WebcamLayoutState = z.infer<typeof webcamStateSchema>;
 
 export const webcamLayoutState = (() => {
-  let initWebcamState: WebcamState = {};
+  let initWebcamState: WebcamLayoutState = {};
   try {
     const storedWebcamState = localStorage.getItem("webcamState");
     initWebcamState = webcamStateSchema.parse(
@@ -360,7 +362,7 @@ export const webcamLayoutState = (() => {
     );
   } catch {}
 
-  const store = writable<WebcamState>(initWebcamState);
+  const store = writable<WebcamLayoutState>(initWebcamState);
 
   const _set = store.set;
   store.set = (webcamState) => {
@@ -390,7 +392,7 @@ const screenStateSchema = z.object({
 type ScreenState = z.infer<typeof webcamStateSchema>;
 
 export const screenLayoutState = (() => {
-  let initScreenState: WebcamState = {
+  let initScreenState: WebcamLayoutState = {
     horizAlign: HorizAlign.left,
     vertAlign: VertAlign.bottom,
   };
@@ -399,7 +401,7 @@ export const screenLayoutState = (() => {
     initScreenState = webcamStateSchema.parse(JSON.parse(storedScreenState));
   } catch {}
 
-  const store = writable<WebcamState>(initScreenState);
+  const store = writable<WebcamLayoutState>(initScreenState);
 
   const _set = store.set;
   store.set = (screenState) => {

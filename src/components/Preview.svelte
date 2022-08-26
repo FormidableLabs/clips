@@ -4,10 +4,8 @@
     canvasDimensions,
     displayPreview,
     displayDimensions,
-    webcamPreview,
-    webcamDimensions,
+    webcamState,
     canvasStream,
-    webcamStream,
     displayStream,
     activeTheme,
     activeBackground,
@@ -82,9 +80,7 @@
     displayStream: $displayStream,
     displayDimensions: $displayDimensions,
     displayPreview: $displayPreview,
-    webcamStream: $webcamStream,
-    webcamDimensions: $webcamDimensions,
-    webcamPreview: $webcamPreview,
+    webcamState: $webcamState,
     micAnalyzer: $micAnalyzer,
     webcamLayoutState: $webcamLayoutState,
     screenLayoutState: $screenLayoutState,
@@ -97,9 +93,6 @@
     drawArgs.displayStream = $displayStream;
     drawArgs.displayDimensions = $displayDimensions;
     drawArgs.displayPreview = $displayPreview;
-    drawArgs.webcamStream = $webcamStream;
-    drawArgs.webcamDimensions = $webcamDimensions;
-    drawArgs.webcamPreview = $webcamPreview;
     drawArgs.micAnalyzer = $micAnalyzer;
   }
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import ActionButton from "./ActionButton.svelte";
   import Camera from "./icons/camera.icon.svelte";
-  import { webcamDimensions, webcamPreview, webcamStream } from "../stores";
+  import { webcamState } from "../stores";
   import PopupContainer from "./PopupContainer.svelte";
   import TextButton from "./TextButton.svelte";
   import Loader from "./Loader.svelte";
@@ -11,20 +11,22 @@
   const promptWebcam = async (deviceId: string) => {
     isPopupOpen = false;
 
-    $webcamStream = await navigator.mediaDevices.getUserMedia({
+    $webcamState.stream = await navigator.mediaDevices.getUserMedia({
       video: {
         deviceId: { exact: deviceId },
       },
     });
-    $webcamPreview.srcObject = $webcamStream;
+    $webcamState.preview.srcObject = $webcamState.stream;
     grabDimensions();
   };
 
   const grabDimensions = () => {
-    if ($webcamStream?.getVideoTracks?.()?.[0]?.getSettings?.()) {
-      const { width, height } = $webcamStream.getVideoTracks()[0].getSettings();
-      $webcamDimensions.width = width;
-      $webcamDimensions.height = height;
+    if ($webcamState.stream?.getVideoTracks?.()?.[0]?.getSettings?.()) {
+      const { width, height } = $webcamState.stream
+        .getVideoTracks()[0]
+        .getSettings();
+      $webcamState.width = width;
+      $webcamState.height = height;
     }
   };
 
@@ -52,13 +54,13 @@
   }
 
   const stopWebcam = () => {
-    $webcamStream.getTracks().forEach((track) => track.stop());
-    $webcamStream = null;
-    $webcamPreview.srcObject = null;
+    $webcamState.stream.getTracks().forEach((track) => track.stop());
+    $webcamState.stream = null;
+    $webcamState.preview.srcObject = null;
   };
 
   const handleActionButtonClick = () => {
-    if ($webcamStream) {
+    if ($webcamState.stream) {
       stopWebcam();
     } else {
       isPopupOpen = true;
@@ -67,7 +69,7 @@
 </script>
 
 <ActionButton
-  isActive={Boolean($webcamStream)}
+  isActive={Boolean($webcamState.stream)}
   {isPopupOpen}
   on:popupDismiss={() => (isPopupOpen = false)}
   on:click={handleActionButtonClick}
@@ -93,7 +95,7 @@
 
   <video
     class="invisible absolute"
-    bind:this={$webcamPreview}
+    bind:this={$webcamState.preview}
     autoplay
     playsinline
     muted

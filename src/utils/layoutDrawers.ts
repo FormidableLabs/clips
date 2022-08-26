@@ -3,11 +3,10 @@ import { HorizAlign, VertAlign, WebcamShape } from "../stores";
 import { circleClip, roundedRectClip } from "../drawUtils";
 
 export const drawWebcam: DrawFn = (args) => {
-  if (args.webcamStream) {
+  if (args.webcamState.stream) {
     const {
       ctx,
-      webcamDimensions,
-      webcamPreview,
+      webcamState,
       theme,
       webcamLayoutState,
       canvasSize,
@@ -24,11 +23,11 @@ export const drawWebcam: DrawFn = (args) => {
       // Determine diameter of resulting circle
       const maxD = Math.min(width, height) - 2 * pad;
       const diam = size * maxD;
-      const aR = webcamDimensions.height / webcamDimensions.width;
+      const aR = webcamState.height / webcamState.width;
 
       let _w = diam,
         _h = _w * aR;
-      if (webcamDimensions.width > webcamDimensions.height) {
+      if (webcamState.width > webcamState.height) {
         _h = diam;
         _w = _h / aR;
       }
@@ -63,12 +62,12 @@ export const drawWebcam: DrawFn = (args) => {
       ctx.globalCompositeOperation = "source-over";
 
       circleClip(ctx, x0, y0, webcamRadius, () => {
-        ctx.drawImage(webcamPreview, x0 - _w / 2, y0 - _h / 2, _w, _h);
+        ctx.drawImage(webcamState.preview, x0 - _w / 2, y0 - _h / 2, _w, _h);
       });
     }
     // Rectangular webcam
     else if (shape === WebcamShape.initial) {
-      const aR = webcamDimensions.height / webcamDimensions.width;
+      const aR = webcamState.height / webcamState.width;
 
       let x0 = 0,
         y0 = 0,
@@ -121,7 +120,7 @@ export const drawWebcam: DrawFn = (args) => {
       ctx.globalCompositeOperation = "source-over";
 
       roundedRectClip(ctx, x0, y0, w, h, r, () => {
-        ctx.drawImage(webcamPreview, x0, y0, w, h);
+        ctx.drawImage(webcamState.preview, x0, y0, w, h);
       });
     } // End initial
   }
