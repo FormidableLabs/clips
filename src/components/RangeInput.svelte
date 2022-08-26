@@ -17,7 +17,7 @@
       type="range"
       {name}
       id={name}
-      class="shadow-sm focus:ring-fmd-blue focus:border-fmd-blue block w-full sm:text-sm border-fmd-gray rounded-md bg-fmd-gray border-2 border-fmd-blue {isDisabled
+      class="focus:ring-fmd-blue focus:border-fmd-blue block w-full sm:text-sm border-fmd-gray rounded-md bg-fmd-gray border-2 border-fmd-blue {isDisabled
         ? 'opacity-30'
         : ''}"
       bind:value

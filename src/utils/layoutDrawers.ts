@@ -65,9 +65,63 @@ export const drawWebcam: DrawFn = (args) => {
       circleClip(ctx, x0, y0, webcamRadius, () => {
         ctx.drawImage(webcamPreview, x0 - _w / 2, y0 - _h / 2, _w, _h);
       });
-    } else if (shape === WebcamShape.initial) {
-      // TODO:
     }
+    // Rectangular webcam
+    else if (shape === WebcamShape.initial) {
+      const aR = webcamDimensions.height / webcamDimensions.width;
+
+      let x0 = 0,
+        y0 = 0,
+        w = 0,
+        h = 0;
+
+      // Will max out the width
+      if (aR * (width - 2 * pad) <= height - 2 * pad) {
+        w = size * (width - 2 * pad);
+        h = w * aR;
+      }
+      // Will max out the height
+      else {
+        h = size * (height - 2 * pad);
+        w = h / aR;
+      }
+
+      // x0
+      if (horizAlign === HorizAlign.left) {
+        x0 = pad;
+      } else if (horizAlign === HorizAlign.center) {
+        x0 = (width - w) / 2;
+      } else if (horizAlign === HorizAlign.right) {
+        x0 = width - pad - w;
+      }
+
+      if (vertAlign === VertAlign.top) {
+        y0 = pad;
+      } else if (vertAlign === VertAlign.center) {
+        y0 = (height - h) / 2;
+      } else if (vertAlign === VertAlign.bottom) {
+        y0 = height - pad - h;
+      }
+
+      // Accent ring around webcam feed?
+      ctx.globalCompositeOperation = "destination-out";
+      roundedRectClip(
+        ctx,
+        x0 - pad / 2,
+        y0 - pad / 2,
+        w + pad,
+        h + pad,
+        r,
+        () => {
+          ctx.fillRect(x0 - pad / 2, y0 - pad / 2, w + pad, h + pad);
+        }
+      );
+      ctx.globalCompositeOperation = "source-over";
+
+      roundedRectClip(ctx, x0, y0, w, h, r, () => {
+        ctx.drawImage(webcamPreview, x0, y0, w, h);
+      });
+    } // End initial
   }
 };
 
