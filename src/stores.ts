@@ -270,11 +270,13 @@ export enum HorizAlign {
   center = "center",
   right = "right",
 }
+
 export enum VertAlign {
   top = "top",
   center = "center",
   bottom = "bottom",
 }
+
 export enum WebcamShape {
   initial = "initial",
   circle = "circle",
@@ -305,9 +307,8 @@ const webcamStateSchema = z.object({
     .optional()
     .default(VertAlign.bottom),
   shape: z.enum(webcamShapeOptions).optional().default(WebcamShape.circle),
-  size: z.number().optional().default(0.5),
-  // TODO: Shape, circle | rect
-  // TODO: border radius?
+  size: z.number().min(0).max(1).optional().default(0.5),
+  borderRadius: z.number().min(0).max(1).optional().default(0.05),
 });
 type WebcamState = z.infer<typeof webcamStateSchema>;
 

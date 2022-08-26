@@ -60,7 +60,7 @@
     // TODO: dynamic bits per second based on resolution...
     recorder = new MediaRecorder(combinedStream, {
       audioBitsPerSecond: 128000, // 128 kbps
-      videoBitsPerSecond: 5 * 1000 * 1000, // N mbps
+      videoBitsPerSecond: 10 * 1000 * 1000, // N mbps
       mimeType: "video/webm;codecs=vp9",
     });
     recorder.ondataavailable = onDataAvailable;

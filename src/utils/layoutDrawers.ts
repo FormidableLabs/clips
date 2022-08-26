@@ -17,7 +17,6 @@ export const drawWebcam: DrawFn = (args) => {
     const { width, height } = canvasSize;
     const m = Math.max(width, height);
     const pad = m / 75;
-    const r = m / 100;
 
     // Circle webcam
     if (shape === WebcamShape.circle) {
@@ -102,6 +101,8 @@ export const drawWebcam: DrawFn = (args) => {
       } else if (vertAlign === VertAlign.bottom) {
         y0 = height - pad - h;
       }
+
+      const r = (webcamLayoutState.borderRadius * Math.min(w, h)) / 2;
 
       // Accent ring around webcam feed?
       ctx.globalCompositeOperation = "destination-out";
