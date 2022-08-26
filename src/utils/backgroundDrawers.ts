@@ -113,7 +113,11 @@ export const createAudioWaveBackground = (): DrawFn => {
       ctx.fill(p);
     }
 
-    ctx.fillStyle = theme.primary;
+    // Background
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+    bgGrad.addColorStop(0, theme.secondary);
+    bgGrad.addColorStop(1, theme.primary);
+    ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, width, height);
 
     ctx.restore();
@@ -165,7 +169,10 @@ export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
     }
 
     // Background
-    ctx.fillStyle = theme.primary;
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+    bgGrad.addColorStop(0, theme.secondary);
+    bgGrad.addColorStop(1, theme.primary);
+    ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, width, height);
 
     ctx.restore();
