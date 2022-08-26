@@ -22,7 +22,7 @@
   {/if}
 
   <button
-    class="border border-gray-300 rounded-full w-full aspect-square flex items-center justify-center p-1.5 hover:bg-fmd-yellow hover:shadow transition transition-colors transition-shadow duration-200 ease-in-out {isActive
+    class="border border-fmd-gray_darker rounded-full w-full aspect-square flex items-center justify-center p-1.5 hover:bg-fmd-yellow hover:shadow transition transition-colors transition-shadow duration-200 ease-in-out {isActive
       ? 'bg-fmd-yellow'
       : ''}"
     on:click

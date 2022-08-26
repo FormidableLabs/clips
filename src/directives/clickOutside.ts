@@ -20,9 +20,18 @@ export const clickOutside: Action = (node) => {
 
   document.addEventListener("click", handleGlobalClick, true);
 
+  // Handle esc-key as well
+  const handleEsc = (evt: KeyboardEvent) => {
+    if (evt.key === "Escape") {
+      node.dispatchEvent(new CustomEvent("outclick"));
+    }
+  };
+  document.addEventListener("keyup", handleEsc, true);
+
   return {
     destroy() {
       document.removeEventListener("click", handleGlobalClick, true);
+      document.removeEventListener("keyup", handleEsc, true);
     },
   };
 };
