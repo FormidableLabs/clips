@@ -16,7 +16,8 @@ module.exports = {
           sky: "#8BDDFD",
           yellow: "#FFC951",
           gray: "#EBE5DA",
-          gray2: "#f4f1eb"
+          gray_lighter: "#f4f1eb",
+          gray_darker: "#b49d74"
         }
       }
     },

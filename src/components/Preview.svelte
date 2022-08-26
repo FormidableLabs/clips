@@ -11,11 +11,17 @@
     displayStream,
     activeTheme,
     activeBackground,
-    activeLayout,
     recordingFPS,
     micAnalyzer,
+    webcamLayoutState,
+    screenLayoutState,
   } from "../stores";
   import type { DrawArgs } from "../stores";
+  import {
+    drawHelperGrid,
+    drawScreenShare,
+    drawWebcam,
+  } from "../utils/layoutDrawers";
 
   // Container measurements
   let wrapper: HTMLDivElement;
@@ -79,6 +85,8 @@
     webcamDimensions: $webcamDimensions,
     webcamPreview: $webcamPreview,
     micAnalyzer: $micAnalyzer,
+    webcamLayoutState: $webcamLayoutState,
+    screenLayoutState: $screenLayoutState,
   };
   $: {
     drawArgs.ctx = ctx;
@@ -99,7 +107,10 @@
     ctx.globalCompositeOperation = "source-over";
 
     if (drawArgs.ctx) {
-      $activeLayout?.draw(drawArgs);
+      // drawHelperGrid(drawArgs);
+
+      drawScreenShare(drawArgs);
+      drawWebcam(drawArgs);
 
       // Background gets drawn last
       ctx.globalCompositeOperation = "destination-over";

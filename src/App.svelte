@@ -10,10 +10,11 @@
   import SidebarCanvasSection from "./components/SidebarCanvasSection.svelte";
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
   import SidebarBackgroundSection from "./components/SidebarBackgroundSection.svelte";
-  import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
   import FormidableIcon from "./components/icons/formidable.icon.svelte";
   import GithubIcon from "./components/icons/github.icon.svelte";
   import { patchBlob } from "./utils/blobHelpers";
+  import WebcamLayoutSection from "./components/WebcamLayoutSection.svelte";
+  import ScreenLayout from "./components/ScreenLayout.svelte";
 
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
@@ -77,7 +78,7 @@
 </script>
 
 <div
-  class="w-screen h-screen overflow-hidden bg-fmd-gray2 p-0 sm:p-3 md:p-6 flex items-center relative"
+  class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter p-0 sm:p-3 md:p-6 flex items-center relative"
 >
   <div class="container flex gap-4">
     <div
@@ -89,12 +90,13 @@
       <ActionBar on:record={onRecordButtonPress} />
     </div>
     <div
-      class="bg-fmd-gray w-64 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
+      class="bg-fmd-gray w-72 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
     >
       <SidebarCanvasSection />
       <SidebarThemeSection />
       <SidebarBackgroundSection />
-      <SidebarLayoutSection />
+      <WebcamLayoutSection />
+      <ScreenLayout />
     </div>
   </div>
 

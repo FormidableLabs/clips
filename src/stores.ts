@@ -1,4 +1,4 @@
-import type { Readable } from "svelte/store";
+import { z } from "zod";
 import { derived, writable } from "svelte/store";
 import {
   createAudioBarBackground,
@@ -6,11 +6,6 @@ import {
   createLinearGradientBackground,
   createSolidBackground,
 } from "./utils/backgroundDrawers";
-import {
-  createScreenAndCamLayout,
-  screenshareOnlyLayout,
-  webcamOnlyLayout,
-} from "./utils/layoutDrawers";
 
 /**
  * Recording state
@@ -190,6 +185,8 @@ export type DrawArgs = {
   webcamStream: MediaStream | null | undefined;
   webcamPreview: HTMLVideoElement | null | undefined;
   micAnalyzer: null | { freqs: Uint8Array; analyser: AnalyserNode };
+  webcamLayoutState: WebcamState;
+  screenLayoutState: ScreenState;
 };
 export type DrawFn = (args: DrawArgs) => void;
 
@@ -266,57 +263,101 @@ export const activeBackground = (() => {
 })();
 
 /**
- * Layouts
+ * Webcam state
  */
+export enum HorizAlign {
+  left = "left",
+  center = "center",
+  right = "right",
+}
+export enum VertAlign {
+  top = "top",
+  center = "center",
+  bottom = "bottom",
+}
 
-type Layout = Background;
+export const horizontalAlignmentOptions = [
+  HorizAlign.left,
+  HorizAlign.center,
+  HorizAlign.right,
+] as const;
+export const verticalAlignmentOptions = [
+  VertAlign.top,
+  VertAlign.center,
+  VertAlign.bottom,
+] as const;
 
-export const layouts: Layout[] = [
-  {
-    title: "Screen+Cam (left/bottom)",
-    draw: createScreenAndCamLayout({
-      camAlignHoriz: "left",
-      camAlignVert: "bottom",
-    }),
-  },
-  {
-    title: "Screen+Cam (left/top)",
-    draw: createScreenAndCamLayout({
-      camAlignHoriz: "left",
-      camAlignVert: "top",
-    }),
-  },
-  {
-    title: "Screen+Cam (right/bottom)",
-    draw: createScreenAndCamLayout({
-      camAlignHoriz: "right",
-      camAlignVert: "bottom",
-    }),
-  },
-  {
-    title: "Screen+Cam (right/top)",
-    draw: createScreenAndCamLayout({
-      camAlignHoriz: "right",
-      camAlignVert: "top",
-    }),
-  },
-  { title: "Webcam Only", draw: webcamOnlyLayout },
-  {
-    title: "Screenshare only",
-    draw: screenshareOnlyLayout,
-  },
-];
+const webcamStateSchema = z.object({
+  horizAlign: z
+    .enum(horizontalAlignmentOptions)
+    .optional()
+    .default(HorizAlign.left),
+  vertAlign: z
+    .enum(verticalAlignmentOptions)
+    .optional()
+    .default(VertAlign.bottom),
+  // TODO: Shape, circle | rect
+  // TODO: border radius?
+});
+type WebcamState = z.infer<typeof webcamStateSchema>;
 
-export const activeLayout = (() => {
-  const initLayoutTitle = localStorage.getItem("layout");
-  const initLayout =
-    layouts.find((layout) => layout.title === initLayoutTitle) || layouts[0];
-  const store = writable<Layout>(initLayout);
+export const webcamLayoutState = (() => {
+  let initWebcamState: WebcamState = {
+    horizAlign: HorizAlign.left,
+    vertAlign: VertAlign.bottom,
+  };
+  try {
+    const storedWebcamState = localStorage.getItem("webcamState");
+    initWebcamState = webcamStateSchema.parse(JSON.parse(storedWebcamState));
+  } catch {}
+
+  const store = writable<WebcamState>(initWebcamState);
 
   const _set = store.set;
-  store.set = (layout) => {
-    localStorage.setItem("layout", layout.title);
-    _set(layout);
+  store.set = (webcamState) => {
+    try {
+      localStorage.setItem("webcamState", JSON.stringify(webcamState));
+    } catch {}
+    _set(webcamState);
+  };
+
+  return store;
+})();
+
+/**
+ * Screen/display state
+ */
+const screenStateSchema = z.object({
+  horizAlign: z
+    .enum(horizontalAlignmentOptions)
+    .optional()
+    .default(HorizAlign.left),
+  vertAlign: z
+    .enum(verticalAlignmentOptions)
+    .optional()
+    .default(VertAlign.bottom),
+  // TODO: border radius?
+});
+type ScreenState = z.infer<typeof webcamStateSchema>;
+
+export const screenLayoutState = (() => {
+  let initScreenState: WebcamState = {
+    horizAlign: HorizAlign.left,
+    vertAlign: VertAlign.bottom,
+  };
+  try {
+    const storedScreenState = localStorage.getItem("screenState");
+    initScreenState = webcamStateSchema.parse(JSON.parse(storedScreenState));
+  } catch {}
+
+  const store = writable<WebcamState>(initScreenState);
+
+  const _set = store.set;
+  store.set = (screenState) => {
+    try {
+      localStorage.setItem("screenState", JSON.stringify(screenState));
+    } catch {}
+    _set(screenState);
   };
 
   return store;
