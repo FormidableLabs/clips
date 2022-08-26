@@ -15,6 +15,7 @@
   import { patchBlob } from "./utils/blobHelpers";
   import WebcamLayoutSection from "./components/WebcamLayoutSection.svelte";
   import ScreenLayout from "./components/ScreenLayout.svelte";
+  import GeneralLayoutSection from "./components/GeneralLayoutSection.svelte";
 
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
@@ -95,6 +96,7 @@
       <SidebarCanvasSection />
       <SidebarThemeSection />
       <SidebarBackgroundSection />
+      <GeneralLayoutSection />
       <WebcamLayoutSection />
       <ScreenLayout />
     </div>

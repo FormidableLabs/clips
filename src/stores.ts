@@ -185,6 +185,7 @@ export type DrawArgs = {
   webcamStream: MediaStream | null | undefined;
   webcamPreview: HTMLVideoElement | null | undefined;
   micAnalyzer: null | { freqs: Uint8Array; analyser: AnalyserNode };
+  generalLayoutState: GeneralLayoutState;
   webcamLayoutState: WebcamState;
   screenLayoutState: ScreenState;
 };
@@ -257,6 +258,38 @@ export const activeBackground = (() => {
   store.set = (background) => {
     localStorage.setItem("background", background.title);
     _set(background);
+  };
+
+  return store;
+})();
+
+/**
+ * General layout state
+ */
+const generalLayoutStateSchema = z.object({
+  padding: z.number().min(0).max(1).optional().default(0.2),
+});
+type GeneralLayoutState = z.infer<typeof generalLayoutStateSchema>;
+
+export const generalLayoutState = (() => {
+  let initGeneralLayoutState: GeneralLayoutState = {
+    padding: 0.2,
+  };
+  try {
+    const storedWebcamState = localStorage.getItem("generalLayoutState");
+    initGeneralLayoutState = generalLayoutStateSchema.parse(
+      JSON.parse(storedWebcamState)
+    );
+  } catch {}
+
+  const store = writable<GeneralLayoutState>(initGeneralLayoutState);
+
+  const _set = store.set;
+  store.set = (layoutState) => {
+    try {
+      localStorage.setItem("generalLayoutState", JSON.stringify(layoutState));
+    } catch {}
+    _set(layoutState);
   };
 
   return store;

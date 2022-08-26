@@ -15,6 +15,7 @@
     micAnalyzer,
     webcamLayoutState,
     screenLayoutState,
+    generalLayoutState,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import {
@@ -87,6 +88,7 @@
     micAnalyzer: $micAnalyzer,
     webcamLayoutState: $webcamLayoutState,
     screenLayoutState: $screenLayoutState,
+    generalLayoutState: $generalLayoutState,
   };
   $: {
     drawArgs.ctx = ctx;

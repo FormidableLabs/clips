@@ -11,12 +11,13 @@ export const drawWebcam: DrawFn = (args) => {
       theme,
       webcamLayoutState,
       canvasSize,
+      generalLayoutState,
     } = args;
     const { horizAlign, vertAlign, size, shape } = webcamLayoutState;
+    const { padding } = generalLayoutState;
 
     const { width, height } = canvasSize;
-    const m = Math.max(width, height);
-    const pad = m / 75;
+    const pad = (padding * Math.min(width, height)) / 4;
 
     // Circle webcam
     if (shape === WebcamShape.circle) {
@@ -138,11 +139,13 @@ export const drawScreenShare: DrawFn = (args) => {
       displayPreview,
       screenLayoutState,
       canvasSize,
+      generalLayoutState,
     } = args;
     const { width, height } = canvasSize;
     const { horizAlign, vertAlign } = screenLayoutState;
+    const { padding } = generalLayoutState;
     const m = Math.max(width, height);
-    const pad = m / 75;
+    const pad = (padding * Math.min(width, height)) / 4;
     const r = m / 100;
 
     const displayAspectRatio =
