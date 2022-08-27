@@ -1,5 +1,4 @@
 <script lang="ts">
-  import CheckIcon from "./icons/check.icon.svelte";
   import { slide } from "svelte/transition";
   import ActionButton from "./ActionButton.svelte";
   import Mic from "./icons/mic.icon.svelte";

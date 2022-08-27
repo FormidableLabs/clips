@@ -83,7 +83,7 @@
 >
   <div class="container flex gap-4">
     <div
-      class="relative flex flex-col gap-4 flex-grow max-w-[calc(100%-250px)]"
+      class="relative flex flex-col gap-4 flex-grow max-w-[calc(100%-350px)]"
     >
       <div class="flex-grow overflow-hidden">
         <Preview />
@@ -91,7 +91,7 @@
       <ActionBar on:record={onRecordButtonPress} />
     </div>
     <div
-      class="bg-fmd-gray w-72 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
+      class="bg-fmd-gray w-96 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
     >
       <SidebarCanvasSection />
       <SidebarThemeSection />
