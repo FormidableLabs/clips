@@ -6,12 +6,12 @@
     isRecording,
     recordingFPS,
   } from "../stores.js";
-  import FormField from "./FormField.svelte";
+  import FormField from "./NumberInput.svelte";
   import Select from "./Select.svelte";
 </script>
 
-<SidebarSection title="Canvas">
-  <div class="flex flex-col gap-2">
+<SidebarSection title="Recording Options">
+  <div class="grid grid-cols-2 gap-2">
     <Select
       title="Canvas Size"
       name="canvasSize"

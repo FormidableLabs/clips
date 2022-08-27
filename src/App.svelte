@@ -7,15 +7,12 @@
     recordingStartTime,
   } from "./stores";
   import ActionBar from "./components/ActionBar.svelte";
-  import SidebarCanvasSection from "./components/SidebarCanvasSection.svelte";
+  import SidebarRecordingSection from "./components/SidebarRecordingSection.svelte";
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
-  import SidebarBackgroundSection from "./components/SidebarBackgroundSection.svelte";
   import FormidableIcon from "./components/icons/formidable.icon.svelte";
   import GithubIcon from "./components/icons/github.icon.svelte";
   import { patchBlob } from "./utils/blobHelpers";
-  import WebcamLayoutSection from "./components/WebcamLayoutSection.svelte";
-  import ScreenLayout from "./components/ScreenLayout.svelte";
-  import GeneralLayoutSection from "./components/GeneralLayoutSection.svelte";
+  import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
 
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
@@ -93,12 +90,9 @@
     <div
       class="bg-fmd-gray w-96 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
     >
-      <SidebarCanvasSection />
+      <SidebarRecordingSection />
       <SidebarThemeSection />
-      <SidebarBackgroundSection />
-      <GeneralLayoutSection />
-      <WebcamLayoutSection />
-      <ScreenLayout />
+      <SidebarLayoutSection />
     </div>
   </div>
 

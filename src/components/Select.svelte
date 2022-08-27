@@ -1,4 +1,6 @@
 <script lang="ts">
+  import InputLabel from "./InputLabel.svelte";
+
   export let name: string;
   export let title: string;
   export let value: unknown;
@@ -7,9 +9,7 @@
 </script>
 
 <div>
-  <label for={name} class="block text-sm font-medium text-fmd-navy">
-    {title}
-  </label>
+  <InputLabel {name}>{title}</InputLabel>
   <select
     id={name}
     {name}
