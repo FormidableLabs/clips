@@ -131,11 +131,10 @@ export const drawWebcam: DrawFn = (args) => {
  */
 export const drawScreenShare: DrawFn = (args) => {
   // Screen
-  if (args.displayStream) {
+  if (args.activeShare && args.activeShare.stream && args.activeShare.preview) {
     const {
       ctx,
-      displayDimensions,
-      displayPreview,
+      activeShare,
       screenLayoutState,
       canvasSize,
       generalLayoutState,
@@ -147,8 +146,7 @@ export const drawScreenShare: DrawFn = (args) => {
     const pad = (padding * Math.min(width, height)) / 4;
     const r = m / 100;
 
-    const displayAspectRatio =
-      displayDimensions.height / displayDimensions.width;
+    const displayAspectRatio = activeShare.height / activeShare.width;
 
     let x0 = 0,
       y0 = 0,
@@ -183,7 +181,7 @@ export const drawScreenShare: DrawFn = (args) => {
     }
 
     roundedRectClip(ctx, x0, y0, w, h, r, () => {
-      ctx.drawImage(displayPreview, x0, y0, w, h);
+      ctx.drawImage(activeShare.preview, x0, y0, w, h);
     });
   }
 };

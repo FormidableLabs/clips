@@ -2,8 +2,6 @@
   import { onMount } from "svelte";
   import {
     canvasDimensions,
-    displayPreview,
-    displayDimensions,
     webcamState,
     canvasStream,
     displayStream,
@@ -14,6 +12,7 @@
     webcamLayoutState,
     screenLayoutState,
     generalLayoutState,
+    activeShare,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import {
@@ -77,9 +76,7 @@
     ctx,
     theme: $activeTheme,
     canvasSize: $canvasDimensions,
-    displayStream: $displayStream,
-    displayDimensions: $displayDimensions,
-    displayPreview: $displayPreview,
+    activeShare: $activeShare,
     webcamState: $webcamState,
     micAnalyzer: $micAnalyzer,
     webcamLayoutState: $webcamLayoutState,
@@ -90,10 +87,8 @@
     drawArgs.ctx = ctx;
     drawArgs.theme = $activeTheme;
     drawArgs.canvasSize = $canvasDimensions;
-    drawArgs.displayStream = $displayStream;
-    drawArgs.displayDimensions = $displayDimensions;
-    drawArgs.displayPreview = $displayPreview;
     drawArgs.micAnalyzer = $micAnalyzer;
+    drawArgs.activeShare = $activeShare;
   }
 
   const draw = () => {

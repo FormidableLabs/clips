@@ -56,9 +56,39 @@ export const recordingFPS = (() => {
 /**
  * Track video stream
  */
-export const displayStream = writable<MediaStream>(null);
-export const displayPreview = writable<HTMLVideoElement>(null);
-export const displayDimensions = writable({ width: 0, height: 0 });
+export type ScreenShareState = {
+  activeIndex: null | number;
+  shares: {
+    stream?: MediaStream;
+    preview?: HTMLVideoElement;
+    width: number;
+    height: number;
+  }[];
+};
+export const screenShareState = writable<ScreenShareState>({
+  activeIndex: 0,
+  shares: [],
+});
+
+export const activeShare = derived(screenShareState, ($state) => {
+  return $state.shares[$state.activeIndex];
+});
+
+export const displayStream = derived(screenShareState, ($state) => {
+  if ($state.activeIndex === null || $state.shares.length === 0) return null;
+  return $state.shares[$state.activeIndex].stream;
+});
+export const displayPreview = derived(screenShareState, ($state) => {
+  if ($state.activeIndex === null || $state.shares.length === 0) return null;
+  return $state.shares[$state.activeIndex].preview;
+});
+export const displayDimensions = derived(screenShareState, ($state) => {
+  if ($state.activeIndex === null || $state.shares.length === 0) return null;
+  return {
+    width: $state.shares[$state.activeIndex].width,
+    height: $state.shares[$state.activeIndex].height,
+  };
+});
 
 /**
  * Track webcam stream
@@ -187,9 +217,7 @@ export type DrawArgs = {
   ctx: CanvasRenderingContext2D;
   theme: Theme;
   canvasSize: CanvasSize;
-  displayDimensions: { width: number; height: number } | null | undefined;
-  displayStream: MediaStream | null | undefined;
-  displayPreview: HTMLVideoElement | null | undefined;
+  activeShare: ScreenShareState["shares"][number] | null | undefined;
   webcamState: WebcamState;
   micAnalyzer: null | { freqs: Uint8Array; analyser: AnalyserNode };
   generalLayoutState: GeneralLayoutState;

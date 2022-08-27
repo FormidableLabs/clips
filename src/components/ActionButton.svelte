@@ -5,6 +5,7 @@
 
   export let isActive: boolean = false;
   export let isPopupOpen: boolean = false;
+  export let extraClasses = "";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -12,7 +13,7 @@
 <div class="relative action_button">
   {#if isPopupOpen}
     <div
-      class="w-64 absolute bg-white bottom-14 -left-24 rounded shadow-xl action_button_popup"
+      class="w-[256px] absolute bg-white bottom-14 -left-[104px] rounded shadow-xl action_button_popup"
       transition:fade={{ duration: 150 }}
       use:clickOutside
       on:outclick={() => dispatch("popupDismiss")}
@@ -22,7 +23,7 @@
   {/if}
 
   <button
-    class="border border-fmd-gray_darker rounded-full w-full aspect-square flex items-center justify-center p-1.5 hover:bg-fmd-yellow hover:shadow transition transition-colors transition-shadow duration-200 ease-in-out {isActive
+    class="border border-fmd-gray_darker rounded-full w-full aspect-square flex items-center justify-center p-1.5 hover:bg-fmd-yellow hover:shadow transition transition-colors transition-shadow duration-200 ease-in-out {extraClasses} {isActive
       ? 'bg-fmd-yellow'
       : ''}"
     on:click
