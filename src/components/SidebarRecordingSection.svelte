@@ -30,6 +30,7 @@
       bind:value={$recordingFPS}
       min={1}
       max={60}
+      step={1}
       isDisabled={$isRecording}
     />
   </div>
