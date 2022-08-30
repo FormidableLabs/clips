@@ -116,8 +116,14 @@ export const micAnalyzer = derived(micState, ($micState) => {
   const context = new AudioContext();
   const analyser = context.createAnalyser();
   analyser.fftSize = 128;
+  // Set min/max decibels so bars aren't going too far over 100% of height
+  analyser.minDecibels = -90;
+  analyser.maxDecibels = -15;
+
   const source = context.createMediaStreamSource($stream);
   source.connect(analyser);
+
+  // analyser.connect(context.destination);
 
   let freqs = new Uint8Array(analyser.frequencyBinCount);
 
