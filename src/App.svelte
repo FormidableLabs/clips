@@ -48,7 +48,7 @@
   };
 
   const startRecording = () => {
-    $recordingStartTime = Date.now();
+    $recordingStartTime = performance.now();
     chunks.length = 0;
 
     const combinedStream = new MediaStream([

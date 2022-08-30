@@ -18,6 +18,9 @@
       $micState.stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: { exact: deviceId },
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
         },
       });
     } catch {
