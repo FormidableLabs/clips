@@ -6,7 +6,7 @@
     isRecording,
     recordingFPS,
   } from "../stores.js";
-  import FormField from "./NumberInput.svelte";
+  import NumberInput from "./NumberInput.svelte";
   import Select from "./Select.svelte";
 </script>
 
@@ -23,11 +23,13 @@
       isDisabled={$isRecording}
     />
 
-    <FormField
+    <NumberInput
       title="Recording FPS"
       name="recordingFPS"
       placeholder="30"
       bind:value={$recordingFPS}
+      min={1}
+      max={60}
       isDisabled={$isRecording}
     />
   </div>
