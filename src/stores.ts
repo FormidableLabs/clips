@@ -21,7 +21,7 @@ export const recordingDuration = derived(
     if (!$startTime) return null;
 
     const setDuration = () => {
-      const s = Math.floor((Date.now() - $startTime) / 1000);
+      const s = Math.floor((performance.now() - $startTime) / 1000);
 
       const numMins = Math.floor(s / 60);
       const numSecs = s % 60;

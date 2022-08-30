@@ -21,7 +21,7 @@
   };
 
   const onRecorderStop = async () => {
-    const duration = Date.now() - $recordingStartTime;
+    const duration = performance.now() - $recordingStartTime;
     $recordingStartTime = null;
 
     const completeBlob = new Blob(chunks, { type: chunks[0].type });
