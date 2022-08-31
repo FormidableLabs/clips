@@ -178,3 +178,78 @@ export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
     ctx.restore();
   };
 };
+
+/**
+ * Rainbow bars
+ */
+export const createRainbowAudioBarBackground = ({
+  N = 1,
+  gapPercent = 0.005,
+  initHue = 0,
+}: {
+  N?: number;
+  gapPercent?: number;
+  initHue?: number;
+} = {}): DrawFn => {
+  return ({ ctx, canvasSize, theme, micAnalyzer }) => {
+    ctx.save();
+    const { width, height } = canvasSize;
+
+    if (micAnalyzer) {
+      let { freqs, analyser } = micAnalyzer;
+      analyser.getByteFrequencyData(freqs);
+
+      // Let's only take every-other frequency?
+      let modFreqs = [];
+      let acc = 0;
+      for (let i = 0; i < freqs.length; i++) {
+        acc += freqs[i];
+
+        if ((i + 1) % N === 0) {
+          modFreqs.push(acc / N);
+          acc = 0;
+        }
+      }
+
+      const gap = gapPercent * width;
+      const barWidth = (width - (modFreqs.length + 1) * gap) / modFreqs.length;
+      const barHeight = barWidth / 2;
+      const numFullBars = Math.floor(height / (barHeight + gap));
+
+      let x0, y0, h, ang, numFilledBars, lastBarHeight;
+      for (let i = 0; i < modFreqs.length; i++) {
+        x0 = gap + (barWidth + gap) * i;
+        h = (modFreqs[i] / 255) * height;
+        y0 = height - h;
+
+        ang = (initHue + (i / modFreqs.length) * 360) % 360;
+
+        numFilledBars = Math.floor(h / (barHeight + gap));
+        lastBarHeight = (height - 2 * gap) % (barHeight + gap);
+
+        for (let j = 0; j < numFullBars - 1; j++) {
+          ctx.fillStyle = `hsla(${ang}, ${j < numFilledBars ? 70 : 30}%, 40%, ${
+            j < numFilledBars ? 1 : 0.6
+          })`;
+          ctx.fillRect(
+            x0,
+            height - (j + 1) * (barHeight + gap),
+            barWidth,
+            barHeight
+          );
+        }
+        ctx.fillStyle = `hsla(${ang}, 30%, 40%, 0.6)`;
+        ctx.fillRect(x0, gap, barWidth, lastBarHeight);
+      }
+    }
+
+    // Background
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+    bgGrad.addColorStop(0, theme.secondary);
+    bgGrad.addColorStop(1, theme.primary);
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.restore();
+  };
+};

@@ -4,6 +4,7 @@ import {
   createAudioBarBackground,
   createAudioWaveBackground,
   createLinearGradientBackground,
+  createRainbowAudioBarBackground,
   createSolidBackground,
 } from "./utils/backgroundDrawers";
 
@@ -196,6 +197,12 @@ export const themes: Theme[] = [
     secondary: "#3638dc",
     accent: "#ffffff",
   },
+  {
+    title: "Black-ish",
+    primary: "#232323",
+    secondary: "#434343",
+    accent: "#959595",
+  },
 ];
 
 export const activeTheme = (() => {
@@ -256,6 +263,14 @@ export const backgrounds: Background[] = [
   {
     title: "Audio Wave",
     draw: createAudioWaveBackground(),
+  },
+  {
+    title: "Rainbow Bars",
+    draw: createRainbowAudioBarBackground({
+      N: 2,
+      initHue: 0,
+      gapPercent: 0.005,
+    }),
   },
   {
     title: "Gradient (to bottom right)",
