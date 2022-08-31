@@ -269,7 +269,7 @@ export const backgrounds: Background[] = [
     draw: createRainbowAudioBarBackground({
       N: 2,
       initHue: 0,
-      gapPercent: 0.005,
+      gapPercent: 0.003,
     }),
   },
   {

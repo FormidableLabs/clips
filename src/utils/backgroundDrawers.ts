@@ -225,9 +225,9 @@ export const createRainbowAudioBarBackground = ({
         ang = (initHue + (i / modFreqs.length) * 360) % 360;
 
         numFilledBars = Math.floor(h / (barHeight + gap));
-        lastBarHeight = (height - 2 * gap) % (barHeight + gap);
+        lastBarHeight = height - 2 * gap - numFullBars * (barHeight + gap);
 
-        for (let j = 0; j < numFullBars - 1; j++) {
+        for (let j = 0; j < numFullBars; j++) {
           ctx.fillStyle = `hsla(${ang}, ${j < numFilledBars ? 70 : 30}%, 40%, ${
             j < numFilledBars ? 1 : 0.6
           })`;
