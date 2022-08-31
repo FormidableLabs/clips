@@ -51,17 +51,13 @@
     measure();
   }
 
-  /**
-   * On mount:
-   * - do initial measure
-   * - grab context
-   * - setup canvas streaming context
-   * - Fix off render loop
-   */
+  // On mount, get canvas render context
   onMount(() => {
     ctx ||= canvas.getContext("2d");
-    draw();
   });
+
+  // Kick off drawing process based on recordingFPS
+  $: if (drawArgs.ctx) startDraw($recordingFPS);
 
   // Setting up canvas capture stream
   $: if (canvas) {
@@ -91,23 +87,54 @@
     drawArgs.activeShare = $activeShare;
   }
 
-  const draw = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.imageSmoothingQuality = "high";
-    ctx.globalCompositeOperation = "source-over";
+  /**
+   * Some internal state for raf loop and FPS.
+   */
+  let then: number,
+    startTime: number,
+    now: number,
+    elapsed: number,
+    fpsInterval: number;
 
-    if (drawArgs.ctx) {
-      // drawHelperGrid(drawArgs);
+  // Kick off the drawing process with a desired FPS
+  const startDraw = (desiredFps: number) => {
+    fpsInterval = 1000 / desiredFps;
+    then = performance.now();
+    startTime = then;
 
-      drawScreenShare(drawArgs);
-      drawWebcam(drawArgs);
+    draw();
+    requestAnimationFrame(loop);
+  };
 
-      // Background gets drawn last
-      ctx.globalCompositeOperation = "destination-over";
-      $activeBackground?.draw(drawArgs);
+  // raf loop
+  const loop = (newTime: number) => {
+    // Handle FPS stuff
+    now = newTime;
+    elapsed = now - then;
+    if (elapsed > fpsInterval) {
+      then = now - (elapsed % fpsInterval);
+      draw();
     }
 
-    requestAnimationFrame(draw);
+    requestAnimationFrame(loop);
+  };
+
+  // Actual draw fn
+  const draw = () => {
+    // Note: this is a bit of a hack, but avoids Svelte's reactivity from triggering
+    //  reactive block above that calls `startDraw`.
+    const c = drawArgs.ctx;
+
+    // Draw
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    c.imageSmoothingQuality = "high";
+    c.globalCompositeOperation = "source-over";
+    drawScreenShare(drawArgs);
+    drawWebcam(drawArgs);
+
+    // Background gets drawn last
+    c.globalCompositeOperation = "destination-over";
+    $activeBackground?.draw(drawArgs);
   };
 </script>
 
