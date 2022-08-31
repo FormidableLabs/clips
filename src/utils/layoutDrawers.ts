@@ -1,6 +1,6 @@
 import type { DrawFn } from "../stores";
 import { HorizAlign, VertAlign, WebcamShape } from "../stores";
-import { circleClip, roundedRectClip } from "../drawUtils";
+import { circleClip, roundedRectClip } from "./drawUtils";
 
 export const drawWebcam: DrawFn = (args) => {
   if (args.webcamState.stream) {

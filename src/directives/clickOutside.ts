@@ -1,5 +1,11 @@
 import type { Action } from "svelte/action";
 
+/**
+ * Custom action/directive used to create menu-popups with click-outside behavior.
+ * - Registers a window-level click listener, does a little DOM check, and
+ *    emits a custom event if necessary.
+ * - Registers a window-level keyup listener to dismiss on ESC-key as well.
+ */
 export const clickOutside: Action = (node) => {
   const handleGlobalClick = (evt: Event) => {
     if (evt.target instanceof Node && evt.target instanceof Element) {
