@@ -1,6 +1,6 @@
-# Snips
+# Clips
 
-This repo is an active experiment. The primary goal of this app is to make it easy to create short screen recordings that are shareable to various platforms – such as LinkedIn and Twitter – all using web APIs. The app is intended to:
+This repo is an active experiment. The primary goal of this app is to make it easy to create short screen recordings that are shareable to various platforms – such as LinkedIn and YouTube – all using web APIs. The app is intended to:
 
 - be opinionated enough that a user can click a few buttons, and then have a nice-looking screen recording ready to go;
 - be flexible enough that users can theme their screen recordings to their liking (to some extent);
