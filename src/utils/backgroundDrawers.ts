@@ -1,4 +1,5 @@
 import type { DrawFn, Theme } from "../stores";
+import { roundedRectClip } from "./drawUtils";
 
 /**
  * Solid background
@@ -231,15 +232,28 @@ export const createRainbowAudioBarBackground = ({
           ctx.fillStyle = `hsla(${ang}, ${j < numFilledBars ? 70 : 30}%, 40%, ${
             j < numFilledBars ? 1 : 0.6
           })`;
-          ctx.fillRect(
+
+          roundedRectClip(
+            ctx,
             x0,
             height - (j + 1) * (barHeight + gap),
             barWidth,
-            barHeight
+            barHeight,
+            gap,
+            () => {
+              ctx.fillRect(
+                x0,
+                height - (j + 1) * (barHeight + gap),
+                barWidth,
+                barHeight
+              );
+            }
           );
         }
         ctx.fillStyle = `hsla(${ang}, 30%, 40%, 0.6)`;
-        ctx.fillRect(x0, gap, barWidth, lastBarHeight);
+        roundedRectClip(ctx, x0, gap, barWidth, lastBarHeight, gap, () => {
+          ctx.fillRect(x0, gap, barWidth, lastBarHeight);
+        });
       }
     }
 
