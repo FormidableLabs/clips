@@ -13,6 +13,7 @@
   import GithubIcon from "./components/icons/github.icon.svelte";
   import { patchBlob } from "./utils/blobHelpers";
   import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
+  import { getPreferredMimeType } from "./utils/getPreferredMimeType";
 
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
@@ -59,7 +60,7 @@
     recorder = new MediaRecorder(combinedStream, {
       audioBitsPerSecond: 128000, // 128 kbps
       videoBitsPerSecond: 10 * 1000 * 1000, // N mbps
-      mimeType: "video/webm;codecs=vp9",
+      mimeType: getPreferredMimeType(),
     });
     recorder.ondataavailable = onDataAvailable;
     recorder.onstop = onRecorderStop;
