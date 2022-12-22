@@ -98,7 +98,7 @@
             <TextButton
               on:click={stopWebcam}
               extraClasses="bg-fmd-gray_lighter w-full"
-              hasClose>Stop Mic</TextButton
+              hasClose>Stop Webcam</TextButton
             >
           </div>
         {/if}
@@ -109,7 +109,7 @@
   <Camera />
 
   <video
-    class="invisible absolute"
+    class="absolute w-1 h-1 opacity-0 z-[-10] pointer-events-none"
     bind:this={$webcamState.preview}
     autoplay
     playsinline

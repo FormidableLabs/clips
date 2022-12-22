@@ -13,9 +13,11 @@
   import GithubIcon from "./components/icons/github.icon.svelte";
   import { patchBlob } from "./utils/blobHelpers";
   import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
+  import { getPreferredMimeType } from "./utils/getPreferredMimeType";
 
   let recorder: MediaRecorder;
   const chunks: Blob[] = [];
+  let ext: string = "";
   const onDataAvailable = (e: BlobEvent) => {
     chunks.push(e.data);
   };
@@ -32,7 +34,7 @@
 
     const link = document.createElement("a");
     link.href = data;
-    link.download = "video.webm";
+    link.download = `video.${ext}`;
     link.dispatchEvent(
       new MouseEvent("click", {
         bubbles: true,
@@ -56,10 +58,12 @@
       ...($micState.stream?.getTracks() || []),
     ]);
     // TODO: dynamic bits per second based on resolution...
+    const mime = getPreferredMimeType();
+    ext = mime.ext;
     recorder = new MediaRecorder(combinedStream, {
       audioBitsPerSecond: 128000, // 128 kbps
       videoBitsPerSecond: 10 * 1000 * 1000, // N mbps
-      mimeType: "video/webm;codecs=vp9",
+      mimeType: mime.mimeType,
     });
     recorder.ondataavailable = onDataAvailable;
     recorder.onstop = onRecorderStop;
