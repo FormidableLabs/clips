@@ -1,4 +1,4 @@
-# Clips
+[![Clips — Formidable, We build the modern web](./clips-Hero.png)](https://formidable.com/open-source/)
 
 This repo is an active experiment. The primary goal of this app is to make it easy to create short screen recordings that are shareable to various platforms – such as LinkedIn and YouTube – all using web APIs. The app is intended to:
 
