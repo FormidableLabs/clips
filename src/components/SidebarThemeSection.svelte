@@ -30,13 +30,13 @@
     />
 
     <!-- Color Theme -->
-    <div class="col-span-2 grid grid-cols-4 gap-1">
-      <div class="col-span-4">
+    <div class="col-span-2 grid grid-cols-5 gap-1">
+      <div class="col-span-5">
         <InputLabel>Color Theme</InputLabel>
       </div>
       {#each themes as theme}
         <button
-          class="grid grid-cols-2 grid-rows-[3fr,1fr] gap-0.5 aspect-[3/2] border-2 p-0.5 rounded focus:outline-none focus:ring-fmd-blue focus:border-4 focus:border-fmd-blue {theme ===
+          class="grid grid-cols-2 grid-rows-[4fr,1fr] gap-1 aspect-[3/2] border-2 p-0.5 rounded focus:outline-none focus:ring-fmd-blue focus:border-2 focus:border-fmd-blue {theme ===
           $activeTheme
             ? 'border-fmd-blue'
             : 'border-transparent'}"

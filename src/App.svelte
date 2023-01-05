@@ -102,7 +102,7 @@
 
   <div class="absolute top-0 left-0 p-4 flex gap-4 items-center text-fmd-navy">
     <a
-      class="w-10 hover:text-fmd-sky transition transition-colors duration-100 ease-in-out"
+      class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
       aria-label="Formidable logo"
       href="https://formidable.com"
       target="_blank"

@@ -178,19 +178,19 @@ export type Theme = {
   accent: string;
 };
 export const themes: Theme[] = [
+  { title: "Sun", primary: "#e78e47", secondary: "#f7d570", accent: "#ffffff" },
+  {
+    title: "Green",
+    primary: "#15a356",
+    secondary: "#9dF06c",
+    accent: "#ffffff",
+  },
   {
     title: "Basic",
     primary: "#32056f",
     secondary: "#7139e6",
     accent: "#ffffff",
   },
-  {
-    title: "Green",
-    primary: "#354735",
-    secondary: "#acea88",
-    accent: "#ffffff",
-  },
-  { title: "Sun", primary: "#e78e47", secondary: "#f7d570", accent: "#ffffff" },
   {
     title: "White and Blue",
     primary: "#ffffff",
