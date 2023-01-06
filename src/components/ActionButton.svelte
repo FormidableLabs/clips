@@ -25,7 +25,7 @@
 
   <button
     class="border border-fmd-gray_darker w-full green text-fmd-gray_darker hover:text-fmd-black flex items-center justify-center p-1.5 hover:bg-fmd-yellow transition transition-all duration-100  {extraClasses} {isActive
-      ? 'bg-fmd-yellow text-fmd-black border-fmd-black'
+      ? 'bg-fmd-red text-fmd-white text-fmd-black'
       : ''} {isVideo ? 'h-full rounded' : 'rounded-full aspect-square'}"
     on:click
   >
