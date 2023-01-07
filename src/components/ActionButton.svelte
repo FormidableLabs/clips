@@ -15,7 +15,6 @@
   {#if isPopupOpen}
     <div
       class="w-[256px] absolute bg-white bottom-14 -left-[104px] rounded shadow-xl action_button_popup"
-      transition:fade={{ duration: 150 }}
       use:clickOutside
       on:outclick={() => dispatch("popupDismiss")}
     >
@@ -24,8 +23,8 @@
   {/if}
 
   <button
-    class="border border-fmd-gray_darker w-full green text-fmd-gray_darker hover:text-fmd-black flex items-center justify-center p-1.5 hover:bg-fmd-yellow transition transition-all duration-100  {extraClasses} {isActive
-      ? 'bg-fmd-red text-fmd-white text-fmd-black'
+    class="border border-fmd-gray_darker w-full green text-fmd-gray_darker hover:border-fmd-yellow hover:text-fmd-black flex items-center justify-center p-1.5 hover:bg-fmd-yellow transition transition-all duration-150  {extraClasses} {isActive
+      ? 'bg-fmd-red border-fmd-red text-fmd-white text-fmd-black'
       : ''} {isVideo ? 'h-full rounded' : 'rounded-full aspect-square'}"
     on:click
   >
