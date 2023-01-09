@@ -33,7 +33,7 @@
 
   <div class="w-[1px] h-16 bg-fmd-gray_darker" />
 
-  <div class="flex gap-2 items-center">
+  <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
     {#each $screenShareState.shares as share}
       <ShareButton {share} />

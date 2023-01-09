@@ -3,13 +3,11 @@
   import type { ScreenShareState } from "../stores";
   import { activeShare, screenShareState } from "../stores.js";
   import { onMount } from "svelte";
-  import PopupContainer from "./PopupContainer.svelte";
-  import TextButton from "./TextButton.svelte";
   import LoadingDots from "./icons/loadingDots.icon.svelte";
+  import CloseIcon from "./icons/close.icon.svelte";
 
   export let share: ScreenShareState["shares"][number];
 
-  let isPopupOpen = false;
   let preview: HTMLVideoElement;
 
   onMount(async () => {
@@ -48,7 +46,6 @@
 
   const makeActive = () => {
     $screenShareState.activeIndex = $screenShareState.shares.indexOf(share);
-    isPopupOpen = false;
   };
 
   $: {
@@ -58,14 +55,8 @@
   }
 </script>
 
-<div class="w-20 h-14">
-  <ActionButton
-    isActive={share === $activeShare}
-    isVideo
-    {isPopupOpen}
-    on:popupDismiss={() => (isPopupOpen = false)}
-    on:click={() => (isPopupOpen = true)}
-  >
+<div class="w-20 h-14 relative">
+  <ActionButton isActive={share === $activeShare} isVideo on:click={makeActive}>
     <video
       class="invisible absolute top-0 left-0"
       bind:this={share.preview}
@@ -77,16 +68,14 @@
 
     {#if share.stream}
       <video class="h-full" autoplay playsinline muted bind:this={preview} />
+      <button
+        on:click={stopSharing}
+        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red bg-fmd-red text-fmd-white hover:bg-fmd-white hover:text-fmd-red transition-all duration-200 ease-in-out"
+      >
+        <CloseIcon />
+      </button>
     {:else}
       <LoadingDots />
     {/if}
-
-    <PopupContainer slot="popupContent" title="Screenshare">
-      <div class="flex flex-col gap-1">
-        <TextButton on:click={stopSharing} hasClose>Stop sharing</TextButton>
-
-        <TextButton on:click={makeActive}>Make Active</TextButton>
-      </div>
-    </PopupContainer>
   </ActionButton>
 </div>
