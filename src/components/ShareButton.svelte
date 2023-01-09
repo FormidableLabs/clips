@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { slide } from "svelte/transition";
-  import ShareIcon from "./icons/share.icon.svelte";
   import ActionButton from "./ActionButton.svelte";
   import type { ScreenShareState } from "../stores";
   import { activeShare, screenShareState } from "../stores.js";
   import { onMount } from "svelte";
   import PopupContainer from "./PopupContainer.svelte";
   import TextButton from "./TextButton.svelte";
+  import LoadingDots from "./icons/loadingDots.icon.svelte";
 
   export let share: ScreenShareState["shares"][number];
 
@@ -79,7 +78,7 @@
     {#if share.stream}
       <video class="h-full" autoplay playsinline muted bind:this={preview} />
     {:else}
-      <ShareIcon />
+      <LoadingDots />
     {/if}
 
     <PopupContainer slot="popupContent" title="Screenshare">

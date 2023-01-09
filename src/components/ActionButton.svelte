@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
   import { clickOutside } from "../directives/clickOutside";
   import { createEventDispatcher } from "svelte";
 

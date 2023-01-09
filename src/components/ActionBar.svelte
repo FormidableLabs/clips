@@ -21,9 +21,7 @@
   };
 </script>
 
-<div
-  class="grid grid-cols-[auto_auto_1fr_auto] gap-4 items-center pb-4"
->
+<div class="grid grid-cols-[auto_auto_1fr_auto] gap-4 items-center pb-4">
   <div class="flex gap-2">
     <div class="w-12">
       <MicButton />
@@ -40,7 +38,7 @@
     {#each $screenShareState.shares as share}
       <ShareButton {share} />
     {/each}
-    
+
     <div class="w-20 h-14">
       <ActionButton
         on:click={handleAddScreenShare}
