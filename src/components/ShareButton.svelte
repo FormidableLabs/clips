@@ -70,7 +70,7 @@
       <video class="h-full" autoplay playsinline muted bind:this={preview} />
       <button
         on:click={stopSharing}
-        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red bg-fmd-red text-fmd-white hover:bg-fmd-white hover:text-fmd-red transition-all duration-200 ease-in-out"
+        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red bg-fmd-gray_lighter text-fmd-red hover:bg-fmd-red hover:text-fmd-white transition-all duration-200 ease-in-out"
       >
         <CloseIcon />
       </button>
