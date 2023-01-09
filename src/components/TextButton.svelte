@@ -1,6 +1,6 @@
 <script lang="ts">
   import CheckIcon from "./icons/check.icon.svelte";
-  import CloseIcon from "./icons/close.icon.svelte";
+  import StopIcon from "./icons/stop.icon.svelte";
 
   export let extraClasses: string = "";
   export let isDisabled = false;
@@ -21,7 +21,7 @@
 
   {#if hasCheck || hasClose}
     <span class="w-6 flex-shrink-0">
-      <svelte:component this={hasCheck ? CheckIcon : CloseIcon} />
+      <svelte:component this={hasCheck ? CheckIcon : StopIcon} />
     </span>
   {/if}
 </button>

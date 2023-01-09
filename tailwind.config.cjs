@@ -16,16 +16,20 @@ module.exports = {
           sky: "#8BDDFD",
           yellow: "#FFC951",
           gray: "#EBE5DA",
-          gray_lighter: "#f4f1eb",
-          gray_darker: "#b49d74"
-        }
-      }
+          gray_lighter: "#F9F7F3",
+          gray_darker: "#888888",
+        },
+      },
+      keyframes: {
+        loading: {
+          "0%, 100%": { fill: "#88888880" },
+          "50%": { fill: "#888888" },
+        },
+      },
     },
     container: {
-      center: true
-    }
+      center: true,
+    },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require("@tailwindcss/forms")],
 };
