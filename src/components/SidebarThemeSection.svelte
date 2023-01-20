@@ -7,28 +7,12 @@
     backgrounds,
     generalLayoutState,
   } from "../stores.js";
-  import RangeInput from "./RangeInput.svelte";
   import NumberInput from "./NumberInput.svelte";
   import InputLabel from "./InputLabel.svelte";
 </script>
 
 <SidebarSection title="Theme">
   <div class="grid grid-cols-2 gap-2">
-    <Select
-      title="Background Style"
-      name="background"
-      options={backgrounds.map((bg) => ({ title: bg.title, value: bg }))}
-      bind:value={$activeBackground}
-    />
-    <NumberInput
-      name="padding"
-      title="Padding"
-      bind:value={$generalLayoutState.padding}
-      min={0}
-      max={1}
-      step={0.02}
-    />
-
     <!-- Color Theme -->
     <div class="col-span-2 grid grid-cols-5 gap-1">
       <div class="col-span-5">
@@ -51,5 +35,21 @@
         </button>
       {/each}
     </div>
+
+    <Select
+      title="Background Style"
+      name="background"
+      options={backgrounds.map((bg) => ({ title: bg.title, value: bg }))}
+      bind:value={$activeBackground}
+    />
+    
+    <NumberInput
+      name="padding"
+      title="Padding"
+      bind:value={$generalLayoutState.padding}
+      min={0}
+      max={1}
+      step={0.02}
+    />
   </div>
 </SidebarSection>
