@@ -15,7 +15,7 @@
     <select
       id={name}
       {name}
-      class="bg-fmd-gray border-fmd-blue border-2 mt-1 block w-full pl-3 pr-10 py-2 text-base border-fmd-gray focus:outline-none focus:ring-fmd-blue focus:border-fmd-blue sm:text-sm rounded-md"
+      class="bg-fmd-gray border-none border-[1px] mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-fmd-blue focus:border-fmd-blue sm:text-sm rounded-md"
       bind:value
       disabled={isDisabled}
     >
@@ -25,12 +25,12 @@
     </select>
   {:else}
     <div
-      class="grid grid-cols-{options.length} justify-items-center border-fmd-gray_darker border-[1px] rounded mt-2"
+      class="grid grid-cols-{options.length} justify-items-center border-none border-[1px] mt-2 overflow-hidden"
     >
       {#each options as op, i}
         <div
           class="block {i !== 0 &&
-            'border-l-[1px] border-fmd-gray_darker'} w-full text-center"
+            'border-l-[1px] border-fmd-gray'} w-full text-center"
         >
           <input
             class="hidden peer"
@@ -42,10 +42,13 @@
           />
           <label
             for={op.title}
-            class="block transition transition-all duration-150 py-2 peer-checked:bg-fmd-blue peer-checked:text-fmd-white peer-hover:bg-fmd-yellow peer-hover:cursor-pointer peer-checked:peer-hover:bg-fmd-blue"
+            class="block rounded duration-150 py-2 peer-hover:cursor-pointer" 
           >
             {op.title}
           </label>
+          <div
+            class="transition transition-all peer-checked:bg-fmd-red h-1 peer-hover:bg-fmd-yellow peer-hover:peer-checked:bg-fmd-red"
+          />
         </div>
       {/each}
     </div>

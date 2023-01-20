@@ -21,7 +21,7 @@
       {max}
       {step}
       id={name}
-      class="shadow-sm focus:ring-fmd-blue focus:border-fmd-blue block w-full sm:text-sm border-fmd-gray rounded-md bg-fmd-gray border-2 border-fmd-blue {isDisabled
+      class="shadow-sm focus:ring-fmd-blue focus:border-fmd-blue block w-full sm:text-sm rounded-md bg-fmd-gray border-none {isDisabled
         ? 'opacity-30'
         : ''}"
       {placeholder}
