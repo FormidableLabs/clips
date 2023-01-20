@@ -53,10 +53,10 @@
   </div>
 
   <!-- Recording button -->
-  <div class="">
+  <div class="flex justify-end items-center gap-2">
     {#if $recordingDuration !== null}
       <div
-        class="absolute w-[100px] -left-[15px] bg-white bottom-[75px] rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
+        class="w-[100px] bg-white rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
         transition:fade={{ duration: 300 }}
       >
         {$recordingDuration}
