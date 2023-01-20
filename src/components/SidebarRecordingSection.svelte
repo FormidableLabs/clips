@@ -5,33 +5,35 @@
     canvasSizes,
     isRecording,
     recordingFPS,
+    recordingFPSOptions,
   } from "../stores.js";
-  import NumberInput from "./NumberInput.svelte";
   import Select from "./Select.svelte";
 </script>
 
 <SidebarSection title="Recording Options">
-  <div class="grid grid-cols-2 gap-2">
+  <div class="grid grid-rows-2 gap-4">
     <Select
       title="Canvas Size"
       name="canvasSize"
       options={canvasSizes.map((size) => ({
-        title: `${size.title} (${size.width}x${size.height})`,
+        title: `${size.title}`,
         value: size,
       }))}
       bind:value={$canvasDimensions}
       isDisabled={$isRecording}
+      isDropdown={false}
     />
 
-    <NumberInput
+    <Select
       title="Recording FPS"
       name="recordingFPS"
-      placeholder="30"
+      options={recordingFPSOptions.map((fps) => ({
+        title: fps.toString(),
+        value: fps,
+      }))}
       bind:value={$recordingFPS}
-      min={1}
-      max={60}
-      step={1}
       isDisabled={$isRecording}
+      isDropdown={false}
     />
   </div>
 </SidebarSection>

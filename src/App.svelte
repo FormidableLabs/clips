@@ -91,9 +91,7 @@
       </div>
       <ActionBar on:record={onRecordButtonPress} />
     </div>
-    <div
-      class="bg-fmd-gray w-96 h-full flex-shrink-0 rounded overflow-auto flex flex-col gap-1"
-    >
+    <div class=" w-96 flex flex-col gap-3">
       <SidebarRecordingSection />
       <SidebarThemeSection />
       <SidebarLayoutSection />
