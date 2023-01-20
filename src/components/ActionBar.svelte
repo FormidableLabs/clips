@@ -21,21 +21,42 @@
   };
 </script>
 
-<div
-  class="flex-shrink-0 rounded bg-fmd-gray p-3 flex justify-center items-center gap-3"
->
-  <div class="w-12">
-    <MicButton />
+<div class="grid grid-cols-[auto_auto_1fr_auto] gap-4 items-center pb-4">
+  <div class="flex gap-2">
+    <div class="w-12">
+      <MicButton />
+    </div>
+    <div class="w-12">
+      <WebcamButton />
+    </div>
   </div>
-  <div class="w-12">
-    <WebcamButton />
+
+  <div class="w-[1px] h-16 bg-fmd-gray_darker" />
+
+  <div class="flex gap-3 items-center">
+    <!-- Existing screen shares -->
+    {#each $screenShareState.shares as share}
+      <ShareButton {share} />
+    {/each}
+
+    <div class="w-20 h-14">
+      <ActionButton
+        on:click={handleAddScreenShare}
+        extraClasses="p-2.5"
+        isVideo
+      >
+        <div class="w-10">
+          <DesktopIcon />
+        </div>
+      </ActionButton>
+    </div>
   </div>
 
   <!-- Recording button -->
-  <div class="relative">
+  <div class="flex justify-end items-center gap-2">
     {#if $recordingDuration !== null}
       <div
-        class="absolute w-[100px] -left-[15px] bg-white bottom-[75px] rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
+        class="w-[100px] bg-white rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
         transition:fade={{ duration: 300 }}
       >
         {$recordingDuration}
@@ -53,18 +74,5 @@
           : 'w-full h-full rounded-[100%]'}"
       />
     </button>
-  </div>
-
-  <!-- Existing screen shares -->
-  {#each $screenShareState.shares as share}
-    <div class="w-12">
-      <ShareButton {share} />
-    </div>
-  {/each}
-
-  <div class="w-12">
-    <ActionButton on:click={handleAddScreenShare} extraClasses="p-2.5">
-      <DesktopIcon />
-    </ActionButton>
   </div>
 </div>
