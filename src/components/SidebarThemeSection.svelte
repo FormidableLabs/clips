@@ -12,25 +12,35 @@
 </script>
 
 <SidebarSection title="Theme">
-  <div class="grid grid-cols-2 gap-2">
+  <div class="grid grid-cols-2 gap-4">
     <!-- Color Theme -->
-    <div class="col-span-2 grid grid-cols-5 gap-1">
+    <div class="col-span-2 grid grid-cols-5 gap-y-3">
       <div class="col-span-5">
         <InputLabel>Color Theme</InputLabel>
       </div>
-      {#each themes as theme}
+      {#each themes as theme, i}
         <button
-          class="grid grid-cols-2 grid-rows-[4fr,1fr] gap-1 aspect-[3/2] border-2 p-0.5 rounded focus:outline-none focus:ring-fmd-blue focus:border-2 focus:border-fmd-blue {theme ===
-          $activeTheme
-            ? 'border-fmd-blue'
-            : 'border-transparent'}"
+          class="group transition transition-bg duration-150 focus:outline-none {i !==
+            0 && 'border-l-[1px] border-fmd-gray'} {theme === $activeTheme
+            ? 'bg-fmd-red/5 focus:bg-fmd-red/5'
+            : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10'}"
           on:click={() => ($activeTheme = theme)}
         >
-          <div class="h-full" style="background-color: {theme.primary};" />
-          <div class="h-full" style="background-color: {theme.secondary};" />
+          <div class="grid grid-cols-2 gap-1 p-2">
+            <div
+              class="w-full aspect-square"
+              style="background-color: {theme.primary};"
+            />
+            <div
+              class="w-full aspect-square"
+              style="background-color: {theme.secondary};"
+            />
+          </div>
           <div
-            class="col-span-2 h-full"
-            style="background-color: {theme.accent};"
+            class="transition transition-all duration-150 {theme ===
+            $activeTheme
+              ? 'bg-fmd-red group-focus:bg-fmd-red'
+              : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow'} h-1 "
           />
         </button>
       {/each}
@@ -42,7 +52,7 @@
       options={backgrounds.map((bg) => ({ title: bg.title, value: bg }))}
       bind:value={$activeBackground}
     />
-    
+
     <NumberInput
       name="padding"
       title="Padding"
