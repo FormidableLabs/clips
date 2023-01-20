@@ -42,12 +42,12 @@
           />
           <label
             for={op.title}
-            class="block rounded duration-150 py-2 peer-hover:cursor-pointer" 
+            class="block transition transition-all duration-150 py-2 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5"
           >
             {op.title}
           </label>
           <div
-            class="transition transition-all peer-checked:bg-fmd-red h-1 peer-hover:bg-fmd-yellow peer-hover:peer-checked:bg-fmd-red"
+            class="transition transition-all duration-150 peer-checked:bg-fmd-red h-1 peer-hover:bg-fmd-yellow peer-hover:peer-checked:bg-fmd-red"
           />
         </div>
       {/each}
