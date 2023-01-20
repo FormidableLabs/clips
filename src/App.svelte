@@ -82,7 +82,7 @@
 <div
   class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter p-0 sm:p-3 md:pr-0 sm:p-3 md:pr-0 flex items-center relative"
 >
-  <div class="container flex gap-12 mr-0">
+  <div class="w-full flex gap-12 mr-0 ml-9">
     <div
       class="relative flex flex-col gap-4 flex-grow max-w-[calc(100%-350px)]"
     >
@@ -91,7 +91,9 @@
       </div>
       <ActionBar on:record={onRecordButtonPress} />
     </div>
-    <div class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-6 px-6">
+    <div
+      class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-6 px-6 pt-6"
+    >
       <SidebarRecordingSection />
       <SidebarThemeSection />
       <SidebarLayoutSection />
@@ -119,10 +121,3 @@
     </a>
   </div>
 </div>
-
-<style>
-  .container {
-    height: 1000px;
-    max-height: 100%;
-  }
-</style>
