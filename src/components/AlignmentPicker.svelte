@@ -28,11 +28,9 @@
         }}
         aria-label="align {horOp} horizontally, {vertOp} vertically"
       >
-        <div class="w-4 text-[6em] leading-3">
-          <svg height={DOT_SIZE} width={DOT_SIZE}>
-            <circle cx={DOT_SIZE / 2} cy={DOT_SIZE / 2} r={DOT_SIZE / 2} />
-          </svg>
-        </div>
+        <svg height={DOT_SIZE} width={DOT_SIZE}>
+          <circle cx={DOT_SIZE / 2} cy={DOT_SIZE / 2} r={DOT_SIZE / 2} />
+        </svg>
       </button>
     {/each}
   {/each}
