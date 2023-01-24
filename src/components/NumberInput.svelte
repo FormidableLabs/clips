@@ -14,7 +14,7 @@
 <div>
   <InputLabel {name}>{title}</InputLabel>
   <div
-    class="mt-1 grid grid-cols-[1fr_auto_auto] bg-fmd-white rounded overflow-hidden"
+    class="mt-1 grid grid-cols-[1fr_auto_auto] bg-fmd-white overflow-hidden"
   >
     <input
       type="number"
@@ -23,7 +23,7 @@
       {max}
       {step}
       id={name}
-      class="focus:ring-0 focus:border-fmd-red focus:border-r-fmd-gray block w-full sm:text-sm -md bg-transparent border-0 border-r-[1px] border-b-2 border-b-transparent border-fmd-gray transition transition-border {isDisabled
+      class="focus:ring-0 focus:border-fmd-red hover:border-b-fmd-yellow focus:border-r-fmd-gray block w-full sm:text-sm -md bg-transparent border-0 border-r-[1px] border-b-2 border-b-transparent border-r-fmd-gray transition transition-border {isDisabled
         ? 'opacity-30'
         : ''}"
       {placeholder}

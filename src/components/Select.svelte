@@ -15,7 +15,7 @@
     <select
       id={name}
       {name}
-      class="bg-fmd-gray border-none border-[1px] mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-fmd-blue focus:border-fmd-blue sm:text-sm rounded-md"
+      class="bg-fmd-white border-0 border-b-2 border-transparent mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-0 hover:border-b-fmd-yellow focus:border-b-fmd-yellow hover:cursor-pointer sm:text-sm transition transition-border "
       bind:value
       disabled={isDisabled}
     >
