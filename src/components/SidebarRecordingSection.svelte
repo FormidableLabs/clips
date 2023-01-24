@@ -11,7 +11,7 @@
 </script>
 
 <SidebarSection title="Recording Options">
-  <div class="grid grid-rows-2 gap-4">
+  <div class="grid grid-rows-2 gap-3">
     <Select
       title="Canvas Size"
       name="canvasSize"
