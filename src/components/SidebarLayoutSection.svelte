@@ -17,7 +17,7 @@
 <SidebarSection title="Layout">
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <InputLabel>Webcam Alignment</InputLabel>
+      <InputLabel>Webcam Position</InputLabel>
       <div class="mb-1" />
       <AlignmentPicker
         bind:horizAlign={$webcamLayoutState.horizAlign}
@@ -25,7 +25,7 @@
       />
     </div>
     <div>
-      <InputLabel>Screen Alignment</InputLabel>
+      <InputLabel>Screen Position</InputLabel>
       <div class="mb-1" />
       <AlignmentPicker
         bind:horizAlign={$screenLayoutState.horizAlign}
