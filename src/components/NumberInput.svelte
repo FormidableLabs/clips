@@ -13,7 +13,9 @@
 
 <div>
   <InputLabel {name}>{title}</InputLabel>
-  <div class="mt-1">
+  <div
+    class="mt-1 grid grid-cols-[1fr_auto_auto] bg-fmd-white rounded overflow-hidden"
+  >
     <input
       type="number"
       {name}
@@ -21,12 +23,34 @@
       {max}
       {step}
       id={name}
-      class="shadow-sm focus:ring-fmd-blue focus:border-fmd-blue block w-full sm:text-sm rounded-md bg-fmd-gray border-none {isDisabled
+      class="focus:ring-0 focus:border-fmd-red focus:border-r-fmd-gray block w-full sm:text-sm -md bg-transparent border-0 border-r-[1px] border-b-2 border-b-transparent border-fmd-gray transition transition-border {isDisabled
         ? 'opacity-30'
         : ''}"
       {placeholder}
       bind:value
       disabled={isDisabled}
     />
+    <button
+      class="h-full px-3 bg-transparent hover:bg-fmd-yellow border-r-[1px] border-fmd-gray transition transition-bg"
+      on:click={() =>
+        (value = value
+          ? Number.parseFloat((Number(value) + step).toFixed(2))
+          : (0 + step).toFixed(2))}>+</button
+    >
+    <button
+      class="h-full px-3 bg-transparent hover:bg-fmd-yellow transition transition-bg"
+      on:click={() =>
+        (value = value
+          ? Number.parseFloat((Number(value) - step).toFixed(2))
+          : (0 - step).toFixed(2))}>&#8211;</button
+    >
   </div>
 </div>
+
+<style>
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>
