@@ -30,14 +30,25 @@
     );
   };
 
-  const stopSharing = () => {
-    if (share.preview) share.preview.srcObject = null;
-    if (share.stream) {
-      share.stream.getTracks().forEach((track) => track.stop());
-      share.stream = null;
-    }
-    removeShare();
-  };
+const stopSharing = () => {
+  const currentIndex = $screenShareState.shares.indexOf(share);
+  const isCurrentActiveIndexBeingRemoved = currentIndex === $screenShareState.activeIndex;
+  if (share.preview){
+    share.preview.srcObject = null;
+  } 
+  if (share.stream) {
+    share.stream.getTracks().forEach((track) => track.stop());
+    share.stream = null;
+  }
+  removeShare();
+  if($screenShareState.shares.length && isCurrentActiveIndexBeingRemoved){
+    share = $screenShareState.shares[0];
+    share.preview.srcObject = share.stream;
+    this.bind(share.preview)
+    $screenShareState.activeIndex = $screenShareState.shares.indexOf(share);
+    //bind this to preview
+  }
+};
 
   const grabDimensions = () => {
     const { videoWidth, videoHeight } = share.preview;
