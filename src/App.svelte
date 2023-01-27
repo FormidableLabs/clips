@@ -80,7 +80,7 @@
 </script>
 
 <div
-  class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter p-0 sm:p-3 md:p-6 flex items-center relative"
+  class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter dark:bg-fmd-navy p-0 sm:p-3 md:p-6 flex items-center relative"
 >
   <div class="container flex gap-4">
     <div
@@ -100,7 +100,7 @@
     </div>
   </div>
 
-  <div class="absolute top-0 left-0 p-4 flex gap-4 items-center text-fmd-navy">
+  <div class="absolute top-0 left-0 p-4 flex gap-4 items-center text-fmd-navy dark:text-fmd-white">
     <a
       class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
       aria-label="Formidable logo"
