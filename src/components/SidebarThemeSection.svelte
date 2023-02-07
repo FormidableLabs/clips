@@ -7,7 +7,6 @@
     backgrounds,
     generalLayoutState,
   } from "../stores.js";
-  import NumberInput from "./NumberInput.svelte";
   import InputLabel from "./InputLabel.svelte";
   import RangeInput from "./RangeInput.svelte";
 </script>
@@ -53,15 +52,6 @@
       options={backgrounds.map((bg) => ({ title: bg.title, value: bg }))}
       bind:value={$activeBackground}
     />
-
-    <!-- <NumberInput
-      name="padding"
-      title="Padding"
-      bind:value={$generalLayoutState.padding}
-      min={0}
-      max={1}
-      step={0.02}
-    /> -->
     <RangeInput
       name="padding"
       title="Padding"

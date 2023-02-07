@@ -42,7 +42,7 @@
           />
           <label
             for={op.title}
-            class="block transition transition-all duration-150 pt-2 pb-1 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5"
+            class="block transition transition-all duration-150 pt-2 pb-1.5 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5"
           >
             {op.title}
           </label>

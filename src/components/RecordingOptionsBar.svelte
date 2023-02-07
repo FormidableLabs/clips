@@ -22,8 +22,6 @@
     isDropdown={false}
   />
 
-  <!-- <div class="w-[1px] h-full bg-fmd-gray" /> -->
-
   <Select
     title="Recording FPS"
     name="recordingFPS"
