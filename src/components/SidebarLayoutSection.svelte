@@ -10,8 +10,8 @@
     webcamShapeOptions,
   } from "../stores.js";
   import { titleCase } from "../utils/titleCase.js";
-  import NumberInput from "./NumberInput.svelte";
   import Select from "./Select.svelte";
+  import RangeInput from "./RangeInput.svelte";
 </script>
 
 <SidebarSection title="Layout">
@@ -33,34 +33,35 @@
       />
     </div>
     <!-- Webcam shape/width -->
-    <Select
-      title="Webcam shape"
-      name="webcamShape"
-      options={webcamShapeOptions.map((val) => ({
-        title: titleCase(val),
-        value: val,
-      }))}
-      bind:value={$webcamLayoutState.shape}
-    />
-    <NumberInput
+    <div class="col-span-2">
+      <Select
+        title="Webcam shape"
+        name="webcamShape"
+        options={webcamShapeOptions.map((val) => ({
+          title: titleCase(val),
+          value: val,
+        }))}
+        bind:value={$webcamLayoutState.shape}
+        isDropdown={false}
+      />
+    </div>
+    <RangeInput
       name="webcamWidth"
-      title="Webcam width"
+      title="Webcam Width"
       bind:value={$webcamLayoutState.size}
       min={0}
       max={1}
       step={0.02}
     />
     {#if $webcamLayoutState.shape === WebcamShape.initial}
-      <div transition:slide={{ duration: 150 }} class="col-span-2">
-        <NumberInput
-          name="webcamBorderRadius"
-          title="Border radius"
-          bind:value={$webcamLayoutState.borderRadius}
-          min={0}
-          max={1}
-          step={0.02}
-        />
-      </div>
+      <RangeInput
+        name="webcamBorderRadius"
+        title="Border radius"
+        bind:value={$webcamLayoutState.borderRadius}
+        min={0}
+        max={1}
+        step={0.02}
+      />
     {/if}
   </div>
 </SidebarSection>

@@ -57,8 +57,8 @@
       title="Padding"
       bind:value={$generalLayoutState.padding}
       min={0}
-      max={1}
-      step={0.02}
+      max={0.4}
+      step={0.004}
     />
   </div>
 </SidebarSection>

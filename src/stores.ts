@@ -384,8 +384,8 @@ export const verticalAlignmentOptions = [
   VertAlign.bottom,
 ] as const;
 export const webcamShapeOptions = [
-  WebcamShape.initial,
   WebcamShape.circle,
+  WebcamShape.initial,
 ] as const;
 
 const webcamStateSchema = z.object({

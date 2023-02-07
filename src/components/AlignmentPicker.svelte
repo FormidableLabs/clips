@@ -13,7 +13,7 @@
 </script>
 
 <div
-  class="grid grid-cols-3 grid-rows-3 py-1 w-full border border-fmd-gray overflow-hidden"
+  class="grid grid-cols-3 grid-rows-3 py-1 w-full border border-fmd-gray overflow-hidden rounded"
 >
   {#each verticalAlignmentOptions as vertOp}
     {#each horizontalAlignmentOptions as horOp}
