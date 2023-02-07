@@ -25,7 +25,7 @@
     </select>
   {:else}
     <div
-      class="grid grid-cols-{options.length} justify-items-center border-none border-[1px] mt-2 overflow-hidden"
+      class="grid grid-cols-{options.length} justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray rounded"
     >
       {#each options as op, i}
         <div
@@ -42,12 +42,12 @@
           />
           <label
             for={op.title}
-            class="block transition transition-all duration-150 py-2 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5"
+            class="block transition transition-all duration-150 pt-2 pb-1 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5"
           >
             {op.title}
           </label>
           <div
-            class="transition transition-all duration-150 peer-checked:bg-fmd-red h-1 peer-hover:bg-fmd-yellow peer-hover:peer-checked:bg-fmd-red"
+            class="transition transition-all duration-150 peer-checked:bg-fmd-red h-1 m-auto peer-hover:bg-fmd-yellow peer-hover:peer-checked:bg-fmd-red "
           />
         </div>
       {/each}
