@@ -15,7 +15,7 @@
 </script>
 
 <SidebarSection title="Layout">
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-2 gap-x-4 gap-y-6">
     <div>
       <InputLabel>Webcam Position</InputLabel>
       <div class="mb-1" />

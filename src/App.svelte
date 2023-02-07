@@ -90,13 +90,15 @@
       </div>
       <ActionBar on:record={onRecordButtonPress} />
     </div>
-    <div class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-6 px-6">
+    <div class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-10 px-6">
       <SidebarThemeSection />
       <SidebarLayoutSection />
     </div>
   </div>
 
-  <div class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-navy">
+  <div
+    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-navy"
+  >
     <a
       class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
       aria-label="Formidable logo"

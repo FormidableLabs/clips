@@ -12,7 +12,7 @@
 </script>
 
 <SidebarSection title="Theme">
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-2 gap-6">
     <!-- Color Theme -->
     <div class="col-span-2 grid grid-cols-5 gap-y-3">
       <div class="col-span-5">
