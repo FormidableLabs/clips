@@ -6,19 +6,51 @@
   export let value: unknown;
   export let options: { title: string; value: unknown }[];
   export let isDisabled = false;
+  export let isDropdown = true;
 </script>
 
 <div>
   <InputLabel {name}>{title}</InputLabel>
-  <select
-    id={name}
-    {name}
-    class="bg-fmd-gray border-fmd-blue border-2 mt-1 block w-full pl-3 pr-10 py-2 text-base border-fmd-gray focus:outline-none focus:ring-fmd-blue focus:border-fmd-blue sm:text-sm rounded-md"
-    bind:value
-    disabled={isDisabled}
-  >
-    {#each options as op}
-      <option value={op.value}>{op.title}</option>
-    {/each}
-  </select>
+  {#if isDropdown}
+    <select
+      id={name}
+      {name}
+      class="bg-fmd-white border-0 border-b-2 border-transparent mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-0 hover:border-b-fmd-yellow focus:border-b-fmd-yellow hover:cursor-pointer sm:text-sm transition transition-border "
+      bind:value
+      disabled={isDisabled}
+    >
+      {#each options as op}
+        <option value={op.value}>{op.title}</option>
+      {/each}
+    </select>
+  {:else}
+    <div
+      class="grid grid-cols-{options.length} justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray rounded"
+    >
+      {#each options as op, i}
+        <div
+          class="block {i !== 0 &&
+            'border-l-[1px] border-fmd-gray'} w-full text-center"
+        >
+          <input
+            class="hidden peer"
+            type="radio"
+            bind:group={value}
+            value={op.value}
+            id={op.title}
+            {name}
+          />
+          <label
+            for={op.title}
+            class="block transition transition-all duration-150 pt-2 pb-1.5 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5"
+          >
+            {op.title}
+          </label>
+          <div
+            class="transition transition-all duration-150 peer-checked:bg-fmd-red h-1 m-auto peer-hover:bg-fmd-yellow peer-hover:peer-checked:bg-fmd-red "
+          />
+        </div>
+      {/each}
+    </div>
+  {/if}
 </div>

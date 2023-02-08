@@ -11,6 +11,7 @@
     screenShareState,
   } from "../stores.js";
   import ActionButton from "./ActionButton.svelte";
+  import RecordingOptionsBar from "./RecordingOptionsBar.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -21,7 +22,7 @@
   };
 </script>
 
-<div class="grid grid-cols-[auto_auto_1fr_auto] gap-4 items-center pb-4">
+<div class="grid grid-cols-[auto_auto_1fr_auto] gap-x-4 gap-y-10 items-center pb-4">
   <div class="flex gap-2">
     <div class="w-12">
       <MicButton />
@@ -75,4 +76,6 @@
       />
     </button>
   </div>
+
+  <RecordingOptionsBar />
 </div>

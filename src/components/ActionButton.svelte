@@ -6,6 +6,7 @@
   export let isPopupOpen: boolean = false;
   export let extraClasses = "";
   export let isVideo: boolean = false;
+  export let showPopupUnder: boolean = false;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -13,7 +14,9 @@
 <div class="relative action_button {isVideo ? 'h-full' : ''}">
   {#if isPopupOpen}
     <div
-      class="w-[256px] absolute bg-white bottom-20 -left-2 rounded shadow-xl action_button_popup"
+      class="w-[256px] absolute bg-white {showPopupUnder
+        ? 'top-20'
+        : 'bottom-20'} -left-2 rounded shadow-xl action_button_popup z-10"
       use:clickOutside
       on:outclick={() => dispatch("popupDismiss")}
     >
