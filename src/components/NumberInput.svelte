@@ -13,9 +13,7 @@
 
 <div>
   <InputLabel {name}>{title}</InputLabel>
-  <div
-    class="mt-1 grid grid-cols-[1fr_auto_auto] bg-fmd-white overflow-hidden"
-  >
+  <div class="mt-1 grid grid-cols-[1fr_auto_auto] bg-fmd-white overflow-hidden">
     <input
       type="number"
       {name}
@@ -52,5 +50,9 @@
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 </style>
