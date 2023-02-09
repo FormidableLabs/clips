@@ -207,6 +207,26 @@ export const themes: Theme[] = [
   },
 ];
 
+const defaultCustomTheme = {
+  title: "Custom",
+  primary: "#848484",
+  secondary: "#848484",
+  accent: "#848484",
+};
+
+export const customTheme = (() => {
+  const store = writable<Theme>(defaultCustomTheme);
+
+  const _set = store.set;
+
+  store.set = (theme) => {
+    localStorage.setItem("customTheme", JSON.stringify(theme));
+    _set(theme);
+    activeTheme.set(theme);
+  };
+  return store;
+})();
+
 export const activeTheme = (() => {
   const initThemeTitle = localStorage.getItem("theme");
   const initTheme =
