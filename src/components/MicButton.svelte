@@ -93,7 +93,7 @@
           <div transition:slide={{ duration: 150 }} class="w-full block">
             <TextButton
               on:click={stopMic}
-              extraClasses="bg-fmd-gray_lighter w-full"
+              extraClasses="bg-fmd-gray_lighter dark:bg-fmd-navy/30 dark:hover:bg-fmd-blue w-full"
               hasClose>Stop Mic</TextButton
             >
           </div>
