@@ -25,12 +25,13 @@
     </select>
   {:else}
     <div
-      class="grid grid-cols-{options.length} justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray rounded"
+      class="flex justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray rounded"
     >
       {#each options as op, i}
         <div
-          class="block {i !== 0 &&
-            'border-l-[1px] border-fmd-gray'} w-full text-center"
+          class="block {i !== 0
+            ? 'border-l-[1px] border-fmd-gray'
+            : ''} w-full text-center"
         >
           <input
             class="hidden peer"

@@ -1,5 +1,6 @@
 <script lang="ts">
   import SidebarSection from "./SidebarSection.svelte";
+  import { slide } from "svelte/transition";
   import { activeTheme, customTheme, themes } from "../stores";
   import Select from "./Select.svelte";
   import {
@@ -10,7 +11,6 @@
   import InputLabel from "./InputLabel.svelte";
   import RangeInput from "./RangeInput.svelte";
   import ColorInput from "./ColorInput.svelte";
-  import { custom } from "zod";
 </script>
 
 <SidebarSection title="Theme">
@@ -54,15 +54,10 @@
           : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10'}"
         on:click={() => ($activeTheme = $customTheme)}
       >
-        <div class="grid grid-cols-2 gap-1 p-2">
-          <div
-            class="w-full aspect-square"
-            style="background-color: {$customTheme.primary};"
-          />
-          <div
-            class="w-full aspect-square"
-            style="background-color: {$customTheme.secondary};"
-          />
+        <div
+          class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150"
+        >
+          Custom
         </div>
         <div
           class="transition transition-all duration-150 {$customTheme ===
@@ -71,22 +66,24 @@
             : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow'} h-1 "
         />
       </button>
-    </div>
 
-    {#if $activeTheme === $customTheme}
-      <ColorInput
-        name="customPrimary"
-        placeholder="#848484"
-        title="Primary Color"
-        bind:value={$customTheme.primary}
-      />
-      <ColorInput
-        name="customSecondary"
-        placeholder="#848484"
-        title="Secondary Color"
-        bind:value={$customTheme.secondary}
-      />
-    {/if}
+      {#if $activeTheme === $customTheme}
+        <div
+          class="col-span-6 grid grid-cols-2 gap-x-4"
+          transition:slide={{ duration: 150 }}
+        >
+          <div class="col-span-2 pb-2">
+            <InputLabel name="customTheme">Custom Theme</InputLabel>
+          </div>
+          <ColorInput title="Primary Color" bind:value={$customTheme.primary} />
+          <ColorInput
+            title="Secondary Color"
+            bind:value={$customTheme.secondary}
+            rightAlignPopup={true}
+          />
+        </div>
+      {/if}
+    </div>
 
     <Select
       title="Background Style"

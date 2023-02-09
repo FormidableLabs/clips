@@ -1,22 +1,36 @@
 <script lang="ts">
-  import InputLabel from "./InputLabel.svelte";
+  import { ColorPicker } from "@apsc/color";
+  import "@apsc/color/color-picker.css";
+  import ActionButton from "./ActionButton.svelte";
+  import PopupContainer from "./PopupContainer.svelte";
 
-  export let name: string;
-  export let placeholder = "#848484";
   export let title: string;
   export let value: string;
+  export let rightAlignPopup: boolean = false;
+
+  let isPopupOpen = false;
+
+  const handleColorInputButtonClick = () => {
+    isPopupOpen = true;
+  };
 </script>
 
-<div>
-  <InputLabel {name}>{title}</InputLabel>
-  <div class="mt-1 grid grid-cols-[1fr_auto_auto] bg-fmd-white overflow-hidden">
-    <input
-      type="color"
-      {name}
-      id={name}
-      class="focus:ring-0 focus:border-fmd-red hover:border-b-fmd-yellow focus:border-r-fmd-gray block w-full sm:text-sm -md bg-transparent border-0 border-r-[1px] border-b-2 border-b-transparent border-r-fmd-gray transition transition-border"
-      {placeholder}
-      bind:value
-    />
+<ActionButton
+  isActive={false}
+  isSquareVariant={true}
+  showPopupUnder={true}
+  isTextVariant={true}
+  {rightAlignPopup}
+  {isPopupOpen}
+  on:popupDismiss={() => (isPopupOpen = false)}
+  on:click={handleColorInputButtonClick}
+>
+  <PopupContainer slot="popupContent" title="">
+    <ColorPicker class="h-[256px] pt-1" bind:color={value} />
+  </PopupContainer>
+
+  <div class="flex items-center gap-2">
+    <div class="h-6 w-6 rounded" style="background-color: {value};" />
+    {title}
   </div>
-</div>
+</ActionButton>

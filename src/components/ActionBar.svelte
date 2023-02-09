@@ -44,7 +44,7 @@
       <ActionButton
         on:click={handleAddScreenShare}
         extraClasses="p-2.5"
-        isVideo
+        isSquareVariant
       >
         <div class="w-10">
           <DesktopIcon />

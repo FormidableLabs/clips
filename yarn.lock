@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@apsc/color@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@apsc/color/-/color-0.0.5.tgz#c3ab6fb0dc311b4a2e6bbd93a1d8a3e91322b74b"
+  integrity sha512-phT5yRCF5j2f+TaWzEV7HcWopsMA+WHMgkblgQdihkPcJmig46sz52fUocw6kCtxGsW9FMtLnz5n6aur7Q6IuA==
+  dependencies:
+    lodash.debounce "^4.0.8"
+
 "@esbuild/linux-loong64@0.14.54":
   version "0.14.54"
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.14.54.tgz#de2a4be678bd4d0d1ffbb86e6de779cde5999028"
@@ -561,6 +568,11 @@ lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/lilconfig/-/lilconfig-2.0.6.tgz#32a384558bd58af3d4c6e077dd1ad1d397bc69d4"
   integrity sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
 
 magic-string@^0.25.7:
   version "0.25.9"

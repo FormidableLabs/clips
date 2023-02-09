@@ -215,7 +215,10 @@ const defaultCustomTheme = {
 };
 
 export const customTheme = (() => {
-  const store = writable<Theme>(defaultCustomTheme);
+  const initCustomTheme =
+    JSON.parse(localStorage.getItem("customTheme")) || defaultCustomTheme;
+
+  const store = writable<Theme>(initCustomTheme);
 
   const _set = store.set;
 
