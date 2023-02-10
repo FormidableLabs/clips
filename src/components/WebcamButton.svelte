@@ -97,7 +97,7 @@
           <div transition:slide={{ duration: 150 }} class="w-full block">
             <TextButton
               on:click={stopWebcam}
-              extraClasses="bg-fmd-gray_lighter w-full"
+              extraClasses="bg-fmd-gray_lighter dark:bg-fmd-navy/30 dark:hover:bg-fmd-navy w-full"
               hasClose>Stop Webcam</TextButton
             >
           </div>

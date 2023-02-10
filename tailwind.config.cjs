@@ -25,6 +25,10 @@ module.exports = {
           "0%, 100%": { fill: "#88888880" },
           "50%": { fill: "#888888" },
         },
+        loadingDark: {
+          "0%, 100%": { fill: "#FFFFFF80" },
+          "50%": { fill: "#FFFFFF" },
+        },
       },
     },
     container: {

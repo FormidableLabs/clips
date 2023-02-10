@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div class="w-[1px] h-16 bg-fmd-gray_darker" />
+  <div class="w-[1px] h-16 bg-fmd-gray_darker dark:bg-fmd-blue" />
 
   <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
