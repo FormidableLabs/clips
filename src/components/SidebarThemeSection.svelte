@@ -50,14 +50,14 @@
       {/each}
 
       <button
-        class="group transition transition-bg duration-150 focus:outline-none border-l-[1px] border-fmd-gray {$customTheme ===
+        class="group transition transition-bg duration-150 focus:outline-none border-l-[1px] border-fmd-gray dark:border-fmd-blue {$customTheme ===
         $activeTheme
-          ? 'bg-fmd-red/5 focus:bg-fmd-red/5'
-          : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10'}"
+          ? 'bg-fmd-red/5 focus:bg-fmd-red/5 dark:bg-fmd-blue/50 dark:focus:bg-fmd-blue/50'
+          : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10 dark:hover:bg-fmd-blue/20 dark:focus:bg-fmd-blue/20'}"
         on:click={() => ($activeTheme = $customTheme)}
       >
         <div
-          class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150"
+          class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150 dark:text-white"
         >
           Custom
         </div>
@@ -65,7 +65,7 @@
           class="transition transition-all duration-150 {$customTheme ===
           $activeTheme
             ? 'bg-fmd-red group-focus:bg-fmd-red'
-            : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow'} h-1 "
+            : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow dark:group-hover:bg-fmd-sky dark:group-focus:bg-fmd-sky'} h-1"
         />
       </button>
 

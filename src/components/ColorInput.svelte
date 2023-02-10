@@ -26,7 +26,9 @@
   on:click={handleColorInputButtonClick}
 >
   <PopupContainer slot="popupContent" title="">
-    <ColorPicker class="h-[256px] pt-1" bind:color={value} />
+    <div class="transparent-input">
+      <ColorPicker class="h-[256px] p-2" bind:color={value} />
+    </div>
   </PopupContainer>
 
   <div class="flex items-center gap-2">
@@ -34,3 +36,9 @@
     {title}
   </div>
 </ActionButton>
+
+<style>
+  .transparent-input :global(input) {
+    background-color: transparent;
+  }
+</style>

@@ -16,7 +16,7 @@
 <div class="relative action_button {isSquareVariant ? 'h-full' : ''}">
   {#if isPopupOpen}
     <div
-      class="w-[256px] absolute bg-white {showPopupUnder
+      class="w-[256px] absolute bg-white dark:bg-transparent {showPopupUnder
         ? 'top-8'
         : 'bottom-20'} {rightAlignPopup
         ? '-right-2'
@@ -29,7 +29,7 @@
   {/if}
 
   <button
-    class="border border-fmd-gray_darker w-full green text-fmd-gray_darker hover:text-fmd-black dark:text-fmd-white dark:hover:text-fmd-white dark:border-fmd-white dark:hover:bg-fmd-blue flex items-center justify-center p-1.5 hover:bg-fmd-yellow transition transition-all duration-150  {extraClasses}  {isSquareVariant
+    class="w-full green hover:text-fmd-black flex items-center p-1.5 transition transition-all duration-150 dark:text-fmd-white dark:hover:text-fmd-white dark:border-fmd-white dark:hover:bg-fmd-blue {extraClasses} {isSquareVariant
       ? 'h-full rounded'
       : 'rounded-full aspect-square'}
       {isTextVariant
