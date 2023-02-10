@@ -79,7 +79,7 @@
 </script>
 
 <div
-  class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter p-0 sm:p-3 md:pr-0 sm:p-3 md:pr-0 flex items-center relative"
+  class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter p-0 sm:p-3 md:pr-0 sm:p-3 md:pr-0 flex items-center relative dark:bg-fmd-navy"
 >
   <div class="w-full flex gap-12 mr-0 ml-9 h-full">
     <div
@@ -90,14 +90,14 @@
       </div>
       <ActionBar on:record={onRecordButtonPress} />
     </div>
-    <div class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-10 px-6">
+    <div class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-10 px-6 dark:border-fmd-blue">
       <SidebarThemeSection />
       <SidebarLayoutSection />
     </div>
   </div>
 
   <div
-    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-navy"
+    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-navy dark:text-fmd-white"
   >
     <a
       class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"

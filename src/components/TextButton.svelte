@@ -12,7 +12,7 @@
   on:click
   class="rounded {isDisabled
     ? 'bg-opacity-30'
-    : 'hover:bg-fmd-yellow'} px-3 py-2 text-left transition transition-colors duration-150 ease-in-out flex items-center justify-between gap-1 {extraClasses}"
+    : 'hover:bg-fmd-yellow dark:hover:bg-fmd-navy'} px-3 py-2 text-left transition transition-colors duration-150 ease-in-out flex items-center justify-between gap-1 {extraClasses}"
   disabled={isDisabled}
 >
   <div class="flex-grow">
@@ -20,7 +20,7 @@
   </div>
 
   {#if hasCheck || hasClose}
-    <span class="w-6 flex-shrink-0">
+    <span class="w-6 flex-shrink-0 dark:fill-white">
       <svelte:component this={hasCheck ? CheckIcon : StopIcon} />
     </span>
   {/if}

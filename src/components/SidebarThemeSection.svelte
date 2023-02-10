@@ -21,9 +21,11 @@
       {#each themes as theme, i}
         <button
           class="group transition transition-bg duration-150 focus:outline-none {i !==
-            0 && 'border-l-[1px] border-fmd-gray'} {theme === $activeTheme
-            ? 'bg-fmd-red/5 focus:bg-fmd-red/5'
-            : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10'}"
+            0 &&
+            'border-l-[1px] border-fmd-gray dark:border-fmd-blue'} {theme ===
+          $activeTheme
+            ? 'bg-fmd-red/5 focus:bg-fmd-red/5 dark:bg-fmd-blue/50 dark:focus:bg-fmd-blue/50'
+            : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10 dark:hover:bg-fmd-blue/20 dark:focus:bg-fmd-blue/20'}"
           on:click={() => ($activeTheme = theme)}
         >
           <div class="grid grid-cols-2 gap-1 p-2">
@@ -40,7 +42,7 @@
             class="transition transition-all duration-150 {theme ===
             $activeTheme
               ? 'bg-fmd-red group-focus:bg-fmd-red'
-              : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow'} h-1 "
+              : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow dark:group-hover:bg-fmd-sky dark:group-focus:bg-fmd-sky'} h-1 "
           />
         </button>
       {/each}

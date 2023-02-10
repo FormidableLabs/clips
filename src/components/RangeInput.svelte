@@ -1,4 +1,6 @@
 <script lang="ts">
+  import InputLabel from "./InputLabel.svelte";
+
   export let name: string;
   export let title: string;
   export let value: number;
@@ -9,9 +11,7 @@
 </script>
 
 <div>
-  <label for={name} class="block text-sm font-medium text-fmd-navy">
-    {title}
-  </label>
+  <InputLabel {name}>{title}</InputLabel>
   <div class="mt-1 grid grid-cols-[1fr_auto] gap-3 items-center">
     <input
       type="range"
@@ -26,7 +26,9 @@
       {max}
       {step}
     />
-    <div class="text-xs">{Math.floor((value / max) * 100)}%</div>
+    <div class="text-xs dark:text-white">
+      {Math.floor((value / max) * 100)}%
+    </div>
   </div>
 </div>
 
@@ -73,5 +75,26 @@
     border-radius: 15px;
     background: #f04d21;
     cursor: pointer;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #fff;
+    }
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      background: #fff;
+    }
+    input[type="range"]::-moz-range-track {
+      width: 100%;
+      height: 4px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #fff;
+    }
   }
 </style>
