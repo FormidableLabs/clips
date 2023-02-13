@@ -31,11 +31,8 @@
   let isMovingWebcam = false;
   let webcamX = 0;
   let webcamY = 0;
-  $: webcamWidth =
-    $webcamLayoutState.shape === WebcamShape.circle
-      ? $webcamState.height * $webcamLayoutState.size
-      : $webcamState.width * $webcamLayoutState.size;
-  $: webcamHeight = $webcamState.height * $webcamLayoutState.size;
+  let webcamWidth = 0;
+  let webcamHeight = 0;
 
   // Track container sizing, so we can scale accordingly.
   const measure = () => {
@@ -55,6 +52,14 @@
 
   $: if (wrapper && $canvasDimensions) {
     measure();
+  }
+
+  $: if (containerWidth / containerHeight <= 1) {
+    webcamWidth = containerWidth * $webcamLayoutState.size;
+    webcamHeight = webcamWidth * ($webcamState.height / $webcamState.width);
+  } else {
+    webcamHeight = containerHeight * $webcamLayoutState.size;
+    webcamWidth = webcamHeight * ($webcamState.width / $webcamState.height);
   }
 
   // On mount, get canvas render context
@@ -163,12 +168,14 @@
       style="transform: scale({scale}); transform-origin: top left;"
       bind:this={canvas}
     />
-    <div
-      class="absolute {isMovingWebcam ? 'cursor-grabbing' : 'cursor-grab'}"
-      style="top: {webcamY * containerHeight}px; left: {webcamX *
-        containerWidth}px; height:{webcamHeight}px; width: {webcamWidth}px;"
-      on:mousedown={() => (isMovingWebcam = true)}
-      on:mouseup={() => (isMovingWebcam = false)}
-    />
+    {#if $webcamState.stream}
+      <div
+        class="absolute {isMovingWebcam ? 'cursor-grabbing' : 'cursor-grab'}"
+        style="top: {webcamY * containerHeight}px; left: {webcamX *
+          containerWidth}px; height:{webcamHeight}px; width: {webcamWidth}px;"
+        on:mousedown={() => (isMovingWebcam = true)}
+        on:mouseup={() => (isMovingWebcam = false)}
+      />
+    {/if}
   </div>
 </div>
