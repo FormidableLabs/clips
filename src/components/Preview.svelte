@@ -13,6 +13,7 @@
     screenLayoutState,
     generalLayoutState,
     activeShare,
+    WebcamShape,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import {
@@ -30,6 +31,11 @@
   // Canvas tracking
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
+
+  // Position values
+  let isMovingWebcam = false;
+  let webcamX = 0;
+  let webcamY = 0;
 
   // Track container sizing, so we can scale accordingly.
   const measure = () => {
@@ -130,11 +136,11 @@
     c.imageSmoothingQuality = "high";
     c.globalCompositeOperation = "source-over";
     drawScreenShare(drawArgs);
-    drawWebcam(drawArgs);
+    drawWebcam(drawArgs, webcamX, webcamY);
 
     // Background gets drawn last
     c.globalCompositeOperation = "destination-over";
-    $activeBackground?.draw(drawArgs);
+    $activeBackground?.draw(drawArgs, 0, 0);
   };
 </script>
 
@@ -142,7 +148,13 @@
 
 <div class="w-full h-full flex justify-center items-center" bind:this={wrapper}>
   <div
-    class="bg-gray-300 overflow-hidden rounded shadow-lg"
+    on:mousemove={(e) => {
+      if (isMovingWebcam) {
+        webcamX += e.movementX / containerWidth;
+        webcamY += e.movementY / containerHeight;
+      }
+    }}
+    class="bg-gray-300 overflow-hidden rounded shadow-lg relative"
     style="aspect-ratio: {$canvasDimensions.width}/{$canvasDimensions.height}; width: {containerWidth}px; height: {containerHeight}px"
   >
     <canvas
@@ -150,6 +162,17 @@
       height="{$canvasDimensions.height}px"
       style="transform: scale({scale}); transform-origin: top left;"
       bind:this={canvas}
+    />
+    <div
+      class="absolute"
+      style="top: {webcamY * containerHeight}px; left: {webcamX *
+        containerWidth}px; height:{$webcamState.height *
+        $webcamLayoutState.size}px; width: {$webcamLayoutState.shape ===
+      WebcamShape.circle
+        ? $webcamState.height * $webcamLayoutState.size
+        : $webcamState.width * $webcamLayoutState.size}px;"
+      on:mousedown={() => (isMovingWebcam = true)}
+      on:mouseup={() => (isMovingWebcam = false)}
     />
   </div>
 </div>
