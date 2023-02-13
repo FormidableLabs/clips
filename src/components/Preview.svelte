@@ -4,7 +4,6 @@
     canvasDimensions,
     webcamState,
     canvasStream,
-    displayStream,
     activeTheme,
     activeBackground,
     recordingFPS,
@@ -16,11 +15,7 @@
     WebcamShape,
   } from "../stores";
   import type { DrawArgs } from "../stores";
-  import {
-    drawHelperGrid,
-    drawScreenShare,
-    drawWebcam,
-  } from "../utils/layoutDrawers";
+  import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
 
   // Container measurements
   let wrapper: HTMLDivElement;
@@ -36,6 +31,11 @@
   let isMovingWebcam = false;
   let webcamX = 0;
   let webcamY = 0;
+  $: webcamWidth =
+    $webcamLayoutState.shape === WebcamShape.circle
+      ? $webcamState.height * $webcamLayoutState.size
+      : $webcamState.width * $webcamLayoutState.size;
+  $: webcamHeight = $webcamState.height * $webcamLayoutState.size;
 
   // Track container sizing, so we can scale accordingly.
   const measure = () => {
@@ -135,7 +135,7 @@
     c.clearRect(0, 0, canvas.width, canvas.height);
     c.imageSmoothingQuality = "high";
     c.globalCompositeOperation = "source-over";
-    drawScreenShare(drawArgs);
+    drawScreenShare(drawArgs, 0, 0);
     drawWebcam(drawArgs, webcamX, webcamY);
 
     // Background gets drawn last
@@ -164,13 +164,9 @@
       bind:this={canvas}
     />
     <div
-      class="absolute"
+      class="absolute {isMovingWebcam ? 'cursor-grabbing' : 'cursor-grab'}"
       style="top: {webcamY * containerHeight}px; left: {webcamX *
-        containerWidth}px; height:{$webcamState.height *
-        $webcamLayoutState.size}px; width: {$webcamLayoutState.shape ===
-      WebcamShape.circle
-        ? $webcamState.height * $webcamLayoutState.size
-        : $webcamState.width * $webcamLayoutState.size}px;"
+        containerWidth}px; height:{webcamHeight}px; width: {webcamWidth}px;"
       on:mousedown={() => (isMovingWebcam = true)}
       on:mouseup={() => (isMovingWebcam = false)}
     />

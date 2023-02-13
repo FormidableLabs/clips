@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
   import InputLabel from "./InputLabel.svelte";
   import AlignmentPicker from "./AlignmentPicker.svelte";
@@ -16,14 +15,6 @@
 
 <SidebarSection title="Layout">
   <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-    <div>
-      <InputLabel>Webcam Position</InputLabel>
-      <div class="mb-1" />
-      <AlignmentPicker
-        bind:horizAlign={$webcamLayoutState.horizAlign}
-        bind:vertAlign={$webcamLayoutState.vertAlign}
-      />
-    </div>
     <div>
       <InputLabel>Screen Position</InputLabel>
       <div class="mb-1" />
