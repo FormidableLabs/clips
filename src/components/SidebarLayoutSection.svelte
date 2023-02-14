@@ -25,7 +25,7 @@
     </div>
     <!-- Webcam shape/width -->
     <div class="col-span-2">
-      <Select
+      <!-- <Select
         title="Webcam shape"
         name="webcamShape"
         options={webcamShapeOptions.map((val) => ({
@@ -34,7 +34,7 @@
         }))}
         bind:value={$webcamLayoutState.shape}
         isDropdown={false}
-      />
+      /> -->
     </div>
     <RangeInput
       name="webcamWidth"

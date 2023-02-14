@@ -25,7 +25,7 @@
     </select>
   {:else}
     <div
-      class="grid grid-cols-{options.length} justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray dark:border-fmd-blue rounded"
+      class="grid grid-cols-{options.length} justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray dark:border-fmd-blue rounded bg-fmd-gray_lighter dark:bg-fmd-navy"
     >
       {#each options as op, i}
         <div

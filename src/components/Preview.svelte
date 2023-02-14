@@ -12,10 +12,15 @@
     screenLayoutState,
     generalLayoutState,
     activeShare,
+    webcamShapeOptions,
     WebcamShape,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
+  import Select from "./Select.svelte";
+  import { titleCase } from "../utils/titleCase";
+  import { clickOutside } from "../directives/clickOutside";
+  import RangeInput from "./RangeInput.svelte";
 
   // Container measurements
   let wrapper: HTMLDivElement;
@@ -29,6 +34,7 @@
 
   // Position values
   let isMovingWebcam = false;
+  let isWebcamFocused = false;
   let webcamX = 0;
   let webcamY = 0;
   let webcamWidth = 0;
@@ -56,10 +62,16 @@
 
   $: if (containerWidth / containerHeight <= 1) {
     webcamWidth = containerWidth * $webcamLayoutState.size;
-    webcamHeight = webcamWidth * ($webcamState.height / $webcamState.width);
+    webcamHeight =
+      $webcamLayoutState.shape === WebcamShape.circle
+        ? webcamWidth
+        : webcamWidth * ($webcamState.height / $webcamState.width);
   } else {
     webcamHeight = containerHeight * $webcamLayoutState.size;
-    webcamWidth = webcamHeight * ($webcamState.width / $webcamState.height);
+    webcamWidth =
+      $webcamLayoutState.shape === WebcamShape.circle
+        ? webcamHeight
+        : webcamHeight * ($webcamState.width / $webcamState.height);
   }
 
   // On mount, get canvas render context
@@ -154,7 +166,7 @@
 <div class="w-full h-full flex justify-center items-center" bind:this={wrapper}>
   <div
     on:mousemove={(e) => {
-      if (isMovingWebcam) {
+      if (isMovingWebcam && isWebcamFocused) {
         webcamX += e.movementX / containerWidth;
         webcamY += e.movementY / containerHeight;
       }
@@ -170,12 +182,64 @@
     />
     {#if $webcamState.stream}
       <div
-        class="absolute {isMovingWebcam ? 'cursor-grabbing' : 'cursor-grab'}"
+        class="absolute"
         style="top: {webcamY * containerHeight}px; left: {webcamX *
-          containerWidth}px; height:{webcamHeight}px; width: {webcamWidth}px;"
-        on:mousedown={() => (isMovingWebcam = true)}
-        on:mouseup={() => (isMovingWebcam = false)}
-      />
+          containerWidth}px;"
+        on:mousedown={() => (isWebcamFocused = true)}
+        use:clickOutside
+        on:outclick={() => (isWebcamFocused = false)}
+      >
+        <div class="relative">
+          <div
+            class="self-start {isMovingWebcam && isWebcamFocused
+              ? 'cursor-grabbing'
+              : 'cursor-grab'} {isWebcamFocused
+              ? 'border-2 border-fmd-sky/80'
+              : ''}"
+            style="height: {webcamHeight -
+              ($generalLayoutState.padding / 2) *
+                webcamHeight}px; width: {webcamWidth -
+              ($generalLayoutState.padding / 2) * webcamWidth}px;"
+            on:mousedown={() => (isMovingWebcam = true)}
+            on:mouseup={() => (isMovingWebcam = false)}
+          />
+          {#if isWebcamFocused}
+            <div
+              class="w-[140px] absolute"
+              style="top: {webcamY < 0.2 ? webcamHeight : -120}px"
+            >
+              <RangeInput
+                name="webcamWidth"
+                title="Size"
+                bind:value={$webcamLayoutState.size}
+                min={0}
+                max={1}
+                step={0.02}
+              />
+              {#if $webcamLayoutState.shape === WebcamShape.initial}
+                <RangeInput
+                  name="webcamBorderRadius"
+                  title="Border radius"
+                  bind:value={$webcamLayoutState.borderRadius}
+                  min={0}
+                  max={1}
+                  step={0.02}
+                />
+              {/if}
+              <Select
+                title=""
+                name="webcamShape"
+                options={webcamShapeOptions.map((val) => ({
+                  title: titleCase(val),
+                  value: val,
+                }))}
+                bind:value={$webcamLayoutState.shape}
+                isDropdown={false}
+              />
+            </div>
+          {/if}
+        </div>
+      </div>
     {/if}
   </div>
 </div>
