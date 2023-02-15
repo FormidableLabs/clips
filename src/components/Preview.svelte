@@ -167,8 +167,18 @@
   <div
     on:mousemove={(e) => {
       if (isMovingWebcam && isWebcamFocused) {
-        webcamX += e.movementX / containerWidth;
-        webcamY += e.movementY / containerHeight;
+        webcamX = Math.min(
+          Math.max(webcamX + e.movementX / containerWidth, 0),
+          1 -
+            (webcamWidth - (webcamWidth * $generalLayoutState.padding) / 2) /
+              containerWidth
+        );
+        webcamY = Math.min(
+          Math.max(webcamY + e.movementY / containerHeight, 0),
+          1 -
+            (webcamWidth - (webcamHeight * $generalLayoutState.padding) / 2) /
+              containerHeight
+        );
       }
     }}
     class="bg-gray-300 overflow-hidden rounded shadow-lg relative"
@@ -203,6 +213,7 @@
             on:mousedown={() => (isMovingWebcam = true)}
             on:mouseup={() => (isMovingWebcam = false)}
           />
+
           {#if isWebcamFocused}
             <div
               class="w-[140px] absolute"
