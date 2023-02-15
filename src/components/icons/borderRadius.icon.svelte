@@ -1,0 +1,12 @@
+<svg
+  viewBox="0 0 70 70"
+  class="w-full fill-current"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    xmlns="http://www.w3.org/2000/svg"
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M26 7H15C10.5817 7 7 10.5817 7 15V26H0V15C0 6.71573 6.71573 0 15 0H26V7ZM26 63H15C10.5817 63 7 59.4183 7 55V44H0V55C0 63.2843 6.71573 70 15 70H26V63ZM44 70H55C63.2843 70 70 63.2843 70 55V44H63V55C63 59.4183 59.4183 63 55 63H44V70ZM44 7V0H55C63.2843 0 70 6.71573 70 15V26H63V15C63 10.5817 59.4183 7 55 7H44Z"
+  />
+</svg>

@@ -18,9 +18,9 @@
   import type { DrawArgs } from "../stores";
   import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
   import Select from "./Select.svelte";
-  import { titleCase } from "../utils/titleCase";
   import { clickOutside } from "../directives/clickOutside";
   import RangeInput from "./RangeInput.svelte";
+  import BorderRadius from "./icons/borderRadius.icon.svelte";
 
   // Container measurements
   let wrapper: HTMLDivElement;
@@ -39,6 +39,18 @@
   let webcamY = 0;
   let webcamWidth = 0;
   let webcamHeight = 0;
+
+  let webcamShapeOptionsWithLabels = [
+    { title: "●", value: webcamShapeOptions[0] },
+    { title: "■", value: webcamShapeOptions[1] },
+  ];
+
+  let sizeOptions = [
+    { title: "S", value: 0.15 },
+    { title: "M", value: 0.25 },
+    { title: "L", value: 0.4 },
+    { title: "XL", value: 0.8 },
+  ];
 
   // Track container sizing, so we can scale accordingly.
   const measure = () => {
@@ -176,7 +188,7 @@
         webcamY = Math.min(
           Math.max(webcamY + e.movementY / containerHeight, 0),
           1 -
-            (webcamWidth - (webcamHeight * $generalLayoutState.padding) / 2) /
+            (webcamHeight - (webcamHeight * $generalLayoutState.padding) / 2) /
               containerHeight
         );
       }
@@ -216,37 +228,49 @@
 
           {#if isWebcamFocused}
             <div
-              class="w-[140px] absolute"
-              style="top: {webcamY < 0.2 ? webcamHeight : -120}px"
+              class="flex items-center absolute items-end gap-2"
+              style="top: {webcamY < 0.2 ? webcamHeight : -60}px;"
             >
-              <RangeInput
-                name="webcamWidth"
-                title="Size"
-                bind:value={$webcamLayoutState.size}
-                min={0}
-                max={1}
-                step={0.02}
-              />
-              {#if $webcamLayoutState.shape === WebcamShape.initial}
-                <RangeInput
-                  name="webcamBorderRadius"
-                  title="Border radius"
-                  bind:value={$webcamLayoutState.borderRadius}
-                  min={0}
-                  max={1}
-                  step={0.02}
+              <div class="w-[80px]">
+                <Select
+                  title=""
+                  name="webcamShape"
+                  options={webcamShapeOptionsWithLabels.map((val) => ({
+                    title: val.title,
+                    value: val.value,
+                  }))}
+                  bind:value={$webcamLayoutState.shape}
+                  isDropdown={false}
                 />
+              </div>
+              <div class="w-[150px]">
+                <Select
+                  title=""
+                  name="webcamWidth"
+                  options={sizeOptions}
+                  isDropdown={false}
+                  bind:value={$webcamLayoutState.size}
+                />
+              </div>
+              {#if $webcamLayoutState.shape === WebcamShape.initial}
+                <div
+                  class="flex items-center w-[180px] border border-fmd-gray rounded mt-2 px-3 bg-fmd-gray_lighter"
+                >
+                  <div class="w-10 pr-3 py-3 border-r mr-2">
+                    <BorderRadius />
+                  </div>
+
+                  <RangeInput
+                    name="webcamBorderRadius"
+                    title=""
+                    bind:value={$webcamLayoutState.borderRadius}
+                    min={0}
+                    max={1}
+                    step={0.02}
+                    showPercentage={false}
+                  />
+                </div>
               {/if}
-              <Select
-                title=""
-                name="webcamShape"
-                options={webcamShapeOptions.map((val) => ({
-                  title: titleCase(val),
-                  value: val,
-                }))}
-                bind:value={$webcamLayoutState.shape}
-                isDropdown={false}
-              />
             </div>
           {/if}
         </div>

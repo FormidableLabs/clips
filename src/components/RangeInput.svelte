@@ -5,6 +5,7 @@
   export let title: string;
   export let value: number;
   export let isDisabled = false;
+  export let showPercentage = true;
   export let min = 0;
   export let max = 1;
   export let step = 0.05;
@@ -12,7 +13,11 @@
 
 <div>
   <InputLabel {name}>{title}</InputLabel>
-  <div class="mt-1 grid grid-cols-[1fr_auto] gap-3 items-center">
+  <div
+    class="mt-1 {showPercentage
+      ? 'grid grid-cols-[1fr_auto] gap-3 items-center'
+      : ''}"
+  >
     <input
       type="range"
       {name}
@@ -26,9 +31,11 @@
       {max}
       {step}
     />
-    <div class="text-xs dark:text-white">
-      {Math.floor((value / max) * 100)}%
-    </div>
+    {#if showPercentage}
+      <div class="text-xs dark:text-white">
+        {Math.floor((value / max) * 100)}%
+      </div>
+    {/if}
   </div>
 </div>
 
