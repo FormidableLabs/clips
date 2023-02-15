@@ -14,6 +14,8 @@
     activeShare,
     webcamShapeOptions,
     WebcamShape,
+    HorizAlign,
+    VertAlign,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
@@ -40,12 +42,56 @@
   let webcamWidth = 0;
   let webcamHeight = 0;
 
-  let webcamShapeOptionsWithLabels = [
+  let isScreenFocused = false;
+
+  $: displayAspectRatio = $activeShare
+    ? $activeShare.height / $activeShare.width
+    : 1;
+  $: isScreenLandscape =
+    displayAspectRatio * $canvasDimensions.width <= $canvasDimensions.height;
+
+  const getAlignmentCssValue = (alignment: string) => {
+    switch (alignment) {
+      case HorizAlign.left:
+      case VertAlign.top:
+        return "flex-start";
+      case HorizAlign.center:
+      case VertAlign.center:
+        return "center";
+      default:
+        return "flex-end";
+    }
+  };
+  $: screenStyles = `
+    width: ${isScreenLandscape ? 100 : 100 / displayAspectRatio}%;
+    height: ${isScreenLandscape ? 100 * displayAspectRatio : 100}%;
+    ${
+      isScreenLandscape
+        ? `align-self: ${getAlignmentCssValue($screenLayoutState.vertAlign)};`
+        : `justify-self: ${getAlignmentCssValue(
+            $screenLayoutState.horizAlign
+          )};`
+    }
+  `;
+
+  const webcamShapeOptionsWithLabels = [
     { title: "●", value: webcamShapeOptions[0] },
     { title: "■", value: webcamShapeOptions[1] },
   ];
 
-  let sizeOptions = [
+  const horizScreenAlignOptionsWithLabels = [
+    { title: "◀", value: HorizAlign.left },
+    { title: "●", value: HorizAlign.center },
+    { title: "▶", value: HorizAlign.right },
+  ];
+
+  const vertScreenAlignOptionsWithLabels = [
+    { title: "▲", value: VertAlign.top },
+    { title: "●", value: VertAlign.center },
+    { title: "▼", value: VertAlign.bottom },
+  ];
+
+  const sizeOptions = [
     { title: "S", value: 0.15 },
     { title: "M", value: 0.25 },
     { title: "L", value: 0.4 },
@@ -202,6 +248,41 @@
       style="transform: scale({scale}); transform-origin: top left;"
       bind:this={canvas}
     />
+    {#if $activeShare}
+      <div class="absolute top-0 left-0 w-full h-full grid">
+        <div
+          class="flex items-center justify-center transition transition-all duration-150 {isScreenFocused
+            ? 'bg-fmd-black/50'
+            : ''}"
+          style={screenStyles}
+          on:mousedown={() => (isScreenFocused = true)}
+          use:clickOutside
+          on:outclick={() => (isScreenFocused = false)}
+        >
+          {#if isScreenFocused}
+            <div class="w-[100px]">
+              {#if isScreenLandscape}
+                <Select
+                  title=""
+                  name="screenAlign"
+                  options={vertScreenAlignOptionsWithLabels}
+                  bind:value={$screenLayoutState.vertAlign}
+                  isDropdown={false}
+                />
+              {:else}
+                <Select
+                  title=""
+                  name="screenAlign"
+                  options={horizScreenAlignOptionsWithLabels}
+                  bind:value={$screenLayoutState.horizAlign}
+                  isDropdown={false}
+                />
+              {/if}
+            </div>
+          {/if}
+        </div>
+      </div>
+    {/if}
     {#if $webcamState.stream}
       <div
         class="absolute"
@@ -225,11 +306,12 @@
             on:mousedown={() => (isMovingWebcam = true)}
             on:mouseup={() => (isMovingWebcam = false)}
           />
-
           {#if isWebcamFocused}
             <div
               class="flex items-center absolute items-end gap-2"
-              style="top: {webcamY < 0.2 ? webcamHeight : -60}px;"
+              style="top: {webcamY < 0.2 ? webcamHeight : -60}px; {webcamX > 0.5
+                ? 'right: 0;'
+                : ''}"
             >
               <div class="w-[80px]">
                 <Select
