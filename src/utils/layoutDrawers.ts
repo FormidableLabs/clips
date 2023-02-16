@@ -101,7 +101,7 @@ export const drawWebcam: DrawFn = (args, webcamX, webcamY) => {
 /**
  * Drawing screen share
  */
-export const drawScreenShare: DrawFn = (args, screenShareX, screenShareY) => {
+export const drawScreenShare: DrawFn = (args) => {
   // Screen
   if (args.activeShare && args.activeShare.stream && args.activeShare.preview) {
     const {

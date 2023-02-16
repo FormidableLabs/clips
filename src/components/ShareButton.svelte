@@ -17,6 +17,7 @@
       });
       share.preview.srcObject = share.stream;
       grabDimensions();
+      makeActive();
       share.stream.getVideoTracks()[0].onended = stopSharing;
     } catch {
       removeShare();
@@ -45,7 +46,12 @@
   };
 
   const makeActive = () => {
-    $screenShareState.activeIndex = $screenShareState.shares.indexOf(share);
+    const shareIndex = $screenShareState.shares.indexOf(share);
+    $screenShareState.activeIndex = shareIndex;
+    setTimeout(() => {
+      $screenShareState.shares[shareIndex].width = share.preview.videoWidth;
+      $screenShareState.shares[shareIndex].height = share.preview.videoHeight;
+    }, 100);
   };
 
   $: {

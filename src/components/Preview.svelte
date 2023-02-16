@@ -16,6 +16,7 @@
     WebcamShape,
     HorizAlign,
     VertAlign,
+    screenShareState,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
@@ -44,9 +45,10 @@
 
   let isScreenFocused = false;
 
-  $: displayAspectRatio = $activeShare
+  $: displayAspectRatio = $activeShare?.width
     ? $activeShare.height / $activeShare.width
     : 1;
+
   $: isScreenLandscape =
     displayAspectRatio * $canvasDimensions.width <= $canvasDimensions.height;
 
@@ -62,9 +64,22 @@
         return "flex-end";
     }
   };
+  $: console.log($activeShare?.width / $canvasDimensions.width);
   $: screenStyles = `
-    width: ${isScreenLandscape ? 100 : 100 / displayAspectRatio}%;
-    height: ${isScreenLandscape ? 100 * displayAspectRatio : 100}%;
+    width: ${
+      isScreenLandscape
+        ? 100
+        : ($canvasDimensions.height /
+            (displayAspectRatio * $canvasDimensions.width)) *
+          100
+    }%;
+    height: ${
+      isScreenLandscape
+        ? ((displayAspectRatio * $canvasDimensions.width) /
+            $canvasDimensions.height) *
+          100
+        : 100
+    }%;
     ${
       isScreenLandscape
         ? `align-self: ${getAlignmentCssValue($screenLayoutState.vertAlign)};`
@@ -210,12 +225,12 @@
     c.clearRect(0, 0, canvas.width, canvas.height);
     c.imageSmoothingQuality = "high";
     c.globalCompositeOperation = "source-over";
-    drawScreenShare(drawArgs, 0, 0);
+    drawScreenShare(drawArgs);
     drawWebcam(drawArgs, webcamX, webcamY);
 
     // Background gets drawn last
     c.globalCompositeOperation = "destination-over";
-    $activeBackground?.draw(drawArgs, 0, 0);
+    $activeBackground?.draw(drawArgs);
   };
 </script>
 
@@ -251,7 +266,7 @@
     {#if $activeShare}
       <div class="absolute top-0 left-0 w-full h-full grid">
         <div
-          class="flex items-center justify-center transition transition-all duration-150 {isScreenFocused
+          class="flex items-center justify-center transition transition-all duration-150 hover:bg-fmd-black/50 {isScreenFocused
             ? 'bg-fmd-black/50'
             : ''}"
           style={screenStyles}

@@ -239,7 +239,11 @@ export type DrawArgs = {
   webcamLayoutState: WebcamLayoutState;
   screenLayoutState: ScreenState;
 };
-export type DrawFn = (args: DrawArgs, webcamX: number, webcamY: number) => void;
+export type DrawFn = (
+  args: DrawArgs,
+  webcamX?: number,
+  webcamY?: number
+) => void;
 
 /**
  * Background
