@@ -16,7 +16,6 @@
     WebcamShape,
     HorizAlign,
     VertAlign,
-    screenShareState,
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
@@ -64,7 +63,7 @@
         return "flex-end";
     }
   };
-  $: console.log($activeShare?.width / $canvasDimensions.width);
+
   $: screenStyles = `
     width: ${
       isScreenLandscape
@@ -212,6 +211,10 @@
       draw();
     }
 
+    // Check if aspect ratio of window changed to update hover positioning effect
+    displayAspectRatio = $activeShare?.width
+      ? $activeShare.height / $activeShare.width
+      : 1;
     requestAnimationFrame(loop);
   };
 
@@ -263,16 +266,16 @@
       style="transform: scale({scale}); transform-origin: top left;"
       bind:this={canvas}
     />
-    {#if $activeShare}
+    {#if $activeShare?.width}
       <div class="absolute top-0 left-0 w-full h-full grid">
         <div
-          class="flex items-center justify-center transition transition-all duration-150 hover:bg-fmd-black/50 {isScreenFocused
-            ? 'bg-fmd-black/50'
+          class="flex items-center justify-center transition transition-bg border-2 border-transparent {isScreenFocused
+            ? 'bg-fmd-black/50 border-fmd-sky'
             : ''}"
           style={screenStyles}
-          on:mousedown={() => (isScreenFocused = true)}
-          use:clickOutside
-          on:outclick={() => (isScreenFocused = false)}
+          on:focus={() => (isScreenFocused = true)}
+          on:mouseover={() => (isScreenFocused = true)}
+          on:mouseleave={() => (isScreenFocused = false)}
         >
           {#if isScreenFocused}
             <div class="w-[100px]">
@@ -309,15 +312,20 @@
       >
         <div class="relative">
           <div
-            class="self-start {isMovingWebcam && isWebcamFocused
+            class="self-start border-2 hover:border-fmd-sky/80 transition transition-bg hover:bg-fmd-black/50 {isMovingWebcam &&
+            isWebcamFocused
               ? 'cursor-grabbing'
               : 'cursor-grab'} {isWebcamFocused
-              ? 'border-2 border-fmd-sky/80'
-              : ''}"
+              ? 'border-fmd-sky/80'
+              : 'border-transparent'}"
             style="height: {webcamHeight -
               ($generalLayoutState.padding / 2) *
                 webcamHeight}px; width: {webcamWidth -
-              ($generalLayoutState.padding / 2) * webcamWidth}px;"
+              ($generalLayoutState.padding / 2) *
+                webcamWidth}px; {$webcamLayoutState.shape ===
+            WebcamShape.initial
+              ? ''
+              : 'border-radius: 100%;'}"
             on:mousedown={() => (isMovingWebcam = true)}
             on:mouseup={() => (isMovingWebcam = false)}
           />
