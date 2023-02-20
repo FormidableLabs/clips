@@ -97,11 +97,13 @@
       max={0.4}
       step={0.004}
     />
+  </div>
+</SidebarSection>
 
-    <div class="w-full h-[1px] bg-fmd-gray dark:bg-fmd-blue" />
+<div class="w-full h-[1px] bg-fmd-gray dark:bg-fmd-blue" />
 
-    <InputLabel>Background Options</InputLabel>
-
+<SidebarSection title="Background Style">
+  <div class="flex flex-col gap-6">
     {#each backgroundOptions as option}
       <Select
         title={option}
