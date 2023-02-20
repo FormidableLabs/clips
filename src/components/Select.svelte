@@ -30,8 +30,9 @@
     >
       {#each options as op, i}
         <div
-          class="block {i !== 0 &&
-            'border-l-[1px] border-fmd-gray dark:border-fmd-blue'} w-full text-center"
+          class="block {i !== 0
+            ? 'border-l-[1px] border-fmd-gray dark:border-fmd-blue'
+            : ''} w-full text-center"
         >
           <input
             class="hidden peer"

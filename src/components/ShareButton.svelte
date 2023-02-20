@@ -62,7 +62,7 @@
 </script>
 
 <div class="w-20 h-14 relative">
-  <ActionButton isActive={share === $activeShare} isVideo on:click={makeActive}>
+  <ActionButton isActive={share === $activeShare} isSquareVariant on:click={makeActive}>
     <video
       class="invisible absolute top-0 left-0"
       bind:this={share.preview}
