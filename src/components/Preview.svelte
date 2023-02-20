@@ -356,9 +356,9 @@
               </div>
               {#if $webcamLayoutState.shape === WebcamShape.initial}
                 <div
-                  class="flex items-center w-[180px] border border-fmd-gray rounded mt-2 px-3 bg-fmd-gray_lighter"
+                  class="flex items-center w-[180px] border border-fmd-gray rounded mt-2 px-3 bg-fmd-white dark:border-fmd-blue dark:bg-fmd-navy"
                 >
-                  <div class="w-10 pr-3 py-3 border-r mr-2">
+                  <div class="w-10 pr-3 py-3 border-r mr-2 dark:text-fmd-white dark:border-fmd-blue">
                     <BorderRadius />
                   </div>
 

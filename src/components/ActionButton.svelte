@@ -29,7 +29,7 @@
   {/if}
 
   <button
-    class="w-full green hover:text-fmd-black flex items-center p-1.5 transition transition-all duration-150 dark:text-fmd-white dark:hover:text-fmd-white dark:border-fmd-white dark:hover:bg-fmd-blue {extraClasses} {isSquareVariant
+    class="w-full green hover:text-fmd-black flex items-center p-1.5 transition transition-all duration-150 dark:text-fmd-white dark:hover:text-fmd-white dark:border-fmd-blue dark:hover:bg-fmd-blue {extraClasses} {isSquareVariant
       ? 'h-full rounded'
       : 'rounded-full aspect-square'}
       {isTextVariant

@@ -25,7 +25,7 @@
     </select>
   {:else}
     <div
-      class="grid justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray dark:border-fmd-blue rounded bg-fmd-gray_lighter dark:bg-fmd-navy"
+      class="grid justify-items-center mt-2 overflow-hidden border-[1px] border-fmd-gray dark:border-fmd-blue rounded bg-fmd-white dark:bg-fmd-navy"
       style="grid-template-columns: repeat({options.length}, 1fr);"
     >
       {#each options as op, i}

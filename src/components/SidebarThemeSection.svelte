@@ -98,7 +98,7 @@
       step={0.004}
     />
 
-    <div class="w-full h-[1px] bg-fmd-gray" />
+    <div class="w-full h-[1px] bg-fmd-gray dark:bg-fmd-blue" />
 
     <InputLabel>Background Options</InputLabel>
 
