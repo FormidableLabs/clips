@@ -89,27 +89,27 @@
   `;
 
   const webcamShapeOptionsWithLabels = [
-    { title: "●", value: webcamShapeOptions[0] },
-    { title: "■", value: webcamShapeOptions[1] },
+    { title: "●", value: webcamShapeOptions[0], ariaLabel: "Circle" },
+    { title: "■", value: webcamShapeOptions[1], ariaLabel: "Initial" },
   ];
 
   const horizScreenAlignOptionsWithLabels = [
-    { title: "◀", value: HorizAlign.left },
-    { title: "●", value: HorizAlign.center },
-    { title: "▶", value: HorizAlign.right },
+    { title: "◀", value: HorizAlign.left, ariaLabel: "Left" },
+    { title: "●", value: HorizAlign.center, ariaLabel: "Center" },
+    { title: "▶", value: HorizAlign.right, ariaLabel: "Right" },
   ];
 
   const vertScreenAlignOptionsWithLabels = [
-    { title: "▲", value: VertAlign.top },
-    { title: "●", value: VertAlign.center },
-    { title: "▼", value: VertAlign.bottom },
+    { title: "▲", value: VertAlign.top, ariaLabel: "Top" },
+    { title: "●", value: VertAlign.center, ariaLabel: "Center" },
+    { title: "▼", value: VertAlign.bottom, ariaLabel: "Bottom" },
   ];
 
   const sizeOptions = [
-    { title: "S", value: 0.15 },
-    { title: "M", value: 0.25 },
-    { title: "L", value: 0.4 },
-    { title: "XL", value: 0.8 },
+    { title: "S", value: 0.15, ariaLabel: "Small" },
+    { title: "M", value: 0.25, ariaLabel: "Medium" },
+    { title: "L", value: 0.4, ariaLabel: "Large" },
+    { title: "XL", value: 0.8, ariaLabel: "Extra large" },
   ];
 
   // Track container sizing, so we can scale accordingly.
@@ -340,10 +340,7 @@
                 <Select
                   title=""
                   name="webcamShape"
-                  options={webcamShapeOptionsWithLabels.map((val) => ({
-                    title: val.title,
-                    value: val.value,
-                  }))}
+                  options={webcamShapeOptionsWithLabels}
                   bind:value={$webcamLayoutState.shape}
                   isDropdown={false}
                 />

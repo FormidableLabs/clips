@@ -4,7 +4,7 @@
   export let name: string;
   export let title: string;
   export let value: unknown;
-  export let options: { title: string; value: unknown }[];
+  export let options: { title: string; value: unknown; ariaLabel?: string }[];
   export let isDisabled = false;
   export let isDropdown = true;
 </script>
@@ -44,6 +44,7 @@
           />
           <label
             for={op.title}
+            aria-label={op.ariaLabel || op.title}
             class="block transition transition-all duration-150 pt-2 pb-1.5 peer-hover:cursor-pointer peer-checked:bg-fmd-red/5 peer-hover:bg-fmd-yellow/10 peer-hover:peer-checked:bg-fmd-red/5 dark:text-white dark:peer-hover:bg-fmd-blue/20 dark:peer-checked:bg-fmd-blue/50 dark:peer-hover:peer-checked:bg-fmd-blue/50"
           >
             {op.title}
