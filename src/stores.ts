@@ -153,7 +153,7 @@ export const canvasSizes: CanvasSize[] = [
   { title: "Portrait", width: 1000, height: 1800 },
 ];
 
-export const recordingFPSOptions: number[] = [24, 30, 60];
+export const recordingFPSOptions: number[] = [30, 60];
 
 export const canvasDimensions = (() => {
   const initSizeName = localStorage.getItem("canvasSize");
