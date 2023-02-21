@@ -7,10 +7,10 @@
 <div class="flex flex-col items-center gap-0.5">
   <div class="wrapper" style="--size: {size}{unit}; --duration: 1.5s;">
     <div
-      class="rainbow border-l-fmd-gray border-b-fmd-gray border-t-fmd-yellow border-r-primary-fmd-yellow"
+      class="rainbow border-l-fmd-gray border-b-fmd-gray border-t-fmd-yellow border-r-primary-fmd-yellow dark:border-t-fmd-navy dark:border-r-primary-fmd-navy"
     />
   </div>
-  <div class="text-sm font-medium text-gray-700"><slot /></div>
+  <div class="text-sm font-medium text-gray-700 dark:text-white"><slot /></div>
 </div>
 
 <style>
