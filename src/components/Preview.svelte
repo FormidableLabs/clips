@@ -243,6 +243,7 @@
   <div
     on:mousemove={(e) => {
       if (isMovingWebcam && isWebcamFocused) {
+        // Bind position values to be between 0 and the width of the container
         webcamX = Math.min(
           Math.max(webcamX + e.movementX / containerWidth, 0),
           1 -
@@ -266,6 +267,7 @@
       style="transform: scale({scale}); transform-origin: top left;"
       bind:this={canvas}
     />
+    <!-- Add box on top of active screen share for alignment options -->
     {#if $activeShare?.width}
       <div class="absolute top-0 left-0 w-full h-full grid">
         <div
@@ -301,6 +303,8 @@
         </div>
       </div>
     {/if}
+
+    <!-- Add webcam controls and drag/drop functionality on top of the webcam position in canvas -->
     {#if $webcamState.stream}
       <div
         class="absolute"
