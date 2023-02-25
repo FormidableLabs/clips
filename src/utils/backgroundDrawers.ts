@@ -144,12 +144,19 @@ export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
       // Let's only take every-other frequency?
       let modFreqs = [];
       let acc = 0;
-      for (let i = 0; i < freqs.length; i++) {
-        acc += freqs[i];
+      let accPlusOne = 0;
 
+      // Use the first quarter of frequencies to better capture human voice ranges
+      for (let i = 0; i < freqs.length / 4 - 1; i++) {
+        acc += freqs[i];
+        accPlusOne += freqs[i + 1];
+
+        // Insert an averaged value between each modded frequency to smooth out waves
         if ((i + 1) % N === 0) {
           modFreqs.push(acc / N);
+          modFreqs.push((acc + accPlusOne) / (N * 2));
           acc = 0;
+          accPlusOne = 0;
         }
       }
 
@@ -160,7 +167,7 @@ export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
 
       ctx.fillStyle = lingrad;
       let x0, y0, w, h;
-      for (let i = 0; i < modFreqs.length - 1; i++) {
+      for (let i = 0; i < modFreqs.length; i++) {
         x0 = gap + (barWidth + gap) * i;
         h = (modFreqs[i] / 255) * height;
         y0 = height - h;

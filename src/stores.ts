@@ -285,19 +285,19 @@ export const backgrounds: Background[] = [
     title: "Thin",
     ariaLabel: "Thin bars",
     category: "Audio",
-    draw: createAudioBarBackground({ N: 2 }),
+    draw: createAudioBarBackground({ N: 1 }),
   },
   {
     title: "Medium",
     ariaLabel: "Medium bars",
     category: "Audio",
-    draw: createAudioBarBackground({ N: 4 }),
+    draw: createAudioBarBackground({ N: 2 }),
   },
   {
     title: "Thick",
     ariaLabel: "Thick bars",
     category: "Audio",
-    draw: createAudioBarBackground({ N: 8 }),
+    draw: createAudioBarBackground({ N: 4 }),
   },
   {
     title: "Wave",
