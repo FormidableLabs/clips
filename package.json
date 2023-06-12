@@ -1,8 +1,10 @@
 {
-  "name": "explore-media",
+  "name": "clips",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Formidable Labs <hello@formidable.com>",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
