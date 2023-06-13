@@ -11,12 +11,14 @@
   import InputLabel from "./InputLabel.svelte";
   import RangeInput from "./RangeInput.svelte";
   import ColorInput from "./ColorInput.svelte";
+
+  const backgroundOptions = ["Audio", "Gradient", "Solid"];
 </script>
 
 <SidebarSection title="Theme">
-  <div class="grid grid-cols-2 gap-6">
+  <div class="flex flex-col gap-6">
     <!-- Color Theme -->
-    <div class="col-span-2 grid grid-cols-6 gap-y-3">
+    <div class="grid grid-cols-6 gap-y-3">
       <div class="col-span-6">
         <InputLabel>Color Theme</InputLabel>
       </div>
@@ -87,12 +89,6 @@
       {/if}
     </div>
 
-    <Select
-      title="Background Style"
-      name="background"
-      options={backgrounds.map((bg) => ({ title: bg.title, value: bg }))}
-      bind:value={$activeBackground}
-    />
     <RangeInput
       name="padding"
       title="Padding"
@@ -101,5 +97,27 @@
       max={0.4}
       step={0.004}
     />
+  </div>
+</SidebarSection>
+
+<div class="w-full h-[1px] bg-fmd-gray dark:bg-fmd-blue" />
+
+<SidebarSection title="Background Style">
+  <div class="flex flex-col gap-6">
+    {#each backgroundOptions as option}
+      <Select
+        title={option}
+        name="background"
+        options={backgrounds
+          .filter((bg) => bg.category === option)
+          .map((bg) => ({
+            title: bg.title,
+            value: bg,
+            ariaLabel: bg.ariaLabel,
+          }))}
+        bind:value={$activeBackground}
+        isDropdown={false}
+      />
+    {/each}
   </div>
 </SidebarSection>

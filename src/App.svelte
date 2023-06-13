@@ -11,7 +11,6 @@
   import FormidableIcon from "./components/icons/formidable.icon.svelte";
   import GithubIcon from "./components/icons/github.icon.svelte";
   import { patchBlob } from "./utils/blobHelpers";
-  import SidebarLayoutSection from "./components/SidebarLayoutSection.svelte";
   import { getPreferredMimeType } from "./utils/getPreferredMimeType";
 
   let recorder: MediaRecorder;
@@ -79,7 +78,7 @@
 </script>
 
 <div
-  class="w-screen h-screen overflow-hidden bg-fmd-gray_lighter p-0 sm:p-3 md:pr-0 sm:p-3 md:pr-0 flex items-center relative dark:bg-fmd-navy"
+  class="w-screen h-screen overflow-hidden bg-fmd-white p-0 sm:p-3 md:pr-0 sm:p-3 md:pr-0 flex items-center relative dark:bg-fmd-navy"
 >
   <div class="w-full flex gap-12 mr-0 ml-9 h-full">
     <div
@@ -90,9 +89,10 @@
       </div>
       <ActionBar on:record={onRecordButtonPress} />
     </div>
-    <div class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-10 px-6 dark:border-fmd-blue">
+    <div
+      class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-10 px-6 dark:border-fmd-blue"
+    >
       <SidebarThemeSection />
-      <SidebarLayoutSection />
     </div>
   </div>
 

@@ -17,6 +17,7 @@
       });
       share.preview.srcObject = share.stream;
       grabDimensions();
+      makeActive();
       share.stream.getVideoTracks()[0].onended = stopSharing;
     } catch {
       removeShare();
@@ -45,7 +46,12 @@
   };
 
   const makeActive = () => {
-    $screenShareState.activeIndex = $screenShareState.shares.indexOf(share);
+    const shareIndex = $screenShareState.shares.indexOf(share);
+    $screenShareState.activeIndex = shareIndex;
+    setTimeout(() => {
+      $screenShareState.shares[shareIndex].width = share.preview.videoWidth;
+      $screenShareState.shares[shareIndex].height = share.preview.videoHeight;
+    }, 100);
   };
 
   $: {
@@ -70,7 +76,7 @@
       <video class="h-full" autoplay playsinline muted bind:this={preview} />
       <button
         on:click={stopSharing}
-        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red bg-fmd-gray_lighter text-fmd-red hover:bg-fmd-red hover:text-fmd-white transition-all duration-200 ease-in-out"
+        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red bg-fmd-white text-fmd-red hover:bg-fmd-red hover:text-fmd-white transition-all duration-200 ease-in-out"
       >
         <CloseIcon />
       </button>

@@ -153,7 +153,7 @@ export const canvasSizes: CanvasSize[] = [
   { title: "Portrait", width: 1000, height: 1800 },
 ];
 
-export const recordingFPSOptions: number[] = [24, 30, 60];
+export const recordingFPSOptions: number[] = [30, 60];
 
 export const canvasDimensions = (() => {
   const initSizeName = localStorage.getItem("canvasSize");
@@ -262,35 +262,53 @@ export type DrawArgs = {
   webcamLayoutState: WebcamLayoutState;
   screenLayoutState: ScreenState;
 };
-export type DrawFn = (args: DrawArgs) => void;
+export type DrawFn = (
+  args: DrawArgs,
+  webcamX?: number,
+  webcamY?: number
+) => void;
+
+export type BackgroundCategories = "Audio" | "Gradient" | "Solid";
 
 /**
  * Background
  */
 type Background = {
   title: string;
+  category: BackgroundCategories;
+  ariaLabel: string;
   draw: DrawFn;
 };
 
 export const backgrounds: Background[] = [
   {
-    title: "Audio Bars (Thin)",
+    title: "Thin",
+    ariaLabel: "Thin bars",
+    category: "Audio",
     draw: createAudioBarBackground({ N: 2 }),
   },
   {
-    title: "Audio Bars (Medium)",
+    title: "Medium",
+    ariaLabel: "Medium bars",
+    category: "Audio",
     draw: createAudioBarBackground({ N: 4 }),
   },
   {
-    title: "Audio Bars (Thick)",
+    title: "Thick",
+    ariaLabel: "Thick bars",
+    category: "Audio",
     draw: createAudioBarBackground({ N: 8 }),
   },
   {
-    title: "Audio Wave",
+    title: "Wave",
+    ariaLabel: "Wave",
+    category: "Audio",
     draw: createAudioWaveBackground(),
   },
   {
-    title: "Rainbow Bars",
+    title: "Rainbow",
+    category: "Audio",
+    ariaLabel: "Rainbow bars",
     draw: createRainbowAudioBarBackground({
       N: 2,
       initHue: 0,
@@ -298,31 +316,45 @@ export const backgrounds: Background[] = [
     }),
   },
   {
-    title: "Gradient (to bottom right)",
+    title: "↘",
+    ariaLabel: "Gradient to bottom right",
+    category: "Gradient",
     draw: createLinearGradientBackground("bottom_right"),
   },
   {
-    title: "Gradient (to top)",
+    title: "↑",
+    ariaLabel: "Gradient to top",
+    category: "Gradient",
     draw: createLinearGradientBackground("top"),
   },
   {
-    title: "Gradient (to bottom)",
+    title: "↓",
+    ariaLabel: "Gradient to bottom",
+    category: "Gradient",
     draw: createLinearGradientBackground("bottom"),
   },
   {
-    title: "Gradient (to left)",
+    title: "←",
+    ariaLabel: "Gradient to left",
+    category: "Gradient",
     draw: createLinearGradientBackground("left"),
   },
   {
-    title: "Gradient (to right)",
+    title: "→",
+    ariaLabel: "Gradient to right",
+    category: "Gradient",
     draw: createLinearGradientBackground("right"),
   },
   {
-    title: "Solid (primary)",
+    title: "Primary",
+    ariaLabel: "Solid primary color",
+    category: "Solid",
     draw: createSolidBackground("primary"),
   },
   {
-    title: "Solid (secondary)",
+    title: "Secondary",
+    ariaLabel: "Solid secondary color",
+    category: "Solid",
     draw: createSolidBackground("secondary"),
   },
 ];

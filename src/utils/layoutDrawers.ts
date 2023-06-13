@@ -2,7 +2,7 @@ import type { DrawFn } from "../stores";
 import { HorizAlign, VertAlign, WebcamShape } from "../stores";
 import { circleClip, roundedRectClip } from "./drawUtils";
 
-export const drawWebcam: DrawFn = (args) => {
+export const drawWebcam: DrawFn = (args, webcamX, webcamY) => {
   if (args.webcamState.stream) {
     const {
       ctx,
@@ -12,11 +12,14 @@ export const drawWebcam: DrawFn = (args) => {
       canvasSize,
       generalLayoutState,
     } = args;
-    const { horizAlign, vertAlign, size, shape } = webcamLayoutState;
+    const { size, shape } = webcamLayoutState;
     const { padding } = generalLayoutState;
 
     const { width, height } = canvasSize;
     const pad = (padding * Math.min(width, height)) / 4;
+
+    let x0 = webcamX * width;
+    let y0 = webcamY * height;
 
     // Circle webcam
     if (shape === WebcamShape.circle) {
@@ -34,20 +37,8 @@ export const drawWebcam: DrawFn = (args) => {
 
       const webcamRadius = diam / 2;
 
-      // Anchor points (for circle). Might have to change with rectangles?
-      let x0 = pad + webcamRadius;
-      if (horizAlign === HorizAlign.center) {
-        x0 = width / 2;
-      } else if (horizAlign === HorizAlign.right) {
-        x0 = width - pad - webcamRadius;
-      }
-
-      let y0 = pad + webcamRadius;
-      if (vertAlign === VertAlign.center) {
-        y0 = height / 2;
-      } else if (vertAlign === VertAlign.bottom) {
-        y0 = height - pad - webcamRadius;
-      }
+      x0 += diam / 2;
+      y0 += diam / 2;
 
       // Accent ring around webcam feed?
       ctx.globalCompositeOperation = "destination-out";
@@ -69,9 +60,7 @@ export const drawWebcam: DrawFn = (args) => {
     else if (shape === WebcamShape.initial) {
       const aR = webcamState.height / webcamState.width;
 
-      let x0 = 0,
-        y0 = 0,
-        w = 0,
+      let w = 0,
         h = 0;
 
       // Will max out the width
@@ -83,23 +72,6 @@ export const drawWebcam: DrawFn = (args) => {
       else {
         h = size * (height - 2 * pad);
         w = h / aR;
-      }
-
-      // x0
-      if (horizAlign === HorizAlign.left) {
-        x0 = pad;
-      } else if (horizAlign === HorizAlign.center) {
-        x0 = (width - w) / 2;
-      } else if (horizAlign === HorizAlign.right) {
-        x0 = width - pad - w;
-      }
-
-      if (vertAlign === VertAlign.top) {
-        y0 = pad;
-      } else if (vertAlign === VertAlign.center) {
-        y0 = (height - h) / 2;
-      } else if (vertAlign === VertAlign.bottom) {
-        y0 = height - pad - h;
       }
 
       const r = (webcamLayoutState.borderRadius * Math.min(w, h)) / 2;
