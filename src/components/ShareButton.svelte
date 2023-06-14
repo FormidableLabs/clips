@@ -19,7 +19,6 @@
       share.preview.srcObject = share.stream;
       grabDimensions();
       makeActive();
-      share.stream.getVideoTracks()[0].onended = stopSharing;
     } catch {
       removeShare(index);
     }
