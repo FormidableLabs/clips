@@ -569,6 +569,11 @@ lilconfig@^2.0.5, lilconfig@^2.0.6:
   resolved "https://registry.yarnpkg.com/lilconfig/-/lilconfig-2.0.6.tgz#32a384558bd58af3d4c6e077dd1ad1d397bc69d4"
   integrity sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==
 
+locally-unique-id-generator@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/locally-unique-id-generator/-/locally-unique-id-generator-0.1.5.tgz#762f41a5654ce78bdcdb9513b3f437f09d9979ac"
+  integrity sha512-cdISIqzCk2IiO9GIfL0oPyvOhz0tOetKOOasYWLfKHD7W/23EpWb12GymG0xCy8nhG+TMon5x+SS9PLaDd+avg==
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"

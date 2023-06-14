@@ -1,10 +1,12 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import { fade } from "svelte/transition";
+  import type { Share } from "../stores";
   import DesktopIcon from "./icons/desktop.icon.svelte";
   import ShareButton from "./ShareButton.svelte";
   import WebcamButton from "./WebcamButton.svelte";
   import MicButton from "./MicButton.svelte";
+  import newUniqueId from "locally-unique-id-generator";
   import {
     isRecording,
     recordingDuration,
@@ -14,12 +16,15 @@
   import RecordingOptionsBar from "./RecordingOptionsBar.svelte";
 
   const dispatch = createEventDispatcher();
+  let shares:Share[]=[];
 
   const handleAddScreenShare = () => {
-    $screenShareState.shares.push({ width: 0, height: 0 });
+    $screenShareState.shares.push({ width: 0, height: 0,id:newUniqueId() });
     $screenShareState.shares = $screenShareState.shares;
-    // $screenShareState.shares = $screenShareState.shares;
   };
+  $:{
+    shares = [...$screenShareState.shares];
+  }
 </script>
 
 <div class="grid grid-cols-[auto_auto_1fr_auto] gap-x-4 gap-y-10 items-center pb-4">
@@ -36,8 +41,8 @@
 
   <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
-    {#each $screenShareState.shares as share}
-      <ShareButton {share} />
+    {#each shares as share,index (share.id)}
+      <ShareButton share={share} {index}/>
     {/each}
 
     <div class="w-20 h-14">

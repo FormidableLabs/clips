@@ -57,14 +57,17 @@ export const recordingFPS = (() => {
 /**
  * Track video stream
  */
+export type Share = {
+  id: string;
+  stream?: MediaStream;
+  preview?: HTMLVideoElement;
+  width: number;
+  height: number
+}
+
 export type ScreenShareState = {
   activeIndex: null | number;
-  shares: {
-    stream?: MediaStream;
-    preview?: HTMLVideoElement;
-    width: number;
-    height: number;
-  }[];
+  shares: Share[];
 };
 export const screenShareState = writable<ScreenShareState>({
   activeIndex: 0,
