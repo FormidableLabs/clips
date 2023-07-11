@@ -4,7 +4,6 @@
   import {
     canvas,
     canvasDimensions,
-    canvasStream,
     isRecording,
     micState, recordingFPS,
     recordingStartTime
@@ -13,15 +12,7 @@
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
   import FormidableIcon from "./components/icons/formidable.icon.svelte";
   import GithubIcon from "./components/icons/github.icon.svelte";
-  import { patchBlob } from "./utils/blobHelpers";
-  import { getPreferredMimeType } from "./utils/getPreferredMimeType";
-
-  let recorder: MediaRecorder;
-  const chunks: Blob[] = [];
-  let ext: string = "";
-  const onDataAvailable = (e: BlobEvent) => {
-    chunks.push(e.data);
-  };
+  import { downloadBlob } from "./utils/downloadBlob";
 
   // muxing
   let muxer!: Muxer<ArrayBufferTarget>;
@@ -31,34 +22,6 @@
   let audioEncoder: AudioEncoder;
   let audioTrack: MediaStreamTrack;
   let intervalId = -Infinity;
-
-  const onRecorderStop = async () => {
-
-    // const duration = performance.now() - $recordingStartTime;
-    // $recordingStartTime = null;
-    //
-    // const completeBlob = new Blob(chunks, { type: chunks[0].type });
-    // const newBlob = await patchBlob(completeBlob, duration);
-    // const data = URL.createObjectURL(newBlob);
-    //
-    // // return;
-    //
-    // const link = document.createElement("a");
-    // link.href = data;
-    // link.download = `video.${ext}`;
-    // link.dispatchEvent(
-    //   new MouseEvent("click", {
-    //     bubbles: true,
-    //     cancelable: false,
-    //     view: window,
-    //   })
-    // );
-    //
-    // setTimeout(() => {
-    //   URL.revokeObjectURL(data);
-    //   link.remove();
-    // }, 500);
-  };
 
   const startRecording = () => {
     // TODO: This doesn't necessarily exist
@@ -103,7 +66,6 @@
       });
 
       // Create a MediaStreamTrackProcessor to get AudioData chunks from the audio track
-      // @ts-expect-error don't have types for MediaStreamTrackProcessor yet
       let trackProcessor = new MediaStreamTrackProcessor({ track: audioTrack });
       let consumer = new WritableStream({
         write(audioData) {
@@ -119,12 +81,11 @@
     lastKeyFrame = -Infinity;
     framesGenerated = 0;
 
-    encodeVideoFrame()
+    encodeVideoFrame();
     intervalId = setInterval(encodeVideoFrame, 1000 / $recordingFPS);
   };
 
   const encodeVideoFrame = () => {
-    console.log("ENCODING");
     let elapsedTime = document.timeline.currentTime - $recordingStartTime;
     let frame = new VideoFrame($canvas, {
       timestamp: framesGenerated * 1e6 / $recordingFPS
@@ -137,10 +98,9 @@
 
     videoEncoder.encode(frame, { keyFrame: needsKeyFrame });
     frame.close();
-
   };
 
-  const stopRecording =async () => {
+  const stopRecording = async () => {
     console.log("STOPPING");
     $recordingStartTime = null;
 
@@ -151,30 +111,14 @@
     await audioEncoder?.flush();
     muxer.finalize();
 
-    // TODO: Download
-    const blob = new Blob([muxer.target.buffer])
-    const data = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = data;
-    link.download = `video.mp4`;
-    link.dispatchEvent(
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: false,
-        view: window,
-      })
-    );
-
-    setTimeout(() => {
-      URL.revokeObjectURL(data);
-      link.remove();
-    }, 500);
+    const blob = new Blob([muxer.target.buffer]);
+    downloadBlob(blob);
 
     videoEncoder = null;
     audioEncoder = null;
     muxer = null;
   };
+
   const onRecordButtonPress = () => {
     if ($isRecording) stopRecording();
     else startRecording();
