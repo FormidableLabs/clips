@@ -139,6 +139,8 @@ export const micAnalyzer = derived(micState, ($micState) => {
  */
 export const canvasStream = writable<MediaStream>(null);
 
+export const canvas = writable<HTMLCanvasElement>(null)
+
 /**
  * Canvas sizes
  */

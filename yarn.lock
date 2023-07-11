@@ -85,6 +85,11 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-3.0.0.tgz#b06e059209f04c414de0069f2f0e2796d979fc6f"
   integrity sha512-pYrtLtOwku/7r1i9AMONsJMVYAtk3hzOfiGNekhtq5tYBGA7unMve8RvUclKLMT3PrihvJqUmzsRGh0RP84hKg==
 
+"@types/dom-webcodecs@^0.1.6":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@types/dom-webcodecs/-/dom-webcodecs-0.1.8.tgz#1f48409f83120625a12b6692a271ff3f10d77b7b"
+  integrity sha512-KThTPaGQJLITk8Q0XkEkz+GqFdoWDyQfbyeJmfEUagB15TZQdNx5AqP2b7GP6vkVM6X/6T1Z8EHxA8RgHfY9BA==
+
 "@types/node@*":
   version "18.7.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.7.7.tgz#2f7e3443fb434315ff594c49043486fe49937182"
@@ -101,6 +106,11 @@
   integrity sha512-BPdoIt1lfJ6B7rw35ncdwBZrAssjcwzI5LByIrYs+tpXlj/CAkuVdRsgZDdP4lq5EjyWzwxZCqAoFyHKFwp32g==
   dependencies:
     "@types/node" "*"
+
+"@types/wicg-file-system-access@^2020.9.5":
+  version "2020.9.6"
+  resolved "https://registry.yarnpkg.com/@types/wicg-file-system-access/-/wicg-file-system-access-2020.9.6.tgz#da34476b1e29451c8b7aa1a6db86b185647cd970"
+  integrity sha512-6hogE75Hl2Ov/jgp8ZhDaGmIF/q3J07GtXf8nCJCwKTHq7971po5+DId7grft09zG7plBwpF6ZU0yx9Du4/e1A==
 
 acorn-node@^1.8.2:
   version "1.8.2"
@@ -634,6 +644,14 @@ mkdirp@^0.5.1:
   integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
   dependencies:
     minimist "^1.2.6"
+
+mp4-muxer@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/mp4-muxer/-/mp4-muxer-2.1.3.tgz#661bf03461498fce3da4c74b9e648a39fae33f58"
+  integrity sha512-k7T4l53XvbRHHOtV3bMk66jgqFHli/QbDn9Osglz3+wGc1CNqVwdxkdzn6r8xglh7MhdrAGjUZj1WJFJ9NTy7g==
+  dependencies:
+    "@types/dom-webcodecs" "^0.1.6"
+    "@types/wicg-file-system-access" "^2020.9.5"
 
 mri@^1.1.0:
   version "1.2.0"

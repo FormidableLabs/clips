@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { Muxer, ArrayBufferTarget } from "mp4-muxer";
   import Preview from "./components/Preview.svelte";
   import {
+    canvas,
+    canvasDimensions,
     canvasStream,
     isRecording,
-    micState,
-    recordingStartTime,
+    micState, recordingFPS,
+    recordingStartTime
   } from "./stores";
   import ActionBar from "./components/ActionBar.svelte";
   import SidebarThemeSection from "./components/SidebarThemeSection.svelte";
@@ -20,19 +23,141 @@
     chunks.push(e.data);
   };
 
+  // muxing
+  let muxer!: Muxer<ArrayBufferTarget>;
+  let lastKeyFrame = -Infinity;
+  let framesGenerated = 0;
+  let videoEncoder: VideoEncoder;
+  let audioEncoder: AudioEncoder;
+  let audioTrack: MediaStreamTrack;
+  let intervalId = -Infinity;
+
   const onRecorderStop = async () => {
-    const duration = performance.now() - $recordingStartTime;
+
+    // const duration = performance.now() - $recordingStartTime;
+    // $recordingStartTime = null;
+    //
+    // const completeBlob = new Blob(chunks, { type: chunks[0].type });
+    // const newBlob = await patchBlob(completeBlob, duration);
+    // const data = URL.createObjectURL(newBlob);
+    //
+    // // return;
+    //
+    // const link = document.createElement("a");
+    // link.href = data;
+    // link.download = `video.${ext}`;
+    // link.dispatchEvent(
+    //   new MouseEvent("click", {
+    //     bubbles: true,
+    //     cancelable: false,
+    //     view: window,
+    //   })
+    // );
+    //
+    // setTimeout(() => {
+    //   URL.revokeObjectURL(data);
+    //   link.remove();
+    // }, 500);
+  };
+
+  const startRecording = () => {
+    // TODO: This doesn't necessarily exist
+    audioTrack = $micState.stream?.getAudioTracks?.()[0];
+    const audioSampleRate = audioTrack?.getCapabilities().sampleRate.max;
+
+    muxer = new Muxer<ArrayBufferTarget>({
+      target: new ArrayBufferTarget(),
+      video: {
+        codec: "avc",
+        width: $canvasDimensions.width,
+        height: $canvasDimensions.height
+      },
+      audio: audioTrack ? {
+        codec: "aac",
+        sampleRate: audioSampleRate,
+        numberOfChannels: 1
+      } : undefined,
+      firstTimestampBehavior: "offset"
+    });
+
+    videoEncoder = new VideoEncoder({
+      output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+      error: e => console.error(e)
+    });
+    videoEncoder.configure({
+      codec: "avc1.420034",
+      width: $canvasDimensions.width,
+      height: $canvasDimensions.height
+    });
+
+    if (audioTrack) {
+      audioEncoder = new AudioEncoder({
+        output: (chunk, meta) => muxer.addAudioChunk(chunk, meta),
+        error: e => console.error(e)
+      });
+      audioEncoder.configure({
+        codec: "mp4a.40.2",
+        numberOfChannels: 1,
+        sampleRate: audioSampleRate,
+        bitrate: 128000
+      });
+
+      // Create a MediaStreamTrackProcessor to get AudioData chunks from the audio track
+      // @ts-expect-error don't have types for MediaStreamTrackProcessor yet
+      let trackProcessor = new MediaStreamTrackProcessor({ track: audioTrack });
+      let consumer = new WritableStream({
+        write(audioData) {
+          if (!$isRecording) return;
+          audioEncoder.encode(audioData);
+          audioData.close();
+        }
+      });
+      trackProcessor.readable.pipeTo(consumer);
+    }
+
+    $recordingStartTime = performance.now();
+    lastKeyFrame = -Infinity;
+    framesGenerated = 0;
+
+    encodeVideoFrame()
+    intervalId = setInterval(encodeVideoFrame, 1000 / $recordingFPS);
+  };
+
+  const encodeVideoFrame = () => {
+    console.log("ENCODING");
+    let elapsedTime = document.timeline.currentTime - $recordingStartTime;
+    let frame = new VideoFrame($canvas, {
+      timestamp: framesGenerated * 1e6 / $recordingFPS
+    });
+    framesGenerated++;
+
+    // Ensure a video key frame at least every 10 seconds for good scrubbing
+    let needsKeyFrame = elapsedTime - lastKeyFrame >= 10000;
+    if (needsKeyFrame) lastKeyFrame = elapsedTime;
+
+    videoEncoder.encode(frame, { keyFrame: needsKeyFrame });
+    frame.close();
+
+  };
+
+  const stopRecording =async () => {
+    console.log("STOPPING");
     $recordingStartTime = null;
 
-    const completeBlob = new Blob(chunks, { type: chunks[0].type });
-    const newBlob = await patchBlob(completeBlob, duration);
-    const data = URL.createObjectURL(newBlob);
+    clearInterval(intervalId);
+    audioTrack?.stop();
 
-    // return;
+    await videoEncoder?.flush();
+    await audioEncoder?.flush();
+    muxer.finalize();
+
+    // TODO: Download
+    const blob = new Blob([muxer.target.buffer])
+    const data = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
     link.href = data;
-    link.download = `video.${ext}`;
+    link.download = `video.mp4`;
     link.dispatchEvent(
       new MouseEvent("click", {
         bubbles: true,
@@ -45,31 +170,10 @@
       URL.revokeObjectURL(data);
       link.remove();
     }, 500);
-  };
 
-  const startRecording = () => {
-    $recordingStartTime = performance.now();
-    chunks.length = 0;
-
-    const combinedStream = new MediaStream([
-      ...($canvasStream?.getTracks() || []),
-      ...($micState.stream?.getTracks() || []),
-    ]);
-    // TODO: dynamic bits per second based on resolution...
-    const mime = getPreferredMimeType();
-    ext = mime.ext;
-    recorder = new MediaRecorder(combinedStream, {
-      audioBitsPerSecond: 128000, // 128 kbps
-      videoBitsPerSecond: 10 * 1000 * 1000, // N mbps
-      mimeType: mime.mimeType,
-    });
-    recorder.ondataavailable = onDataAvailable;
-    recorder.onstop = onRecorderStop;
-
-    recorder.start();
-  };
-  const stopRecording = () => {
-    recorder.stop();
+    videoEncoder = null;
+    audioEncoder = null;
+    muxer = null;
   };
   const onRecordButtonPress = () => {
     if ($isRecording) stopRecording();
