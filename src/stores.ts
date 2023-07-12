@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { derived, writable } from "svelte/store";
+import { derived, type Unsubscriber, writable } from "svelte/store";
 import {
   createAudioBarBackground,
   createAudioWaveBackground,
@@ -18,7 +18,7 @@ export const isRecording = derived(
 );
 export const recordingDuration = derived(
   recordingStartTime,
-  ($startTime, set) => {
+  ($startTime, set): Unsubscriber => {
     if (!$startTime) return null;
 
     const setDuration = () => {
@@ -43,7 +43,7 @@ export const recordingDuration = derived(
 
 export const recordingFPS = (() => {
   const initFps = localStorage.getItem("recordingFps");
-  const store = writable(Number(initFps) || 30);
+  const store = writable(Number(initFps) || 15);
 
   const _set = store.set;
   store.set = (fps) => {
@@ -62,8 +62,8 @@ export type Share = {
   stream?: MediaStream;
   preview?: HTMLVideoElement;
   width: number;
-  height: number
-}
+  height: number;
+};
 
 export type ScreenShareState = {
   activeIndex: null | number;
@@ -129,7 +129,7 @@ export const micAnalyzer = derived(micState, ($micState) => {
 
   // analyser.connect(context.destination);
 
-  let freqs = new Uint8Array(analyser.frequencyBinCount);
+  const freqs = new Uint8Array(analyser.frequencyBinCount);
 
   return { freqs, analyser };
 });
@@ -139,7 +139,7 @@ export const micAnalyzer = derived(micState, ($micState) => {
  */
 export const canvasStream = writable<MediaStream>(null);
 
-export const canvas = writable<HTMLCanvasElement>(null)
+export const canvas = writable<HTMLCanvasElement>(null);
 
 /**
  * Canvas sizes
@@ -158,12 +158,12 @@ export const canvasSizes: CanvasSize[] = [
   { title: "Portrait", width: 1000, height: 1800 },
 ];
 
-export const recordingFPSOptions: number[] = [30, 60];
+export const recordingFPSOptions: number[] = [15, 30, 60];
 
 export const canvasDimensions = (() => {
   const initSizeName = localStorage.getItem("canvasSize");
   const initSize =
-    canvasSizes.find((size) => size.title === initSizeName) || canvasSizes[0];
+    canvasSizes.find((size) => size.title === initSizeName) || canvasSizes[2];
   const store = writable<CanvasSize>(initSize);
 
   const _set = store.set;
