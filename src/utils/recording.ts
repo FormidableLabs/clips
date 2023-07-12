@@ -79,11 +79,13 @@ export const startRecording = () => {
     trackProcessor.readable.pipeTo(consumer);
   }
 
+  // Set some values to bootstrap recording process tracking
   recordingStartTime.set(performance.now());
   $recordingStartTime = get(recordingStartTime);
   lastKeyFrame = -Infinity;
   framesGenerated = 0;
 
+  // Kick off the encoding process
   encodeVideoFrame();
   intervalId = setInterval(encodeVideoFrame, 1000 / $fps);
 };
@@ -116,10 +118,16 @@ export const stopRecording = async () => {
   clearInterval(intervalId);
   audioTrack?.stop();
 
+  // Flush queues and finalize mux
   await videoEncoder?.flush();
   await audioEncoder?.flush();
   muxer?.finalize();
 
+  // Close out the encoder to free up resources
+  videoEncoder?.close();
+  audioEncoder?.close();
+
+  // Download the blob
   if (muxer) {
     const blob = new Blob([muxer.target.buffer]);
     downloadBlob(blob); // TODO: Enable me
