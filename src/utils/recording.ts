@@ -8,6 +8,9 @@ import {
 } from "../stores";
 import { get } from "svelte/store";
 import { downloadBlob } from "./downloadBlob";
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+
+const ffmpeg = createFFmpeg({ log: true });
 
 // muxing
 let muxer: Muxer<ArrayBufferTarget> | null = null;
@@ -129,8 +132,15 @@ export const stopRecording = async () => {
 
   // Download the blob
   if (muxer) {
-    const blob = new Blob([muxer.target.buffer]);
-    downloadBlob(blob); // TODO: Enable me
+    const rawBlob = new Blob([muxer.target.buffer]);
+
+    // FFMPEG conversion to tidy up
+    if (!ffmpeg.isLoaded()) await ffmpeg.load();
+    await ffmpeg.FS("writeFile", "input.mp4", await fetchFile(rawBlob));
+    await ffmpeg.run("-i", "input.mp4", "output.mp4");
+    const data = await ffmpeg.FS("readFile", "output.mp4");
+
+    await downloadBlob(new Blob([data.buffer]));
   }
 
   videoEncoder = null;
