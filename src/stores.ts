@@ -519,9 +519,13 @@ export const screenLayoutState = (() => {
   store.set = (screenState) => {
     try {
       localStorage.setItem("screenState", JSON.stringify(screenState));
-    } catch {}
+    } catch {
+      /* no-op */
+    }
     _set(screenState);
   };
 
   return store;
 })();
+
+export const isPreparingForDownload = writable(false);

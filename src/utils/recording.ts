@@ -2,6 +2,7 @@ import { ArrayBufferTarget, Muxer } from "mp4-muxer";
 import {
   canvas,
   canvasDimensions,
+  isPreparingForDownload,
   micState,
   recordingFPS,
   recordingStartTime,
@@ -116,31 +117,37 @@ const encodeVideoFrame = () => {
  * Stop recording, download video, and tidy up a bit.
  */
 export const stopRecording = async () => {
-  recordingStartTime.set(null);
+  isPreparingForDownload.set(true);
+  try {
+    recordingStartTime.set(null);
 
-  clearInterval(intervalId);
-  audioTrack?.stop();
+    clearInterval(intervalId);
+    audioTrack?.stop();
 
-  // Flush queues and finalize mux
-  await videoEncoder?.flush();
-  await audioEncoder?.flush();
-  muxer?.finalize();
+    // Flush queues and finalize mux
+    await videoEncoder?.flush();
+    await audioEncoder?.flush();
+    muxer?.finalize();
 
-  // Close out the encoder to free up resources
-  videoEncoder?.close();
-  audioEncoder?.close();
+    // Close out the encoder to free up resources
+    videoEncoder?.close();
+    audioEncoder?.close();
 
-  // Download the blob
-  if (muxer) {
-    const rawBlob = new Blob([muxer.target.buffer]);
+    // Download the blob
+    if (muxer) {
+      const rawBlob = new Blob([muxer.target.buffer]);
 
-    // FFMPEG conversion to tidy up
-    if (!ffmpeg.isLoaded()) await ffmpeg.load();
-    await ffmpeg.FS("writeFile", "input.mp4", await fetchFile(rawBlob));
-    await ffmpeg.run("-i", "input.mp4", "output.mp4");
-    const data = await ffmpeg.FS("readFile", "output.mp4");
+      // Run blob through ffmpeg to compress the output.
+      if (!ffmpeg.isLoaded()) await ffmpeg.load();
+      await ffmpeg.FS("writeFile", "input.mp4", await fetchFile(rawBlob));
+      await ffmpeg.run("-i", "input.mp4", "output.mp4");
+      const data = await ffmpeg.FS("readFile", "output.mp4");
 
-    await downloadBlob(new Blob([data.buffer]));
+      await downloadBlob(new Blob([data.buffer]));
+      isPreparingForDownload.set(false);
+    }
+  } catch {
+    /* no-op */
   }
 
   videoEncoder = null;
