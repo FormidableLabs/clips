@@ -7,6 +7,9 @@
   import TextButton from "./TextButton.svelte";
   import Loader from "./Loader.svelte";
 
+  // Props
+  export let isDisabled = false;
+
   let isPopupOpen = false;
 
   const onPromptDevice = async (deviceId: string) => {
@@ -70,6 +73,7 @@
   {isPopupOpen}
   on:popupDismiss={() => (isPopupOpen = false)}
   on:click={handleActionButtonClick}
+  {isDisabled}
 >
   <!-- Popup content -->
   <PopupContainer slot="popupContent" title="Select a mic">

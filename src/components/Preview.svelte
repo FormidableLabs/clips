@@ -15,7 +15,7 @@
     webcamShapeOptions,
     WebcamShape,
     HorizAlign,
-    VertAlign,
+    VertAlign, canvas
   } from "../stores";
   import type { DrawArgs } from "../stores";
   import { drawScreenShare, drawWebcam } from "../utils/layoutDrawers";
@@ -31,7 +31,6 @@
   let scale = 0;
 
   // Canvas tracking
-  let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
 
   // Position values
@@ -148,18 +147,18 @@
 
   // On mount, get canvas render context
   onMount(() => {
-    ctx ||= canvas.getContext("2d");
+    ctx ||= $canvas.getContext("2d");
   });
 
   // Kick off drawing process based on recordingFPS
   $: if (drawArgs.ctx) startDraw($recordingFPS);
 
   // Setting up canvas capture stream
-  $: if (canvas) {
+  $: if ($canvas) {
     if ($canvasStream) {
       $canvasStream.getTracks().forEach((track) => track.stop());
     }
-    $canvasStream = canvas.captureStream($recordingFPS);
+    $canvasStream = $canvas.captureStream($recordingFPS);
   }
 
   // Track drawArgs
@@ -225,7 +224,7 @@
     const c = drawArgs.ctx;
 
     // Draw
-    c.clearRect(0, 0, canvas.width, canvas.height);
+    c.clearRect(0, 0, $canvas.width, $canvas.height);
     c.imageSmoothingQuality = "high";
     c.globalCompositeOperation = "source-over";
     drawScreenShare(drawArgs);
@@ -265,7 +264,7 @@
       width="{$canvasDimensions.width}px"
       height="{$canvasDimensions.height}px"
       style="transform: scale({scale}); transform-origin: top left;"
-      bind:this={canvas}
+      bind:this={$canvas}
     />
     <!-- Add box on top of active screen share for alignment options -->
     {#if $activeShare?.width}

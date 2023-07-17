@@ -16,21 +16,23 @@
   import RecordingOptionsBar from "./RecordingOptionsBar.svelte";
 
   const dispatch = createEventDispatcher();
-  let shares:Share[]=[];
+  let shares: Share[] = [];
 
   const handleAddScreenShare = () => {
-    $screenShareState.shares.push({ width: 0, height: 0,id:newUniqueId() });
+    $screenShareState.shares.push({ width: 0, height: 0, id: newUniqueId() });
     $screenShareState.shares = $screenShareState.shares;
   };
-  $:{
+  $: {
     shares = [...$screenShareState.shares];
   }
 </script>
 
-<div class="grid grid-cols-[auto_auto_1fr_auto] gap-x-4 gap-y-10 items-center pb-4">
+<div
+  class="grid grid-cols-[auto_auto_1fr_auto] gap-x-4 gap-y-10 items-center pb-4"
+>
   <div class="flex gap-2">
     <div class="w-12">
-      <MicButton />
+      <MicButton isDisabled={$isRecording} />
     </div>
     <div class="w-12">
       <WebcamButton />
@@ -41,8 +43,8 @@
 
   <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
-    {#each shares as share,index (share.id)}
-      <ShareButton share={share} {index}/>
+    {#each shares as share, index (share.id)}
+      <ShareButton {share} {index} />
     {/each}
 
     <div class="w-20 h-14">

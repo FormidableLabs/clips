@@ -2,13 +2,14 @@
   import { clickOutside } from "../directives/clickOutside";
   import { createEventDispatcher } from "svelte";
 
-  export let isActive: boolean = false;
-  export let isPopupOpen: boolean = false;
+  export let isActive = false;
+  export let isPopupOpen = false;
   export let extraClasses = "";
-  export let isSquareVariant: boolean = false;
-  export let isTextVariant: boolean = false;
-  export let showPopupUnder: boolean = false;
-  export let rightAlignPopup: boolean = false;
+  export let isSquareVariant = false;
+  export let isTextVariant = false;
+  export let showPopupUnder = false;
+  export let rightAlignPopup = false;
+  export let isDisabled = false;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -29,13 +30,18 @@
   {/if}
 
   <button
-    class="w-full green hover:text-fmd-black flex items-center p-1.5 transition transition-all duration-150 dark:text-fmd-white dark:hover:text-fmd-white dark:border-fmd-blue dark:hover:bg-fmd-blue {extraClasses} {isSquareVariant
+    class="w-full green flex items-center p-1.5 transition transition-all duration-150 dark:text-fmd-white dark:border-fmd-blue {extraClasses} {isSquareVariant
       ? 'h-full rounded'
       : 'rounded-full aspect-square'}
       {isTextVariant
       ? 'text-black hover:bg-fmd-yellow justify-start'
-      : 'text-fmd-gray_darker border border-fmd-gray_darker hover:bg-fmd-yellow justify-center'}"
+      : 'text-fmd-gray_darker border border-fmd-gray_darker justify-center'} {isDisabled
+      ? 'opacity-50'
+      : 'dark:hover:text-fmd-white hover:text-fmd-black dark:hover:bg-fmd-blue'} {!isTextVariant &&
+      !isDisabled &&
+      'hover:bg-fmd-yellow'}"
     on:click
+    disabled={isDisabled}
   >
     <slot />
   </button>
