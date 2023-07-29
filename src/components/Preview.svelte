@@ -287,7 +287,7 @@
                   name="screenAlign"
                   options={vertScreenAlignOptionsWithLabels}
                   bind:value={$screenLayoutState.vertAlign}
-                  isDropdown={false}
+                  
                 />
               {:else}
                 <Select
@@ -295,7 +295,7 @@
                   name="screenAlign"
                   options={horizScreenAlignOptionsWithLabels}
                   bind:value={$screenLayoutState.horizAlign}
-                  isDropdown={false}
+                  
                 />
               {/if}
             </div>
@@ -346,7 +346,7 @@
                   name="webcamShape"
                   options={webcamShapeOptionsWithLabels}
                   bind:value={$webcamLayoutState.shape}
-                  isDropdown={false}
+                  
                 />
               </div>
               <div class="w-[150px]">
@@ -354,7 +354,7 @@
                   title=""
                   name="webcamWidth"
                   options={sizeOptions}
-                  isDropdown={false}
+                  
                   bind:value={$webcamLayoutState.size}
                 />
               </div>

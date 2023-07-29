@@ -19,7 +19,7 @@
     }))}
     bind:value={$canvasDimensions}
     isDisabled={$isRecording}
-    isDropdown={false}
+    
   />
 
   <Select
@@ -31,6 +31,6 @@
     }))}
     bind:value={$recordingFPS}
     isDisabled={$isRecording}
-    isDropdown={false}
+    
   />
 </div>

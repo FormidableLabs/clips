@@ -116,7 +116,7 @@
             ariaLabel: bg.ariaLabel,
           }))}
         bind:value={$activeBackground}
-        isDropdown={false}
+        
       />
     {/each}
   </div>
