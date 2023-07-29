@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         primary: colors.purple,
         fmd: {
-          white: "#ffffff",
+          white: {DEFAULT: "#ffffff", background: "#FFFFFF05"},
           black: "#000000",
           navy: "#1E2852",
           blue: "#364c99",

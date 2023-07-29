@@ -13,7 +13,8 @@
   <div
     class={clsx(
       "grid justify-items-center mt-2 overflow-hidden",
-      "border border-fmd-gray dark:border-fmd-blue rounded bg-fmd-white dark:bg-fmd-navy"
+      "dark:text-fmd-white",
+      "border border-fmd-gray dark:border-fmd-white/20 rounded bg-fmd-white dark:bg-fmd-navy"
     )}
     style="grid-template-columns: repeat({options.length}, 1fr);"
   >
@@ -21,7 +22,7 @@
       <div
         class={clsx(
           "block relative w-full text-center",
-          i !== 0 && "border-l border-fmd-gray dark:border-fmd-blue"
+          i !== 0 && "border-l border-fmd-gray dark:border-fmd-white/20"
         )}
       >
         <input
@@ -38,8 +39,8 @@
           class={clsx(
             "block pt-3 pb-2",
             "transition transition-all duration-150",
-            "peer-hover:cursor-pointer peer-hover:text-fmd-red-600 ",
-            "peer-checked:border-fmd-red/5 peer-checked:text-fmd-red-600 peer-checked:bg-fmd-red-background"
+            "peer-hover:cursor-pointer peer-hover:text-fmd-red-600 dark:peer-hover:text-fmd-white dark:peer-hover:underline",
+            "peer-checked:border-fmd-red/5 peer-checked:text-fmd-red-600 peer-checked:bg-fmd-red-background dark:peer-checked:bg-fmd-white-background dark:peer-checked:text-fmd-white"
           )}
         >
           {op.title}
@@ -48,7 +49,8 @@
           class={clsx(
             "transition transition-all duration-150",
             "absolute top-0 left-0 h-full w-full pointer-events-none",
-            "border border-transparent peer-checked:border-fmd-red"
+            "border border-transparent",
+            "peer-checked:border-fmd-red dark:peer-checked:border-fmd-white"
           )}
         />
       </div>
