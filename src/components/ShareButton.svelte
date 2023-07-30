@@ -95,7 +95,7 @@
 </script>
 
 <div class="w-20 h-14 relative">
-  <ActionButton {isActive} isSquareVariant isVideo on:click={makeActive}>
+  <ActionButton {isActive} isSquareVariant on:click={makeActive}>
     <video
       class="invisible absolute top-0 left-0"
       bind:this={share.preview}
@@ -108,7 +108,7 @@
       <video class="h-full" autoplay playsinline muted bind:this={preview} />
       <button
         on:click={(event) => stopSharing(event, index)}
-        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red bg-fmd-gray_lighter text-fmd-red hover:bg-fmd-red hover:text-fmd-white transition-all duration-200 ease-in-out"
+        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red text-fmd-red hover:bg-fmd-red hover:text-fmd-white transition-all duration-100 ease-in-out"
       >
         <CloseIcon />
       </button>

@@ -18,10 +18,10 @@
   {#each verticalAlignmentOptions as vertOp}
     {#each horizontalAlignmentOptions as horOp}
       <button
-        class="h-6 py-4 border-fmd-gray_darker text-xs overflow-hidden hover:fill-fmd-yellow dark:hover:fill-fmd-sky transition transition-colors duration-100 ease-in-out flex justify-center items-center {horizAlign ===
+        class="h-6 py-4 border-fmd-gray-600 text-xs overflow-hidden hover:fill-fmd-yellow dark:hover:fill-fmd-sky transition transition-colors duration-100 ease-in-out flex justify-center items-center {horizAlign ===
           horOp && vertAlign === vertOp
           ? 'fill-fmd-red'
-          : 'fill-fmd-gray_darker/30 dark:fill-fmd-sky/10'}"
+          : 'fill-fmd-gray-600/30 dark:fill-fmd-sky/10'}"
         on:click={() => {
           horizAlign = horOp;
           vertAlign = vertOp;

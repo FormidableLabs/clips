@@ -20,8 +20,7 @@ module.exports = {
           },
           sky: "#8BDDFD",
           yellow: "#FFC951",
-          gray: "#E5E5E5",
-          gray_darker: "#888888",
+          gray: {DEFAULT: "#E5E5E5", 600: "#888888"},
         },
       },
       keyframes: {

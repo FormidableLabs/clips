@@ -38,7 +38,7 @@
           aria-label={op.ariaLabel || op.title}
           class={clsx(
             "block pt-3 pb-2",
-            "transition transition-all duration-150",
+            "transition transition-all duration-100",
             "peer-hover:cursor-pointer peer-hover:text-fmd-red-600 dark:peer-hover:text-fmd-white dark:peer-hover:underline",
             "peer-checked:border-fmd-red/5 peer-checked:text-fmd-red-600 peer-checked:bg-fmd-red-background dark:peer-checked:bg-fmd-white-background dark:peer-checked:text-fmd-white"
           )}
@@ -47,7 +47,7 @@
         </label>
         <div
           class={clsx(
-            "transition transition-all duration-150",
+            "transition transition-all duration-100",
             "absolute top-0 left-0 h-full w-full pointer-events-none",
             "border border-transparent",
             "peer-checked:border-fmd-red dark:peer-checked:border-fmd-white"

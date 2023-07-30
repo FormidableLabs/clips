@@ -1,11 +1,12 @@
 <script lang="ts">
+  import clsx from "clsx";
   import { clickOutside } from "../directives/clickOutside";
   import { createEventDispatcher } from "svelte";
 
   export let isActive: boolean = false;
   export let isPopupOpen: boolean = false;
   export let extraClasses = "";
-  export let isSquareVariant: boolean = false;
+  export let isSquareVariant: boolean = true;
   export let isTextVariant: boolean = false;
   export let showPopupUnder: boolean = false;
   export let rightAlignPopup: boolean = false;
@@ -13,7 +14,7 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div class="relative action_button {isSquareVariant ? 'h-full' : ''}">
+<div class="relative action_button h-full">
   {#if isPopupOpen}
     <div
       class="w-[256px] absolute bg-white dark:bg-transparent {showPopupUnder
@@ -29,12 +30,16 @@
   {/if}
 
   <button
-    class="w-full green hover:text-fmd-black flex items-center p-1.5 transition transition-all duration-150 dark:text-fmd-white dark:hover:text-fmd-white dark:border-fmd-blue dark:hover:bg-fmd-blue {extraClasses} {isSquareVariant
-      ? 'h-full rounded'
-      : 'rounded-full aspect-square'}
-      {isTextVariant
-      ? 'text-black hover:bg-fmd-yellow justify-start'
-      : 'text-fmd-gray_darker border border-fmd-gray_darker hover:bg-fmd-yellow justify-center'}"
+    class={clsx(
+      "w-full flex items-center p-1.5 dark:border-fmd-white/20 dark:hover:bg-fmd-white-background",
+      "hover:text-fmd-red dark:text-fmd-white dark:hover:text-fmd-white dark:hover:border-fmd-white",
+      "transition transition-all duration-100",
+      extraClasses,
+      isSquareVariant ? "h-full rounded" : "rounded-full aspect-square",
+      isTextVariant
+        ? "text-black hover:bg-fmd-white-background justify-start dark:hover:underline"
+        : "text-fmd-gray-600 border border-fmd-gray hover:bg-fmd-red-background justify-center"
+    )}
     on:click
   >
     <slot />

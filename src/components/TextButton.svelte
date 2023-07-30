@@ -12,7 +12,7 @@
   on:click
   class="rounded {isDisabled
     ? 'bg-opacity-30'
-    : 'hover:bg-fmd-yellow dark:hover:bg-fmd-navy'} px-3 py-2 text-left transition transition-colors duration-150 ease-in-out flex items-center justify-between gap-1 {extraClasses}"
+    : 'hover:bg-fmd-yellow dark:hover:bg-fmd-navy'} px-3 py-2 text-left transition transition-colors duration-100 ease-in-out flex items-center justify-between gap-1 {extraClasses}"
   disabled={isDisabled}
 >
   <div class="flex-grow">
