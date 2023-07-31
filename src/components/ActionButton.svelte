@@ -17,7 +17,7 @@
 <div class="relative action_button h-full">
   {#if isPopupOpen}
     <div
-      class="w-[256px] absolute bg-white dark:bg-transparent {showPopupUnder
+      class="w-[256px] z-20 absolute bg-white dark:bg-transparent {showPopupUnder
         ? 'top-8'
         : 'bottom-20'} {rightAlignPopup
         ? '-right-2'

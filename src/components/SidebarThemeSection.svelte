@@ -61,9 +61,7 @@
           )}
           on:click={() => ($activeTheme = $customTheme)}
         >
-          <div class="transition-default text-sm">
-            Custom
-          </div>
+          <div class="transition-default text-sm">Custom</div>
           <div
             class={clsx(
               "select-child-overlay",
@@ -74,19 +72,34 @@
       </div>
 
       {#if $activeTheme === $customTheme}
-        <div
-          class="grid grid-cols-2 gap-x-4 mt-4"
-          transition:slide={{ duration: 150 }}
-        >
-          <div class="col-span-2 pb-2">
+        <div class="mt-4" transition:slide={{ duration: 150 }}>
+          <div class="pb-2">
             <InputLabel name="customTheme">Custom Theme</InputLabel>
           </div>
-          <ColorInput title="Primary Color" bind:value={$customTheme.primary} />
-          <ColorInput
-            title="Secondary Color"
-            bind:value={$customTheme.secondary}
-            rightAlignPopup={true}
-          />
+          <div class="grid grid-cols-[1fr_1fr_auto]">
+            <ColorInput
+              title="Primary Color"
+              bind:value={$customTheme.primary}
+            />
+            <ColorInput
+              title="Secondary Color"
+              bind:value={$customTheme.secondary}
+              rightAlignPopup={true}
+            />
+            <div
+              class={clsx(
+                "justify-self-end relative w-8 h-8 overflow-hidden rounded-full border-2 border-fmd-gray dark:border-fmd-white/20",
+                "transition-default",
+                "group-hover:border-fmd-red dark:group-hover:border-fmd-white"
+              )}
+              style="background-color: {$customTheme.primary};"
+            >
+              <div
+                class="w-[200%] aspect-square absolute top-0 left-1/2 rotate-45"
+                style="background-color: {$customTheme.secondary};"
+              />
+            </div>
+          </div>
         </div>
       {/if}
     </div>

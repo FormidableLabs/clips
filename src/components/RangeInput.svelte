@@ -52,6 +52,7 @@
 <style>
   input[type="range"] {
     -webkit-appearance: none;
+    appearance: none;
     margin: 10px 0;
     width: 100%;
     border: none;
