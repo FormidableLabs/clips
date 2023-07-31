@@ -22,21 +22,27 @@
     <div>
       <InputLabel>Color Theme</InputLabel>
       <div
-        class="select-parent"
+        class="select-parent justify-center"
         style="grid-template-columns: repeat({themes.length + 1}, 1fr);"
       >
         {#each themes as theme, i}
           <button
-            class={clsx("select-child-wrapper", i !== 0 && "not-first")}
+            class={clsx(
+              "select-child-wrapper pt-2 pb-1 group",
+              i !== 0 && "not-first"
+            )}
             on:click={() => ($activeTheme = theme)}
           >
-            <div class="grid grid-cols-2 gap-1 p-2">
+            <div
+              class={clsx(
+                "inline-block relative w-8 h-8 overflow-hidden rounded-full border-2 border-fmd-gray dark:border-fmd-white/20",
+                "transition-default",
+                "group-hover:border-fmd-red dark:group-hover:border-fmd-white"
+              )}
+              style="background-color: {theme.primary};"
+            >
               <div
-                class="w-full aspect-square"
-                style="background-color: {theme.primary};"
-              />
-              <div
-                class="w-full aspect-square"
+                class="w-[200%] aspect-square absolute top-0 left-1/2 rotate-45"
                 style="background-color: {theme.secondary};"
               />
             </div>
@@ -49,12 +55,13 @@
           </button>
         {/each}
         <button
-          class="select-child-wrapper not-first"
+          class={clsx(
+            "select-child-wrapper not-first transition-default hover:text-fmd-red dark:text-white",
+            $customTheme === $activeTheme && "text-fmd-red-600"
+          )}
           on:click={() => ($activeTheme = $customTheme)}
         >
-          <div
-            class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150 dark:text-white"
-          >
+          <div class="transition-default text-sm">
             Custom
           </div>
           <div
@@ -68,7 +75,7 @@
 
       {#if $activeTheme === $customTheme}
         <div
-          class="col-span-6 grid grid-cols-2 gap-x-4"
+          class="grid grid-cols-2 gap-x-4 mt-4"
           transition:slide={{ duration: 150 }}
         >
           <div class="col-span-2 pb-2">

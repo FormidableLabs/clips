@@ -3,6 +3,10 @@
 @tailwind utilities;
 @tailwind apply;
 
+.transition-default {
+  @apply transition transition-all duration-100 ease-out;
+}
+
 .select-parent {
   @apply grid justify-items-center mt-2 overflow-hidden;
   @apply dark:text-fmd-white;
@@ -18,7 +22,7 @@
 }
 
 .select-child-overlay {
-  @apply transition transition-all duration-100;
+  @apply transition-default;
   @apply absolute top-0 left-0 h-full w-full pointer-events-none;
   @apply border border-transparent;
   @apply peer-checked:border-fmd-red dark:peer-checked:border-fmd-white peer-checked:bg-fmd-red-background dark:peer-checked:bg-fmd-white-background;
