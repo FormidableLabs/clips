@@ -26,7 +26,7 @@
         {name}
         id={name}
         class={clsx(
-          "z-10 focus:ring-fmd-blue focus:border-fmd-blue block w-full sm:text-sm border-fmd-gray rounded-md bg-transparent border-2 border-fmd-blue",
+          "z-10 block w-full border-fmd-gray rounded-md bg-transparent",
           isDisabled ? "opacity-30" : ""
         )}
         bind:value

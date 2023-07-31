@@ -11,20 +11,11 @@
 <div>
   <InputLabel {name}>{title}</InputLabel>
   <div
-    class={clsx(
-      "grid justify-items-center mt-2 overflow-hidden",
-      "dark:text-fmd-white",
-      "border border-fmd-gray dark:border-fmd-white/20 rounded bg-fmd-white dark:bg-fmd-navy"
-    )}
+    class="select-parent"
     style="grid-template-columns: repeat({options.length}, 1fr);"
   >
     {#each options as op, i}
-      <div
-        class={clsx(
-          "block relative w-full text-center",
-          i !== 0 && "border-l border-fmd-gray dark:border-fmd-white/20"
-        )}
-      >
+      <div class={clsx("select-child-wrapper", i !== 0 && "not-first")}>
         <input
           class="hidden peer"
           type="radio"
@@ -40,19 +31,12 @@
             "block pt-3 pb-2",
             "transition transition-all duration-100",
             "peer-hover:cursor-pointer peer-hover:text-fmd-red-600 dark:peer-hover:text-fmd-white dark:peer-hover:underline",
-            "peer-checked:border-fmd-red/5 peer-checked:text-fmd-red-600 peer-checked:bg-fmd-red-background dark:peer-checked:bg-fmd-white-background dark:peer-checked:text-fmd-white"
+            "peer-checked:text-fmd-red-600 dark:peer-checked:text-fmd-white"
           )}
         >
           {op.title}
         </label>
-        <div
-          class={clsx(
-            "transition transition-all duration-100",
-            "absolute top-0 left-0 h-full w-full pointer-events-none",
-            "border border-transparent",
-            "peer-checked:border-fmd-red dark:peer-checked:border-fmd-white"
-          )}
-        />
+        <div class="select-child-overlay" />
       </div>
     {/each}
   </div>

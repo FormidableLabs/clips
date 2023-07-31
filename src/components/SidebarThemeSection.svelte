@@ -11,6 +11,7 @@
   import InputLabel from "./InputLabel.svelte";
   import RangeInput from "./RangeInput.svelte";
   import ColorInput from "./ColorInput.svelte";
+  import clsx from "clsx";
 
   const backgroundOptions = ["Audio", "Gradient", "Solid"];
 </script>
@@ -18,58 +19,52 @@
 <SidebarSection title="Theme">
   <div class="flex flex-col gap-6">
     <!-- Color Theme -->
-    <div class="grid grid-cols-6 gap-y-3">
-      <div class="col-span-6">
-        <InputLabel>Color Theme</InputLabel>
-      </div>
-      {#each themes as theme, i}
+    <div>
+      <InputLabel>Color Theme</InputLabel>
+      <div
+        class="select-parent"
+        style="grid-template-columns: repeat({themes.length + 1}, 1fr);"
+      >
+        {#each themes as theme, i}
+          <button
+            class={clsx("select-child-wrapper", i !== 0 && "not-first")}
+            on:click={() => ($activeTheme = theme)}
+          >
+            <div class="grid grid-cols-2 gap-1 p-2">
+              <div
+                class="w-full aspect-square"
+                style="background-color: {theme.primary};"
+              />
+              <div
+                class="w-full aspect-square"
+                style="background-color: {theme.secondary};"
+              />
+            </div>
+            <div
+              class={clsx(
+                "select-child-overlay",
+                theme === $activeTheme && "select-child-overlay-selected"
+              )}
+            />
+          </button>
+        {/each}
         <button
-          class="group transition transition-bg duration-150 focus:outline-none {i !==
-            0 &&
-            'border-l-[1px] border-fmd-gray dark:border-fmd-blue'} {theme ===
-          $activeTheme
-            ? 'bg-fmd-red/5 focus:bg-fmd-red/5 dark:bg-fmd-blue/50 dark:focus:bg-fmd-blue/50'
-            : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10 dark:hover:bg-fmd-blue/20 dark:focus:bg-fmd-blue/20'}"
-          on:click={() => ($activeTheme = theme)}
+          class="select-child-wrapper not-first"
+          on:click={() => ($activeTheme = $customTheme)}
         >
-          <div class="grid grid-cols-2 gap-1 p-2">
-            <div
-              class="w-full aspect-square"
-              style="background-color: {theme.primary};"
-            />
-            <div
-              class="w-full aspect-square"
-              style="background-color: {theme.secondary};"
-            />
+          <div
+            class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150 dark:text-white"
+          >
+            Custom
           </div>
           <div
-            class="transition transition-all duration-150 {theme ===
-            $activeTheme
-              ? 'bg-fmd-red group-focus:bg-fmd-red'
-              : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow dark:group-hover:bg-fmd-sky dark:group-focus:bg-fmd-sky'} h-1 "
+            class={clsx(
+              "select-child-overlay",
+              $customTheme === $activeTheme && "select-child-overlay-selected"
+            )}
           />
         </button>
-      {/each}
-
-      <button
-        class="group transition transition-bg duration-150 focus:outline-none border-l-[1px] border-fmd-gray dark:border-fmd-blue {$customTheme ===
-        $activeTheme
-          ? 'bg-fmd-red/5 focus:bg-fmd-red/5 dark:bg-fmd-blue/50 dark:focus:bg-fmd-blue/50'
-          : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10 dark:hover:bg-fmd-blue/20 dark:focus:bg-fmd-blue/20'}"
-        on:click={() => ($activeTheme = $customTheme)}
-      >
-        <div
-          class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150 dark:text-white"
-        >
-          Custom
-        </div>
-        <div
-          class="transition transition-all duration-150 {$customTheme ===
-          $activeTheme
-            ? 'bg-fmd-red group-focus:bg-fmd-red'
-            : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow dark:group-hover:bg-fmd-sky dark:group-focus:bg-fmd-sky'} h-1"
-        />
-      </button>
+      </div>
 
       {#if $activeTheme === $customTheme}
         <div
@@ -116,7 +111,6 @@
             ariaLabel: bg.ariaLabel,
           }))}
         bind:value={$activeBackground}
-        
       />
     {/each}
   </div>
