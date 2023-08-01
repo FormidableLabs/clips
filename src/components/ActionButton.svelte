@@ -14,7 +14,7 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div class="relative action_button h-full">
+<div class="relative action_button h-full group">
   {#if isPopupOpen}
     <div
       class="w-[256px] z-20 absolute bg-white dark:bg-transparent {showPopupUnder
@@ -45,7 +45,4 @@
     <slot />
   </button>
 
-  {#if isActive}<div
-      class="w-1.5 h-1.5 bg-fmd-red rounded-full absolute left-0 right-0 m-auto -bottom-3"
-    />{/if}
 </div>

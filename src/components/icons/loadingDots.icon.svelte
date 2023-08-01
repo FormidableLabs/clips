@@ -4,7 +4,7 @@
   viewBox="0 0 24 24"
   style="enable-background:new 0 0 24 24;"
   xml:space="preserve"
-  class="w-[70%] animate-[loading_1s_infinite] dark:animate-[loadingDark_1s_infinite]"
+  class="w-3/5 animate-[loading_1s_infinite] dark:animate-[loadingDark_1s_infinite]"
 >
   <g>
     <circle cx="4.5" cy="12" r="2" />

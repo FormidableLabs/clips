@@ -272,7 +272,7 @@
       <div class="absolute top-0 left-0 w-full h-full grid">
         <div
           class="flex items-center justify-center transition transition-bg border-2 border-transparent {isScreenFocused
-            ? 'bg-fmd-black/50 border-fmd-sky'
+            ? 'bg-fmd-black/50 border-fmd-red'
             : ''}"
           style={screenStyles}
           on:focus={() => (isScreenFocused = true)}
@@ -316,11 +316,11 @@
       >
         <div class="relative">
           <div
-            class="self-start border-2 hover:border-fmd-sky/80 transition transition-bg hover:bg-fmd-black/50 {isMovingWebcam &&
+            class="self-start border-2 hover:border-fmd-red/80 transition transition-bg hover:bg-fmd-black/50 {isMovingWebcam &&
             isWebcamFocused
               ? 'cursor-grabbing'
               : 'cursor-grab'} {isWebcamFocused
-              ? 'border-fmd-sky/80'
+              ? 'border-fmd-red/80'
               : 'border-transparent'}"
             style="height: {webcamHeight -
               ($generalLayoutState.padding / 2) *

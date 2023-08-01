@@ -5,7 +5,7 @@
   export let name: string;
   export let title: string;
   export let value: unknown;
-  export let isDisabled: boolean;
+  export let isDisabled: boolean = false;
   export let options: { title: string; value: unknown; ariaLabel?: string }[];
 </script>
 

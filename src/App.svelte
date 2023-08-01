@@ -97,7 +97,7 @@
   </div>
 
   <div
-    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-navy dark:text-fmd-white"
+    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-black dark:text-fmd-white"
   >
     <a
       class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
@@ -109,7 +109,7 @@
       <FormidableIcon />
     </a>
     <a
-      class="w-7 hover:text-fmd-sky transition transition-colors duration-100 ease-in-out"
+      class="w-7 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
       aria-label="GitHub logo"
       href="https://github.com/FormidableLabs/clips"
       target="_blank"

@@ -18,8 +18,6 @@ module.exports = {
             300: "#F3714D",
             background: "#db3b0f05",
           },
-          sky: "#8BDDFD",
-          yellow: "#FFC951",
           gray: {DEFAULT: "#E5E5E5", 600: "#888888"},
         },
       },

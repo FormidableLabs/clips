@@ -5,6 +5,7 @@
   import { onMount } from "svelte";
   import LoadingDots from "./icons/loadingDots.icon.svelte";
   import CloseIcon from "./icons/close.icon.svelte";
+  import clsx from "clsx";
 
   export let share: Share;
   export let index: number;
@@ -108,12 +109,18 @@
       <video class="h-full" autoplay playsinline muted bind:this={preview} />
       <button
         on:click={(event) => stopSharing(event, index)}
-        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full border border-fmd-red text-fmd-red hover:bg-fmd-red hover:text-fmd-white transition-all duration-100 ease-in-out"
+        class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full bg-fmd-red text-white hover:bg-fmd-red-600 transition-default"
       >
         <CloseIcon />
       </button>
     {:else}
       <LoadingDots />
     {/if}
+    <div
+      class={clsx(
+        "w-1.5 h-1.5 bg-fmd-red rounded-full absolute left-0 right-0 m-auto -bottom-3",
+        isActive ? "block" : "hidden group-hover:block"
+      )}
+    />
   </ActionButton>
 </div>
