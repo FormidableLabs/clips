@@ -5,10 +5,11 @@
   export let name: string;
   export let title: string;
   export let value: unknown;
+  export let isDisabled: boolean;
   export let options: { title: string; value: unknown; ariaLabel?: string }[];
 </script>
 
-<div>
+<div class={isDisabled ? "pointer-events-none": ""}>
   <InputLabel {name}>{title}</InputLabel>
   <div
     class="select-parent"
