@@ -186,11 +186,11 @@ export const themes: Theme[] = [
   {
     title: "Closed Eyes in the Sun",
     primary: "#FF3F2A",
-    secondary: "#FF5C2A",
+    secondary: "#ff7328",
     accent: "#FFFFFF",
   },
   {
-    title: "Definitely a Tangerine and Not an Orange",
+    title: "Tange-orange",
     primary: "#FF952A",
     secondary: "#FFD452",
     accent: "#FFFFFF",
@@ -214,9 +214,15 @@ export const themes: Theme[] = [
     accent: "#FFFFFF",
   },
   {
-    title: "Salmon at Dusk",
-    primary: "#BD3F9B",
-    secondary: "#BD3F47",
+    title: "(Un)Opinionatedly-Blue Grays",
+    primary: "#1d1e21",
+    secondary: "#34373d",
+    accent: "#FFFFFF",
+  },
+  {
+    title: "Steam-Pressed Shirt",
+    primary: "#edf0f9",
+    secondary: "#f7f8fc",
     accent: "#FFFFFF",
   },
 ];

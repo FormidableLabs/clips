@@ -23,7 +23,7 @@
       <InputLabel>Color Theme</InputLabel>
       <div
         class="select-parent justify-center"
-        style="grid-template-columns: repeat({themes.length + 1}, 1fr);"
+        style="grid-template-columns: repeat({themes.length}, 1fr) 1.5fr;"
       >
         {#each themes as theme, i}
           <button
@@ -35,7 +35,7 @@
           >
             <div
               class={clsx(
-                "inline-block relative w-8 h-8 overflow-hidden rounded-full border-2 border-fmd-gray dark:border-fmd-white/20",
+                "inline-block relative w-7 h-7 overflow-hidden rounded-full border-2 border-fmd-gray dark:border-fmd-white/20",
                 "transition-default",
                 "group-hover:border-fmd-red dark:group-hover:border-fmd-white"
               )}
