@@ -109,7 +109,7 @@
   <Camera />
 
   <video
-    class="absolute w-1 h-1 opacity-0 z-[-10] pointer-events-none"
+    class="absolute w-1 h-1 opacity-0 -z-10 pointer-events-none"
     bind:this={$webcamState.preview}
     autoplay
     playsinline

@@ -21,7 +21,7 @@
       {max}
       {step}
       id={name}
-      class="focus:ring-0 focus:border-fmd-red hover:border-b-fmd-red focus:border-r-fmd-gray block w-full sm:text-sm -md bg-transparent border-0 border-r-[1px] border-b-2 border-b-transparent border-r-fmd-gray transition transition-border {isDisabled
+      class="focus:ring-0 focus:border-fmd-red hover:border-b-fmd-red focus:border-r-fmd-gray block w-full sm:text-sm -md bg-transparent border-0 border-r-px border-b-2 border-b-transparent border-r-fmd-gray transition transition-border {isDisabled
         ? 'opacity-30'
         : ''}"
       {placeholder}
@@ -29,7 +29,7 @@
       disabled={isDisabled}
     />
     <button
-      class="h-full px-3 bg-transparent hover:bg-fmd-red border-r-[1px] border-fmd-gray transition transition-bg"
+      class="h-full px-3 bg-transparent hover:bg-fmd-red border-r-px border-fmd-gray transition transition-bg"
       on:click={() =>
         (value = value
           ? Number.parseFloat((Number(value) + step).toFixed(2))

@@ -21,7 +21,7 @@
         ? 'top-8'
         : 'bottom-20'} {rightAlignPopup
         ? '-right-2'
-        : '-left-2'} rounded shadow-xl action_button_popup z-20"
+        : '-left-2'} rounded shadow-xl action_button_popup z-30"
       use:clickOutside
       on:outclick={() => dispatch("popupDismiss")}
     >
