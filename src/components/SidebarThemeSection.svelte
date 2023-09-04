@@ -115,7 +115,7 @@
   </div>
 </SidebarSection>
 
-<div class="w-full h-[1px] bg-fmd-gray dark:bg-fmd-blue" />
+<div class="w-full h-px bg-fmd-gray dark:bg-fmd-blue" />
 
 <SidebarSection title="Background Style">
   <div class="flex flex-col gap-6">

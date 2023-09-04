@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="w-[1px] h-16 bg-fmd-gray dark:bg-fmd-blue" />
+  <div class="w-px h-16 bg-fmd-gray dark:bg-fmd-blue" />
 
   <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
@@ -62,7 +62,7 @@
   <div class="flex justify-end items-center gap-2">
     {#if $recordingDuration !== null}
       <div
-        class="w-[100px] bg-white rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
+        class="w-24 bg-white rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
         transition:fade={{ duration: 300 }}
       >
         {$recordingDuration}

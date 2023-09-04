@@ -7,13 +7,16 @@
   export let value: unknown;
   export let isDisabled: boolean = false;
   export let options: { title: string; value: unknown; ariaLabel?: string }[];
+  export let isVertical: boolean = false;
 </script>
 
-<div class={isDisabled ? "pointer-events-none": ""}>
+<div class={isDisabled ? "pointer-events-none" : ""}>
   <InputLabel {name}>{title}</InputLabel>
   <div
     class="select-parent"
-    style="grid-template-columns: repeat({options.length}, 1fr);"
+    style="grid-template-columns: repeat({isVertical
+      ? 1
+      : options.length}, 1fr);"
   >
     {#each options as op, i}
       <div class={clsx("select-child-wrapper", i !== 0 && "not-first")}>

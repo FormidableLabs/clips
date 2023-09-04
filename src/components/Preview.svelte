@@ -280,14 +280,14 @@
           on:mouseleave={() => (isScreenFocused = false)}
         >
           {#if isScreenFocused}
-            <div class="w-[100px]">
+            <div class={isScreenLandscape ? "w-11" : "w-24"}>
               {#if isScreenLandscape}
                 <Select
                   title=""
                   name="screenAlign"
+                  isVertical
                   options={vertScreenAlignOptionsWithLabels}
                   bind:value={$screenLayoutState.vertAlign}
-                  
                 />
               {:else}
                 <Select
@@ -295,7 +295,6 @@
                   name="screenAlign"
                   options={horizScreenAlignOptionsWithLabels}
                   bind:value={$screenLayoutState.horizAlign}
-                  
                 />
               {/if}
             </div>
@@ -340,29 +339,29 @@
                 ? 'right: 0;'
                 : ''}"
             >
-              <div class="w-[80px]">
+              <div class="w-20">
                 <Select
                   title=""
                   name="webcamShape"
                   options={webcamShapeOptionsWithLabels}
                   bind:value={$webcamLayoutState.shape}
-                  
                 />
               </div>
-              <div class="w-[150px]">
+              <div class="w-36">
                 <Select
                   title=""
                   name="webcamWidth"
                   options={sizeOptions}
-                  
                   bind:value={$webcamLayoutState.size}
                 />
               </div>
               {#if $webcamLayoutState.shape === WebcamShape.initial}
                 <div
-                  class="flex items-center w-[180px] border border-fmd-gray rounded mt-2 px-3 bg-fmd-white dark:border-fmd-blue dark:bg-fmd-navy"
+                  class="flex items-center w-44 border border-fmd-gray rounded mt-2 px-3 bg-fmd-white dark:border-fmd-blue dark:bg-fmd-navy"
                 >
-                  <div class="w-10 pr-3 py-3 border-r mr-2 dark:text-fmd-white dark:border-fmd-blue">
+                  <div
+                    class="w-10 pr-3 py-3 border-r mr-2 dark:text-fmd-white dark:border-fmd-blue"
+                  >
                     <BorderRadius />
                   </div>
 

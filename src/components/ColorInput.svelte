@@ -27,7 +27,7 @@
 >
   <PopupContainer slot="popupContent" title="">
     <div class="transparent-input">
-      <ColorPicker class="h-[256px] p-2" bind:color={value} />
+      <ColorPicker class="h-64 p-2" bind:color={value} />
     </div>
   </PopupContainer>
 

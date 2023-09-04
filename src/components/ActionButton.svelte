@@ -17,11 +17,11 @@
 <div class="relative action_button h-full group">
   {#if isPopupOpen}
     <div
-      class="w-[256px] z-20 absolute bg-white dark:bg-transparent {showPopupUnder
+      class="w-64 z-20 absolute bg-white dark:bg-transparent {showPopupUnder
         ? 'top-8'
         : 'bottom-20'} {rightAlignPopup
         ? '-right-2'
-        : '-left-2'} rounded shadow-xl action_button_popup z-10"
+        : '-left-2'} rounded shadow-xl action_button_popup z-20"
       use:clickOutside
       on:outclick={() => dispatch("popupDismiss")}
     >
