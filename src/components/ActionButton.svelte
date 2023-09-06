@@ -3,7 +3,6 @@
   import { clickOutside } from "../directives/clickOutside";
   import { createEventDispatcher } from "svelte";
 
-  export let isActive: boolean = false;
   export let isPopupOpen: boolean = false;
   export let extraClasses = "";
   export let isSquareVariant: boolean = true;

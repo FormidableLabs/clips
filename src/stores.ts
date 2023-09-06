@@ -197,8 +197,8 @@ export const themes: Theme[] = [
   },
   {
     title: "Jungle-Chic",
-    primary: "#5CBD39",
-    secondary: "#39BD72",
+    primary: "#69C647",
+    secondary: "#38BC7F",
     accent: "#FFFFFF",
   },
   {

@@ -32,7 +32,7 @@
           for={op.title}
           aria-label={op.ariaLabel || op.title}
           class={clsx(
-            "block pt-3 pb-2",
+            "block py-3",
             "transition-default",
             "peer-hover:cursor-pointer peer-hover:text-fmd-red-600 dark:peer-hover:text-fmd-white dark:peer-hover:underline",
             "peer-checked:text-fmd-red-600 dark:peer-checked:text-fmd-white"
