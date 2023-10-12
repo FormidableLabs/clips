@@ -272,7 +272,7 @@
       <div class="absolute top-0 left-0 w-full h-full grid">
         <div
           class="flex items-center justify-center transition transition-bg border-2 border-transparent {isScreenFocused
-            ? 'bg-fmd-black/50 border-fmd-sky'
+            ? 'bg-fmd-black/50 border-fmd-red'
             : ''}"
           style={screenStyles}
           on:focus={() => (isScreenFocused = true)}
@@ -280,14 +280,14 @@
           on:mouseleave={() => (isScreenFocused = false)}
         >
           {#if isScreenFocused}
-            <div class="w-[100px]">
+            <div class={isScreenLandscape ? "w-11" : "w-24"}>
               {#if isScreenLandscape}
                 <Select
                   title=""
                   name="screenAlign"
+                  isVertical
                   options={vertScreenAlignOptionsWithLabels}
                   bind:value={$screenLayoutState.vertAlign}
-                  isDropdown={false}
                 />
               {:else}
                 <Select
@@ -295,7 +295,6 @@
                   name="screenAlign"
                   options={horizScreenAlignOptionsWithLabels}
                   bind:value={$screenLayoutState.horizAlign}
-                  isDropdown={false}
                 />
               {/if}
             </div>
@@ -316,11 +315,11 @@
       >
         <div class="relative">
           <div
-            class="self-start border-2 hover:border-fmd-sky/80 transition transition-bg hover:bg-fmd-black/50 {isMovingWebcam &&
+            class="self-start border-2 hover:border-fmd-red/80 transition transition-bg hover:bg-fmd-black/50 {isMovingWebcam &&
             isWebcamFocused
               ? 'cursor-grabbing'
               : 'cursor-grab'} {isWebcamFocused
-              ? 'border-fmd-sky/80'
+              ? 'border-fmd-red/80'
               : 'border-transparent'}"
             style="height: {webcamHeight -
               ($generalLayoutState.padding / 2) *
@@ -340,29 +339,29 @@
                 ? 'right: 0;'
                 : ''}"
             >
-              <div class="w-[80px]">
+              <div class="w-20">
                 <Select
                   title=""
                   name="webcamShape"
                   options={webcamShapeOptionsWithLabels}
                   bind:value={$webcamLayoutState.shape}
-                  isDropdown={false}
                 />
               </div>
-              <div class="w-[150px]">
+              <div class="w-36">
                 <Select
                   title=""
                   name="webcamWidth"
                   options={sizeOptions}
-                  isDropdown={false}
                   bind:value={$webcamLayoutState.size}
                 />
               </div>
               {#if $webcamLayoutState.shape === WebcamShape.initial}
                 <div
-                  class="flex items-center w-[180px] border border-fmd-gray rounded mt-2 px-3 bg-fmd-white dark:border-fmd-blue dark:bg-fmd-navy"
+                  class="flex items-center w-44 border border-fmd-gray rounded mt-2 px-3 bg-fmd-white dark:border-fmd-blue dark:bg-fmd-navy"
                 >
-                  <div class="w-10 pr-3 py-3 border-r mr-2 dark:text-fmd-white dark:border-fmd-blue">
+                  <div
+                    class="w-10 pr-3 py-3 border-r mr-2 dark:text-fmd-white dark:border-fmd-blue"
+                  >
                     <BorderRadius />
                   </div>
 

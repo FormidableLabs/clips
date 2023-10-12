@@ -28,8 +28,6 @@
     const newBlob = await patchBlob(completeBlob, duration);
     const data = URL.createObjectURL(newBlob);
 
-    // return;
-
     const link = document.createElement("a");
     link.href = data;
     link.download = `video.${ext}`;
@@ -90,14 +88,14 @@
       <ActionBar on:record={onRecordButtonPress} />
     </div>
     <div
-      class="border-l-[1px] border-fmd-gray w-1/3 flex flex-col gap-10 px-6 dark:border-fmd-blue"
+      class="border-l border-fmd-gray w-1/3 flex flex-col gap-10 px-6 dark:border-fmd-blue"
     >
       <SidebarThemeSection />
     </div>
   </div>
 
   <div
-    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-navy dark:text-fmd-white"
+    class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-black dark:text-fmd-white"
   >
     <a
       class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
@@ -109,7 +107,7 @@
       <FormidableIcon />
     </a>
     <a
-      class="w-7 hover:text-fmd-sky transition transition-colors duration-100 ease-in-out"
+      class="w-7 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
       aria-label="GitHub logo"
       href="https://github.com/FormidableLabs/clips"
       target="_blank"

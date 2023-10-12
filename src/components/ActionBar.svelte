@@ -29,15 +29,15 @@
 
 <div class="grid grid-cols-[auto_auto_1fr_auto] gap-x-4 gap-y-10 items-center pb-4">
   <div class="flex gap-2">
-    <div class="w-12">
+    <div class="w-14 h-14">
       <MicButton />
     </div>
-    <div class="w-12">
+    <div class="w-14 h-14">
       <WebcamButton />
     </div>
   </div>
 
-  <div class="w-[1px] h-16 bg-fmd-gray_darker dark:bg-fmd-blue" />
+  <div class="w-px h-16 bg-fmd-gray dark:bg-fmd-blue" />
 
   <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
@@ -62,7 +62,7 @@
   <div class="flex justify-end items-center gap-2">
     {#if $recordingDuration !== null}
       <div
-        class="w-[100px] bg-white rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
+        class="w-24 bg-white rounded px-3 py-1 shadow flex justify-center items-center font-medium text-lg text-gray-600"
         transition:fade={{ duration: 300 }}
       >
         {$recordingDuration}
@@ -77,7 +77,7 @@
       <div
         class="bg-fmd-red transition transition-all duration-300 ease-in-out {$isRecording
           ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
-          : 'w-full h-full rounded-[100%]'}"
+          : 'w-full h-full rounded-full'}"
       />
     </button>
   </div>

@@ -8,15 +8,17 @@ module.exports = {
       colors: {
         primary: colors.purple,
         fmd: {
-          white: "#ffffff",
+          white: {DEFAULT: "#ffffff", background: "#FFFFFF05"},
           black: "#000000",
           navy: "#1E2852",
           blue: "#364c99",
-          red: "#F04D21",
-          sky: "#8BDDFD",
-          yellow: "#FFC951",
-          gray: "#E5E5E5",
-          gray_darker: "#888888",
+          red: {
+            DEFAULT: "#F04D21",
+            600: "#DB3B0F",
+            300: "#F3714D",
+            background: "#db3b0f05",
+          },
+          gray: {DEFAULT: "#E5E5E5", 600: "#888888"},
         },
       },
       keyframes: {

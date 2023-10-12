@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind apply;
+
+.transition-default {
+  @apply transition transition-all duration-100 ease-out;
+}
+
+.select-parent {
+  @apply grid justify-items-center mt-2 overflow-hidden;
+  @apply dark:text-fmd-white;
+  @apply border border-fmd-gray dark:border-fmd-white/20 rounded bg-fmd-white dark:bg-fmd-navy;
+}
+
+.select-child-wrapper {
+  @apply block relative w-full text-center;
+}
+
+.select-child-wrapper:first-of-type .select-child-overlay {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.select-child-wrapper:last-of-type .select-child-overlay {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.select-child-wrapper.not-first {
+  @apply border-l border-fmd-gray dark:border-fmd-white/20;
+}
+
+.select-child-overlay {
+  @apply transition-default;
+  @apply absolute top-0 left-0 h-full w-full pointer-events-none;
+  @apply border border-transparent;
+  @apply peer-checked:border-fmd-red dark:peer-checked:border-fmd-white peer-checked:bg-fmd-red-background dark:peer-checked:bg-fmd-white-background;
+}
+
+.select-child-overlay-selected {
+  @apply border-fmd-red dark:border-fmd-white bg-fmd-red-background dark:bg-fmd-white-background;
+}

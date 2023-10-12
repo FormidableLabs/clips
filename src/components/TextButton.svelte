@@ -1,4 +1,5 @@
 <script lang="ts">
+  import clsx from "clsx";
   import CheckIcon from "./icons/check.icon.svelte";
   import StopIcon from "./icons/stop.icon.svelte";
 
@@ -10,9 +11,14 @@
 
 <button
   on:click
-  class="rounded {isDisabled
-    ? 'bg-opacity-30'
-    : 'hover:bg-fmd-yellow dark:hover:bg-fmd-navy'} px-3 py-2 text-left transition transition-colors duration-150 ease-in-out flex items-center justify-between gap-1 {extraClasses}"
+  class={clsx(
+    "flex items-center justify-between gap-1",
+    "rounded px-3 py-2 text-left transition-default border border-transparent",
+    isDisabled
+      ? "bg-opacity-30"
+      : "hover:bg-fmd-red-background hover:border-fmd-red-600 dark:hover:bg-fmd-navy",
+    extraClasses
+  )}
   disabled={isDisabled}
 >
   <div class="flex-grow">

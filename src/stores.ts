@@ -62,8 +62,8 @@ export type Share = {
   stream?: MediaStream;
   preview?: HTMLVideoElement;
   width: number;
-  height: number
-}
+  height: number;
+};
 
 export type ScreenShareState = {
   activeIndex: null | number;
@@ -183,55 +183,49 @@ export type Theme = {
   accent: string;
 };
 export const themes: Theme[] = [
-  { title: "Sun", primary: "#e78e47", secondary: "#f7d570", accent: "#ffffff" },
   {
-    title: "Green",
-    primary: "#15a356",
-    secondary: "#9dF06c",
-    accent: "#ffffff",
+    title: "Closed Eyes in the Sun",
+    primary: "#FF3F2A",
+    secondary: "#ff7328",
+    accent: "#FFFFFF",
   },
   {
-    title: "Basic",
-    primary: "#32056f",
-    secondary: "#7139e6",
-    accent: "#ffffff",
+    title: "Tange-orange",
+    primary: "#FF952A",
+    secondary: "#FFD452",
+    accent: "#FFFFFF",
   },
   {
-    title: "White and Blue",
-    primary: "#ffffff",
-    secondary: "#3638dc",
-    accent: "#ffffff",
+    title: "Jungle-Chic",
+    primary: "#69C647",
+    secondary: "#38BC7F",
+    accent: "#FFFFFF",
   },
   {
-    title: "Black-ish",
-    primary: "#232323",
-    secondary: "#434343",
-    accent: "#959595",
+    title: "World's Most Generic Blues",
+    primary: "#299FD2",
+    secondary: "#2956D2",
+    accent: "#FFFFFF",
+  },
+  {
+    title: "Irises with Lavenders",
+    primary: "#3A29D2",
+    secondary: "#8029D2",
+    accent: "#FFFFFF",
+  },
+  {
+    title: "(Un)Opinionatedly-Blue Grays",
+    primary: "#1d1e21",
+    secondary: "#34373d",
+    accent: "#FFFFFF",
+  },
+  {
+    title: "Steam-Pressed Shirt",
+    primary: "#edf0f9",
+    secondary: "#f7f8fc",
+    accent: "#FFFFFF",
   },
 ];
-
-const defaultCustomTheme = {
-  title: "Custom",
-  primary: "#848484",
-  secondary: "#848484",
-  accent: "#848484",
-};
-
-export const customTheme = (() => {
-  const initCustomTheme =
-    JSON.parse(localStorage.getItem("customTheme")) || defaultCustomTheme;
-
-  const store = writable<Theme>(initCustomTheme);
-
-  const _set = store.set;
-
-  store.set = (theme) => {
-    localStorage.setItem("customTheme", JSON.stringify(theme));
-    _set(theme);
-    activeTheme.set(theme);
-  };
-  return store;
-})();
 
 export const activeTheme = (() => {
   const initThemeTitle = localStorage.getItem("theme");
@@ -246,6 +240,27 @@ export const activeTheme = (() => {
     _set(theme);
   };
 
+  return store;
+})();
+
+export const customTheme = (() => {
+  const initCustomTheme = JSON.parse(localStorage.getItem("customTheme")) || {
+    ...(themes.find((theme) => theme.title === localStorage.getItem("theme")) ||
+      themes[0]),
+  };
+
+  const store = writable<Theme>(initCustomTheme);
+
+  const _set = store.set;
+
+  store.set = (theme) => {
+    localStorage.setItem(
+      "customTheme",
+      JSON.stringify({ ...theme, title: "customTheme" })
+    );
+    _set(theme);
+    activeTheme.set(theme);
+  };
   return store;
 })();
 

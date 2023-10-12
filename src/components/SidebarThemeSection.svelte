@@ -11,6 +11,7 @@
   import InputLabel from "./InputLabel.svelte";
   import RangeInput from "./RangeInput.svelte";
   import ColorInput from "./ColorInput.svelte";
+  import clsx from "clsx";
 
   const backgroundOptions = ["Audio", "Gradient", "Solid"];
 </script>
@@ -18,73 +19,87 @@
 <SidebarSection title="Theme">
   <div class="flex flex-col gap-6">
     <!-- Color Theme -->
-    <div class="grid grid-cols-6 gap-y-3">
-      <div class="col-span-6">
-        <InputLabel>Color Theme</InputLabel>
-      </div>
-      {#each themes as theme, i}
-        <button
-          class="group transition transition-bg duration-150 focus:outline-none {i !==
-            0 &&
-            'border-l-[1px] border-fmd-gray dark:border-fmd-blue'} {theme ===
-          $activeTheme
-            ? 'bg-fmd-red/5 focus:bg-fmd-red/5 dark:bg-fmd-blue/50 dark:focus:bg-fmd-blue/50'
-            : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10 dark:hover:bg-fmd-blue/20 dark:focus:bg-fmd-blue/20'}"
-          on:click={() => ($activeTheme = theme)}
-        >
-          <div class="grid grid-cols-2 gap-1 p-2">
+    <div>
+      <InputLabel>Color Theme</InputLabel>
+      <div
+        class="select-parent justify-center"
+        style="grid-template-columns: repeat({themes.length}, 1fr) 1.5fr;"
+      >
+        {#each themes as theme, i}
+          <button
+            class={clsx(
+              "select-child-wrapper pt-2 pb-1 group",
+              i !== 0 && "not-first"
+            )}
+            on:click={() => ($activeTheme = theme)}
+          >
             <div
-              class="w-full aspect-square"
+              class={clsx(
+                "inline-block relative w-7 h-7 overflow-hidden rounded-full border-2 border-fmd-gray dark:border-fmd-white/20",
+                "transition-default",
+                "group-hover:border-fmd-red dark:group-hover:border-fmd-white"
+              )}
               style="background-color: {theme.primary};"
-            />
+            >
+              <div
+                class="w-[200%] aspect-square absolute top-0 left-1/2 rotate-45"
+                style="background-color: {theme.secondary};"
+              />
+            </div>
             <div
-              class="w-full aspect-square"
-              style="background-color: {theme.secondary};"
+              class={clsx(
+                "select-child-overlay",
+                theme === $activeTheme && "select-child-overlay-selected"
+              )}
             />
-          </div>
+          </button>
+        {/each}
+        <button
+          class={clsx(
+            "select-child-wrapper not-first transition-default hover:text-fmd-red dark:text-white",
+            $customTheme === $activeTheme && "text-fmd-red-600"
+          )}
+          on:click={() => ($activeTheme = $customTheme)}
+        >
+          <div class="transition-default text-sm">Custom</div>
           <div
-            class="transition transition-all duration-150 {theme ===
-            $activeTheme
-              ? 'bg-fmd-red group-focus:bg-fmd-red'
-              : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow dark:group-hover:bg-fmd-sky dark:group-focus:bg-fmd-sky'} h-1 "
+            class={clsx(
+              "select-child-overlay",
+              $customTheme === $activeTheme && "select-child-overlay-selected"
+            )}
           />
         </button>
-      {/each}
-
-      <button
-        class="group transition transition-bg duration-150 focus:outline-none border-l-[1px] border-fmd-gray dark:border-fmd-blue {$customTheme ===
-        $activeTheme
-          ? 'bg-fmd-red/5 focus:bg-fmd-red/5 dark:bg-fmd-blue/50 dark:focus:bg-fmd-blue/50'
-          : 'hover:bg-fmd-yellow/10 focus:bg-fmd-yellow/10 dark:hover:bg-fmd-blue/20 dark:focus:bg-fmd-blue/20'}"
-        on:click={() => ($activeTheme = $customTheme)}
-      >
-        <div
-          class=" m-auto h-[calc(100%-5px)] leading-[40px] align-middle text-xs transition transition-all duration-150 dark:text-white"
-        >
-          Custom
-        </div>
-        <div
-          class="transition transition-all duration-150 {$customTheme ===
-          $activeTheme
-            ? 'bg-fmd-red group-focus:bg-fmd-red'
-            : 'group-hover:bg-fmd-yellow group-focus:bg-fmd-yellow dark:group-hover:bg-fmd-sky dark:group-focus:bg-fmd-sky'} h-1"
-        />
-      </button>
+      </div>
 
       {#if $activeTheme === $customTheme}
-        <div
-          class="col-span-6 grid grid-cols-2 gap-x-4"
-          transition:slide={{ duration: 150 }}
-        >
-          <div class="col-span-2 pb-2">
+        <div class="mt-4" transition:slide={{ duration: 150 }}>
+          <div class="pb-2">
             <InputLabel name="customTheme">Custom Theme</InputLabel>
           </div>
-          <ColorInput title="Primary Color" bind:value={$customTheme.primary} />
-          <ColorInput
-            title="Secondary Color"
-            bind:value={$customTheme.secondary}
-            rightAlignPopup={true}
-          />
+          <div class="grid grid-cols-[1fr_1fr_auto]">
+            <ColorInput
+              title="Primary Color"
+              bind:value={$customTheme.primary}
+            />
+            <ColorInput
+              title="Secondary Color"
+              bind:value={$customTheme.secondary}
+              rightAlignPopup={true}
+            />
+            <div
+              class={clsx(
+                "justify-self-end relative w-8 h-8 overflow-hidden rounded-full border-2 border-fmd-gray dark:border-fmd-white/20",
+                "transition-default",
+                "group-hover:border-fmd-red dark:group-hover:border-fmd-white"
+              )}
+              style="background-color: {$customTheme.primary};"
+            >
+              <div
+                class="w-[200%] aspect-square absolute top-0 left-1/2 rotate-45"
+                style="background-color: {$customTheme.secondary};"
+              />
+            </div>
+          </div>
         </div>
       {/if}
     </div>
@@ -100,7 +115,7 @@
   </div>
 </SidebarSection>
 
-<div class="w-full h-[1px] bg-fmd-gray dark:bg-fmd-blue" />
+<div class="w-full h-px bg-fmd-gray dark:bg-fmd-blue" />
 
 <SidebarSection title="Background Style">
   <div class="flex flex-col gap-6">
@@ -116,7 +131,6 @@
             ariaLabel: bg.ariaLabel,
           }))}
         bind:value={$activeBackground}
-        isDropdown={false}
       />
     {/each}
   </div>

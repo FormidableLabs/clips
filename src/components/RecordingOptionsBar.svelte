@@ -1,4 +1,5 @@
 <script lang="ts">
+  import clsx from "clsx";
   import {
     canvasDimensions,
     canvasSizes,
@@ -9,7 +10,12 @@
   import Select from "./Select.svelte";
 </script>
 
-<div class="grid grid-cols-[3fr_1fr] col-span-4 self-end gap-5">
+<div
+  class={clsx(
+    "grid grid-cols-[3fr_1fr] col-span-4 self-end gap-5",
+    $isRecording && "grayscale opacity-70 cursor-not-allowed"
+  )}
+>
   <Select
     title="Canvas Size"
     name="canvasSize"
@@ -19,7 +25,6 @@
     }))}
     bind:value={$canvasDimensions}
     isDisabled={$isRecording}
-    isDropdown={false}
   />
 
   <Select
@@ -31,6 +36,5 @@
     }))}
     bind:value={$recordingFPS}
     isDisabled={$isRecording}
-    isDropdown={false}
   />
 </div>
