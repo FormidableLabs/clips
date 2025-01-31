@@ -32,7 +32,7 @@
     class={clsx(
       "w-full flex items-center p-1.5 dark:border-fmd-white/20 dark:hover:bg-fmd-white-background",
       "hover:text-fmd-red dark:text-fmd-white dark:hover:text-fmd-white dark:hover:border-fmd-white",
-      "transition transition-all duration-100",
+      "transition-all duration-100",
       extraClasses,
       isSquareVariant ? "h-full rounded" : "rounded-full aspect-square",
       isTextVariant

@@ -1,10 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@tailwind apply;
 
 .transition-default {
-  @apply transition transition-all duration-100 ease-out;
+  @apply transition-all duration-100 ease-out;
 }
 
 .select-parent {
