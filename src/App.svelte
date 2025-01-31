@@ -76,7 +76,7 @@
 </script>
 
 <div
-  class="w-screen h-screen overflow-hidden bg-fmd-white p-0 sm:p-3 md:pr-0 sm:p-3 md:pr-0 flex items-center relative dark:bg-fmd-navy"
+  class="w-screen h-screen overflow-hidden bg-fmd-white p-0 sm:p-3 md:pr-0 flex items-center relative dark:bg-fmd-navy"
 >
   <div class="w-full flex gap-12 mr-0 ml-9 h-full">
     <div
@@ -98,7 +98,7 @@
     class="absolute bottom-0 right-0 p-4 flex gap-4 items-center text-fmd-black dark:text-fmd-white"
   >
     <a
-      class="w-10 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
+      class="w-10 hover:text-fmd-red transition-colors duration-100 ease-in-out"
       aria-label="Formidable logo"
       href="https://formidable.com"
       target="_blank"
@@ -107,7 +107,7 @@
       <FormidableIcon />
     </a>
     <a
-      class="w-7 hover:text-fmd-red transition transition-colors duration-100 ease-in-out"
+      class="w-7 hover:text-fmd-red transition-colors duration-100 ease-in-out"
       aria-label="GitHub logo"
       href="https://github.com/FormidableLabs/clips"
       target="_blank"

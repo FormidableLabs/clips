@@ -71,7 +71,6 @@
 </script>
 
 <ActionButton
-  isActive={Boolean($webcamState.stream)}
   {isPopupOpen}
   on:popupDismiss={() => (isPopupOpen = false)}
   on:click={handleActionButtonClick}

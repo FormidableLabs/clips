@@ -26,7 +26,7 @@
         {name}
         id={name}
         class={clsx(
-          "z-20 block w-full border-fmd-gray rounded-md bg-transparent appearance-none my-2.5 w-full border-0",
+          "z-20 block border-fmd-gray rounded-md bg-transparent appearance-none my-2.5 w-full border-0",
           isDisabled ? "opacity-30" : ""
         )}
         bind:value

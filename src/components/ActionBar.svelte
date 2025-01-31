@@ -75,7 +75,7 @@
       }}
     >
       <div
-        class="bg-fmd-red transition transition-all duration-300 ease-in-out {$isRecording
+        class="bg-fmd-red transition-all duration-300 ease-in-out {$isRecording
           ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
           : 'w-full h-full rounded-full'}"
       />
