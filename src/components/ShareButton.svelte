@@ -10,14 +10,15 @@
   export let share: Share;
   export let index: number;
   let preview: HTMLVideoElement;
-  let isActive: boolean = false;
 
   onMount(async () => {
     try {
       share.stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
       });
-      share.preview.srcObject = share.stream;
+      if (share.preview && share.stream) {
+        share.preview.srcObject = share.stream;
+      }
       grabDimensions();
       makeActive();
     } catch {
@@ -25,78 +26,64 @@
     }
   });
 
-  const removeShare = async (removingItemIndex) => {
+  const removeShare = async (removingItemIndex: number) => {
     const filteredShares = $screenShareState.shares.filter(
-      (item, i) => i !== removingItemIndex
+      (_, i) => i !== removingItemIndex
     );
-    let newActiveIndex = null;
-    if (
-      removingItemIndex === $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex === 0
-    ) {
-      newActiveIndex = 0;
+    const current = $screenShareState.activeIndex;
+    let newActiveIndex: number | null = current;
+
+    if (current !== null) {
+      if (current === removingItemIndex) {
+        newActiveIndex = filteredShares.length
+          ? Math.min(removingItemIndex, filteredShares.length - 1)
+          : null;
+      } else if (current > removingItemIndex) {
+        newActiveIndex = current - 1;
+      }
     }
 
-    if (
-      removingItemIndex === $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex !== 0
-    ) {
-      newActiveIndex = removingItemIndex - 1;
-    }
-    if (
-      removingItemIndex !== $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex > $screenShareState.activeIndex
-    ) {
-      newActiveIndex = $screenShareState.activeIndex;
-    }
-    if (
-      removingItemIndex !== $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex < $screenShareState.activeIndex
-    ) {
-      newActiveIndex = $screenShareState.activeIndex - 1;
-    }
     $screenShareState = { activeIndex: newActiveIndex, shares: filteredShares };
   };
 
-  const stopSharing = (event, index) => {
-    if ($screenShareState.shares[index]) {
-      $screenShareState.shares[index].stream
-        .getTracks()
-        .forEach((track) => track.stop());
+  const stopSharing = (_event: MouseEvent, idx: number) => {
+    const target = $screenShareState.shares[idx];
+    if (target?.stream) {
+      target.stream.getTracks().forEach((track) => track.stop());
       $screenShareState.shares = $screenShareState.shares;
-      removeShare(index);
+      removeShare(idx);
     }
   };
 
   const grabDimensions = () => {
-    const { videoWidth, videoHeight } = share.preview;
-    share.width = videoWidth;
-    share.height = videoHeight;
+    if (share.preview) {
+      share.width = share.preview.videoWidth;
+      share.height = share.preview.videoHeight;
+    }
   };
 
   const makeActive = () => {
     const shareIndex = $screenShareState.shares.indexOf(share);
-    $screenShareState.activeIndex = shareIndex;
+    $screenShareState.activeIndex = shareIndex === -1 ? null : shareIndex;
     setTimeout(() => {
-      $screenShareState.shares[shareIndex].width = share.preview.videoWidth;
-      $screenShareState.shares[shareIndex].height = share.preview.videoHeight;
+      const target = $screenShareState.shares[shareIndex];
+      if (target && share.preview) {
+        target.width = share.preview.videoWidth;
+        target.height = share.preview.videoHeight;
+      }
     }, 100);
   };
 
   $: {
-    if (preview && $screenShareState.shares[index]) {
-      preview.srcObject = $screenShareState.shares[index].stream;
+    const shareState = $screenShareState.shares[index];
+    if (preview && shareState?.stream) {
+      preview.srcObject = shareState.stream;
     }
-    isActive = $screenShareState.activeIndex === index;
   }
 </script>
 
 <div class="w-20 h-14 relative">
-  <ActionButton {isActive} isSquareVariant on:click={makeActive}>
+  <ActionButton isSquareVariant on:click={makeActive}>
     <video
       class="invisible absolute top-0 left-0"
       bind:this={share.preview}
@@ -104,9 +91,9 @@
       playsinline
       muted
       on:resize={grabDimensions}
-    />
+    ></video>
     {#if share.stream}
-      <video class="h-full" autoplay playsinline muted bind:this={preview} />
+      <video class="h-full" autoplay playsinline muted bind:this={preview}></video>
       <button
         on:click={(event) => stopSharing(event, index)}
         class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full bg-fmd-red text-white hover:bg-fmd-red-600 transition-default"
@@ -119,8 +106,10 @@
     <div
       class={clsx(
         "w-1.5 h-1.5 bg-fmd-red rounded-full absolute left-0 right-0 m-auto -bottom-3",
-        isActive ? "block" : "hidden group-hover:block"
+        $screenShareState.activeIndex === index
+          ? "block"
+          : "hidden group-hover:block"
       )}
-    />
+    ></div>
   </ActionButton>
 </div>
