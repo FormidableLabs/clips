@@ -6,6 +6,7 @@ import { roundedRectClip } from "./drawUtils";
  */
 export const createSolidBackground = (key: keyof Theme): DrawFn => {
   return ({ ctx, theme, canvasSize }) => {
+    if (!ctx) return;
     ctx.save();
 
     ctx.fillStyle = theme[key];
@@ -22,6 +23,7 @@ export const createLinearGradientBackground = (
   direction: "bottom_right" | "top" | "bottom" | "left" | "right"
 ): DrawFn => {
   return ({ ctx, canvasSize, theme }) => {
+    if (!ctx) return;
     ctx.save();
 
     let gradVals = [0, 0, canvasSize.width, canvasSize.height] as [
@@ -64,6 +66,7 @@ export const createLinearGradientBackground = (
  */
 export const createAudioWaveBackground = (): DrawFn => {
   return ({ ctx, micAnalyzer, theme, canvasSize }) => {
+    if (!ctx) return;
     ctx.save();
     const { width, height } = canvasSize;
 
@@ -76,7 +79,7 @@ export const createAudioWaveBackground = (): DrawFn => {
       analyser.getByteFrequencyData(freqs);
 
       // Let's only take every-other frequency?
-      let modFreqs = [];
+      let modFreqs: number[] = [];
       const N = 16;
       let acc = 0;
       for (let i = 0; i < freqs.length; i++) {
@@ -93,12 +96,11 @@ export const createAudioWaveBackground = (): DrawFn => {
       const p = new Path2D();
       p.moveTo(0, height - modFreqs[0] / 255);
 
-      let nextValue: [number, number], thisValue: [number, number];
+      let nextValue: [number, number] = [0, 0];
+      let thisValue: [number, number] = [0, 0];
       for (let i = 0; i < modFreqs.length - 1; i++) {
         thisValue = nextValue;
         nextValue = [i * dx, (1 - modFreqs[i] / 255) * height];
-
-        if (!thisValue) continue;
 
         const x_mid = (thisValue[0] + nextValue[0]) / 2;
         const y_mid = (thisValue[1] + nextValue[1]) / 2;
@@ -130,6 +132,7 @@ export const createAudioWaveBackground = (): DrawFn => {
  */
 export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
   return ({ ctx, canvasSize, theme, micAnalyzer }) => {
+    if (!ctx) return;
     ctx.save();
     const { width, height } = canvasSize;
 
@@ -142,7 +145,7 @@ export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
       analyser.getByteFrequencyData(freqs);
 
       // Let's only take every-other frequency?
-      let modFreqs = [];
+      let modFreqs: number[] = [];
       let acc = 0;
       for (let i = 0; i < freqs.length; i++) {
         acc += freqs[i];
@@ -159,7 +162,10 @@ export const createAudioBarBackground = ({ N }: { N: number }): DrawFn => {
       const dx = width / modFreqs.length;
 
       ctx.fillStyle = lingrad;
-      let x0, y0, w, h;
+      let x0 = 0,
+        y0 = 0,
+        w = 0,
+        h = 0;
       for (let i = 0; i < modFreqs.length - 1; i++) {
         x0 = gap + (barWidth + gap) * i;
         h = (modFreqs[i] / 255) * height;
@@ -193,6 +199,7 @@ export const createRainbowAudioBarBackground = ({
   initHue?: number;
 } = {}): DrawFn => {
   return ({ ctx, canvasSize, theme, micAnalyzer }) => {
+    if (!ctx) return;
     ctx.save();
     const { width, height } = canvasSize;
 
@@ -201,7 +208,7 @@ export const createRainbowAudioBarBackground = ({
       analyser.getByteFrequencyData(freqs);
 
       // Let's only take every-other frequency?
-      let modFreqs = [];
+      let modFreqs: number[] = [];
       let acc = 0;
       for (let i = 0; i < freqs.length; i++) {
         acc += freqs[i];
@@ -217,7 +224,12 @@ export const createRainbowAudioBarBackground = ({
       const barHeight = barWidth / 2;
       const numFullBars = Math.floor(height / (barHeight + gap));
 
-      let x0, y0, h, ang, numFilledBars, lastBarHeight;
+      let x0 = 0,
+        y0 = 0,
+        h = 0,
+        ang = 0,
+        numFilledBars = 0,
+        lastBarHeight = 0;
       for (let i = 0; i < modFreqs.length; i++) {
         x0 = gap + (barWidth + gap) * i;
         h = (modFreqs[i] / 255) * height;

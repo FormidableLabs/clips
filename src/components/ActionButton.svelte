@@ -9,6 +9,7 @@
   export let isTextVariant: boolean = false;
   export let showPopupUnder: boolean = false;
   export let rightAlignPopup: boolean = false;
+  export let isActive: boolean = false;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -21,8 +22,7 @@
         : 'bottom-20'} {rightAlignPopup
         ? '-right-2'
         : '-left-2'} rounded shadow-xl action_button_popup z-30"
-      use:clickOutside
-      on:outclick={() => dispatch("popupDismiss")}
+      use:clickOutside={() => dispatch("popupDismiss")}
     >
       <slot name="popupContent" />
     </div>

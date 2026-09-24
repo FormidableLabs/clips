@@ -28,7 +28,7 @@
     }
   };
 
-  let audioDevices;
+  let audioDevices: Promise<MediaDeviceInfo[]> | undefined;
   let hasMicPermission = false;
 
   $: {

@@ -19,21 +19,23 @@
         deviceId: { exact: deviceId },
       },
     });
-    $webcamState.preview.srcObject = $webcamState.stream;
+    if ($webcamState.preview) {
+      $webcamState.preview.srcObject = $webcamState.stream;
+    }
     grabDimensions();
   };
 
   const grabDimensions = () => {
-    if ($webcamState.stream?.getVideoTracks?.()?.[0]?.getSettings?.()) {
-      const { width, height } = $webcamState.stream
-        .getVideoTracks()[0]
-        .getSettings();
-      $webcamState.width = width;
-      $webcamState.height = height;
+    const track = $webcamState.stream?.getVideoTracks?.()?.[0];
+    const settings = track?.getSettings?.();
+    if (settings) {
+      const { width, height } = settings;
+      $webcamState.width = width ?? 0;
+      $webcamState.height = height ?? 0;
     }
   };
 
-  let devices;
+  let devices: Promise<MediaDeviceInfo[]> | undefined;
   let hasWebcamPermissions = false;
   $: {
     if (isPopupOpen) {
@@ -61,7 +63,9 @@
       $webcamState.stream.getTracks().forEach((track) => track.stop());
       $webcamState.stream = null;
       $webcamState.deviceId = null;
-      $webcamState.preview.srcObject = null;
+      if ($webcamState.preview) {
+        $webcamState.preview.srcObject = null;
+      }
     }
   };
 

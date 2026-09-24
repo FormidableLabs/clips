@@ -32,7 +32,7 @@
 
   // Canvas tracking
   let canvas: HTMLCanvasElement;
-  let ctx: CanvasRenderingContext2D;
+  let ctx: CanvasRenderingContext2D | undefined;
 
   // Position values
   let isMovingWebcam = false;
@@ -148,7 +148,7 @@
 
   // On mount, get canvas render context
   onMount(() => {
-    ctx ||= canvas.getContext("2d");
+    ctx = canvas.getContext("2d") ?? undefined;
   });
 
   // Kick off drawing process based on recordingFPS
@@ -164,7 +164,7 @@
 
   // Track drawArgs
   let drawArgs: DrawArgs = {
-    ctx,
+    ctx: undefined as CanvasRenderingContext2D | undefined,
     theme: $activeTheme,
     canvasSize: $canvasDimensions,
     activeShare: $activeShare,
@@ -223,6 +223,7 @@
     // Note: this is a bit of a hack, but avoids Svelte's reactivity from triggering
     //  reactive block above that calls `startDraw`.
     const c = drawArgs.ctx;
+    if (!c) return;
 
     // Draw
     c.clearRect(0, 0, canvas.width, canvas.height);
@@ -310,8 +311,7 @@
         style="top: {webcamY * containerHeight}px; left: {webcamX *
           containerWidth}px;"
         on:mousedown={() => (isWebcamFocused = true)}
-        use:clickOutside
-        on:outclick={() => (isWebcamFocused = false)}
+        use:clickOutside={() => (isWebcamFocused = false)}
       >
         <div class="relative">
           <div

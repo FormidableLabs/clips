@@ -1,10 +1,39 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@tailwind apply;
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
-.transition-default {
-  @apply transition transition-all duration-100 ease-out;
+@theme {
+  --color-fmd-white: #ffffff;
+  --color-fmd-white-background: #FFFFFF05;
+  --color-fmd-black: #000000;
+  --color-fmd-navy: #1E2852;
+  --color-fmd-blue: #364c99;
+  --color-fmd-red: #F04D21;
+  --color-fmd-red-300: #F3714D;
+  --color-fmd-red-600: #DB3B0F;
+  --color-fmd-red-background: #db3b0f05;
+  --color-fmd-gray: #E5E5E5;
+  --color-fmd-gray-600: #888888;
+}
+
+@keyframes loading {
+  0%, 100% {
+    fill: #88888880;
+  }
+  50% {
+    fill: #888888;
+  }
+}
+@keyframes loadingDark {
+  0%, 100% {
+    fill: #FFFFFF80;
+  }
+  50% {
+    fill: #FFFFFF;
+  }
+}
+
+@utility transition-default {
+  @apply transition-all duration-100 ease-out;
 }
 
 .select-parent {

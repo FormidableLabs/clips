@@ -17,7 +17,9 @@
       share.stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
       });
-      share.preview.srcObject = share.stream;
+      if (share.preview && share.stream) {
+        share.preview.srcObject = share.stream;
+      }
       grabDimensions();
       makeActive();
     } catch {
@@ -25,71 +27,58 @@
     }
   });
 
-  const removeShare = async (removingItemIndex) => {
+  const removeShare = async (removingItemIndex: number) => {
     const filteredShares = $screenShareState.shares.filter(
-      (item, i) => i !== removingItemIndex
+      (_, i) => i !== removingItemIndex
     );
-    let newActiveIndex = null;
-    if (
-      removingItemIndex === $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex === 0
-    ) {
-      newActiveIndex = 0;
+    const current = $screenShareState.activeIndex;
+    let newActiveIndex: number | null = current;
+
+    if (current !== null) {
+      if (current === removingItemIndex) {
+        newActiveIndex = filteredShares.length
+          ? Math.min(removingItemIndex, filteredShares.length - 1)
+          : null;
+      } else if (current > removingItemIndex) {
+        newActiveIndex = current - 1;
+      }
     }
 
-    if (
-      removingItemIndex === $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex !== 0
-    ) {
-      newActiveIndex = removingItemIndex - 1;
-    }
-    if (
-      removingItemIndex !== $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex > $screenShareState.activeIndex
-    ) {
-      newActiveIndex = $screenShareState.activeIndex;
-    }
-    if (
-      removingItemIndex !== $screenShareState.activeIndex &&
-      filteredShares.length &&
-      removingItemIndex < $screenShareState.activeIndex
-    ) {
-      newActiveIndex = $screenShareState.activeIndex - 1;
-    }
     $screenShareState = { activeIndex: newActiveIndex, shares: filteredShares };
   };
 
-  const stopSharing = (event, index) => {
-    if ($screenShareState.shares[index]) {
-      $screenShareState.shares[index].stream
-        .getTracks()
-        .forEach((track) => track.stop());
+  const stopSharing = (_event: MouseEvent, idx: number) => {
+    const target = $screenShareState.shares[idx];
+    if (target?.stream) {
+      target.stream.getTracks().forEach((track) => track.stop());
       $screenShareState.shares = $screenShareState.shares;
-      removeShare(index);
+      removeShare(idx);
     }
   };
 
   const grabDimensions = () => {
-    const { videoWidth, videoHeight } = share.preview;
-    share.width = videoWidth;
-    share.height = videoHeight;
+    if (share.preview) {
+      share.width = share.preview.videoWidth;
+      share.height = share.preview.videoHeight;
+    }
   };
 
   const makeActive = () => {
     const shareIndex = $screenShareState.shares.indexOf(share);
-    $screenShareState.activeIndex = shareIndex;
+    $screenShareState.activeIndex = shareIndex === -1 ? null : shareIndex;
     setTimeout(() => {
-      $screenShareState.shares[shareIndex].width = share.preview.videoWidth;
-      $screenShareState.shares[shareIndex].height = share.preview.videoHeight;
+      const target = $screenShareState.shares[shareIndex];
+      if (target && share.preview) {
+        target.width = share.preview.videoWidth;
+        target.height = share.preview.videoHeight;
+      }
     }, 100);
   };
 
   $: {
-    if (preview && $screenShareState.shares[index]) {
-      preview.srcObject = $screenShareState.shares[index].stream;
+    const shareState = $screenShareState.shares[index];
+    if (preview && shareState?.stream) {
+      preview.srcObject = shareState.stream;
     }
     isActive = $screenShareState.activeIndex === index;
   }
