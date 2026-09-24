@@ -9,7 +9,6 @@
   export let isTextVariant: boolean = false;
   export let showPopupUnder: boolean = false;
   export let rightAlignPopup: boolean = false;
-  export let isActive: boolean = false;
 
   const dispatch = createEventDispatcher();
 </script>

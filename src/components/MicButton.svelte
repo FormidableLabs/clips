@@ -66,7 +66,6 @@
 </script>
 
 <ActionButton
-  isActive={Boolean($micState.stream)}
   {isPopupOpen}
   on:popupDismiss={() => (isPopupOpen = false)}
   on:click={handleActionButtonClick}

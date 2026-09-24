@@ -164,7 +164,7 @@
 
   // Track drawArgs
   let drawArgs: DrawArgs = {
-    ctx: undefined as CanvasRenderingContext2D | undefined,
+    ctx: undefined,
     theme: $activeTheme,
     canvasSize: $canvasDimensions,
     activeShare: $activeShare,

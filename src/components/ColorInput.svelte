@@ -16,7 +16,6 @@
 </script>
 
 <ActionButton
-  isActive={false}
   isSquareVariant={true}
   showPopupUnder={true}
   isTextVariant={true}

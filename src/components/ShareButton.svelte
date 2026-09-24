@@ -10,7 +10,6 @@
   export let share: Share;
   export let index: number;
   let preview: HTMLVideoElement;
-  let isActive: boolean = false;
 
   onMount(async () => {
     try {
@@ -80,12 +79,11 @@
     if (preview && shareState?.stream) {
       preview.srcObject = shareState.stream;
     }
-    isActive = $screenShareState.activeIndex === index;
   }
 </script>
 
 <div class="w-20 h-14 relative">
-  <ActionButton {isActive} isSquareVariant on:click={makeActive}>
+  <ActionButton isSquareVariant on:click={makeActive}>
     <video
       class="invisible absolute top-0 left-0"
       bind:this={share.preview}
@@ -108,7 +106,9 @@
     <div
       class={clsx(
         "w-1.5 h-1.5 bg-fmd-red rounded-full absolute left-0 right-0 m-auto -bottom-3",
-        isActive ? "block" : "hidden group-hover:block"
+        $screenShareState.activeIndex === index
+          ? "block"
+          : "hidden group-hover:block"
       )}
     />
   </ActionButton>
