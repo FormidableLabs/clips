@@ -267,7 +267,7 @@
       height="{$canvasDimensions.height}px"
       style="transform: scale({scale}); transform-origin: top left;"
       bind:this={canvas}
-    />
+    ></canvas>
     <!-- Add box on top of active screen share for alignment options -->
     {#if $activeShare?.width}
       <div class="absolute top-0 left-0 w-full h-full grid">
@@ -331,7 +331,7 @@
               : 'border-radius: 100%;'}"
             on:mousedown={() => (isMovingWebcam = true)}
             on:mouseup={() => (isMovingWebcam = false)}
-          />
+          ></div>
           {#if isWebcamFocused}
             <div
               class="flex items-center absolute items-end gap-2"

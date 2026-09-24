@@ -44,14 +44,14 @@
               <div
                 class="w-[200%] aspect-square absolute top-0 left-1/2 rotate-45"
                 style="background-color: {theme.secondary};"
-              />
+              ></div>
             </div>
             <div
               class={clsx(
                 "select-child-overlay",
                 theme === $activeTheme && "select-child-overlay-selected"
               )}
-            />
+            ></div>
           </button>
         {/each}
         <button
@@ -67,7 +67,7 @@
               "select-child-overlay",
               $customTheme === $activeTheme && "select-child-overlay-selected"
             )}
-          />
+          ></div>
         </button>
       </div>
 
@@ -97,7 +97,7 @@
               <div
                 class="w-[200%] aspect-square absolute top-0 left-1/2 rotate-45"
                 style="background-color: {$customTheme.secondary};"
-              />
+              ></div>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@
   </div>
 </SidebarSection>
 
-<div class="w-full h-px bg-fmd-gray dark:bg-fmd-blue" />
+<div class="w-full h-px bg-fmd-gray dark:bg-fmd-blue"></div>
 
 <SidebarSection title="Background Style">
   <div class="flex flex-col gap-6">

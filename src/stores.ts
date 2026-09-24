@@ -125,30 +125,38 @@ export const micState = writable<{
   deviceId?: string | null;
 }>({});
 
-export const micAnalyzer: Readable<MicAnalyzerData | null> = derived(
-  micState,
-  ($micState): MicAnalyzerData | null => {
-    if (!$micState.stream) return null;
-    const $stream = $micState.stream;
-    const context = new AudioContext();
-    const analyser = context.createAnalyser();
-    analyser.fftSize = 128;
-    // Set min/max decibels so bars aren't going too far over 100% of height
-    analyser.minDecibels = -90;
-    analyser.maxDecibels = -15;
-
-    const source = context.createMediaStreamSource($stream);
-    source.connect(analyser);
-
-    // analyser.connect(context.destination);
-
-    const freqs: Uint8Array<ArrayBuffer> = new Uint8Array(
-      analyser.frequencyBinCount
-    );
-
-    return { freqs, analyser };
+export const micAnalyzer: Readable<MicAnalyzerData | null> = derived<
+  typeof micState,
+  MicAnalyzerData | null
+>(micState, ($micState, set) => {
+  if (!$micState.stream) {
+    set(null);
+    return;
   }
-);
+  const $stream = $micState.stream;
+  const context = new AudioContext();
+  const analyser = context.createAnalyser();
+  analyser.fftSize = 128;
+  // Set min/max decibels so bars aren't going too far over 100% of height
+  analyser.minDecibels = -90;
+  analyser.maxDecibels = -15;
+
+  const source = context.createMediaStreamSource($stream);
+  source.connect(analyser);
+
+  // analyser.connect(context.destination);
+
+  const freqs: Uint8Array<ArrayBuffer> = new Uint8Array(
+    analyser.frequencyBinCount
+  );
+
+  set({ freqs, analyser });
+
+  return () => {
+    source.disconnect();
+    context.close();
+  };
+});
 
 /**
  * Canvas stream
@@ -198,6 +206,12 @@ export type Theme = {
   secondary: string;
   accent: string;
 };
+const themeSchema: z.ZodType<Theme> = z.object({
+  title: z.string(),
+  primary: z.string(),
+  secondary: z.string(),
+  accent: z.string(),
+});
 export const themes: Theme[] = [
   {
     title: "Closed Eyes in the Sun",
@@ -268,7 +282,7 @@ export const customTheme = (() => {
   };
   if (storedCustomTheme) {
     try {
-      initCustomTheme = JSON.parse(storedCustomTheme);
+      initCustomTheme = themeSchema.parse(JSON.parse(storedCustomTheme));
     } catch {}
   }
 
@@ -543,26 +557,23 @@ const screenStateSchema = z.object({
     .default(VertAlign.bottom),
   // TODO: border radius?
 });
-type ScreenState = z.infer<typeof webcamStateSchema>;
+type ScreenState = z.infer<typeof screenStateSchema>;
 
 export const screenLayoutState = (() => {
-  const defaultState: WebcamLayoutState = {
+  const defaultState: ScreenState = {
     horizAlign: HorizAlign.left,
     vertAlign: VertAlign.bottom,
-    shape: WebcamShape.circle,
-    size: 0.4,
-    borderRadius: 0.05,
   };
-  let initScreenState: WebcamLayoutState = defaultState;
+  let initScreenState: ScreenState = defaultState;
   try {
     const storedScreenState = localStorage.getItem("screenState");
     if (storedScreenState) {
-      const parsed = webcamStateSchema.parse(JSON.parse(storedScreenState));
+      const parsed = screenStateSchema.parse(JSON.parse(storedScreenState));
       initScreenState = { ...defaultState, ...parsed };
     }
   } catch {}
 
-  const store = writable<WebcamLayoutState>(initScreenState);
+  const store = writable<ScreenState>(initScreenState);
 
   const _set = store.set;
   store.set = (screenState) => {

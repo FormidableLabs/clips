@@ -91,9 +91,9 @@
       playsinline
       muted
       on:resize={grabDimensions}
-    />
+    ></video>
     {#if share.stream}
-      <video class="h-full" autoplay playsinline muted bind:this={preview} />
+      <video class="h-full" autoplay playsinline muted bind:this={preview}></video>
       <button
         on:click={(event) => stopSharing(event, index)}
         class="absolute w-5 -top-2 -right-1.5 p-1.5 rounded-full bg-fmd-red text-white hover:bg-fmd-red-600 transition-default"
@@ -110,6 +110,6 @@
           ? "block"
           : "hidden group-hover:block"
       )}
-    />
+    ></div>
   </ActionButton>
 </div>

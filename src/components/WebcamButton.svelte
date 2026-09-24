@@ -118,5 +118,5 @@
     playsinline
     muted
     on:resize={grabDimensions}
-  />
+  ></video>
 </ActionButton>

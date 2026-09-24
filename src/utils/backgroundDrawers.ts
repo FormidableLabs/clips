@@ -102,6 +102,9 @@ export const createAudioWaveBackground = (): DrawFn => {
         thisValue = nextValue;
         nextValue = [i * dx, (1 - modFreqs[i] / 255) * height];
 
+        // Skip the first point since it has no previous value to curve from
+        if (i === 0) continue;
+
         const x_mid = (thisValue[0] + nextValue[0]) / 2;
         const y_mid = (thisValue[1] + nextValue[1]) / 2;
         const cp_x1 = (x_mid + thisValue[0]) / 2;
