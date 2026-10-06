@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="w-px h-16 bg-fmd-gray dark:bg-fmd-blue" />
+  <div class="w-px h-16 bg-fmd-gray dark:bg-fmd-blue"></div>
 
   <div class="flex gap-3 items-center">
     <!-- Existing screen shares -->
@@ -78,7 +78,7 @@
         class="bg-fmd-red transition transition-all duration-300 ease-in-out {$isRecording
           ? 'w-1/2 h-1/2 rounded-lg group-hover:shadow-xl'
           : 'w-full h-full rounded-full'}"
-      />
+      ></div>
     </button>
   </div>
 

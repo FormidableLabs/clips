@@ -21,7 +21,9 @@
   };
 
   const onRecorderStop = async () => {
-    const duration = performance.now() - $recordingStartTime;
+    const startTime = $recordingStartTime;
+    if (startTime === null) return;
+    const duration = performance.now() - startTime;
     $recordingStartTime = null;
 
     const completeBlob = new Blob(chunks, { type: chunks[0].type });
@@ -55,6 +57,10 @@
     ]);
     // TODO: dynamic bits per second based on resolution...
     const mime = getPreferredMimeType();
+    if (!mime) {
+      console.warn("No supported MIME type for MediaRecorder found");
+      return;
+    }
     ext = mime.ext;
     recorder = new MediaRecorder(combinedStream, {
       audioBitsPerSecond: 128000, // 128 kbps

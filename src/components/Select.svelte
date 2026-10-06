@@ -40,7 +40,7 @@
         >
           {op.title}
         </label>
-        <div class="select-child-overlay" />
+        <div class="select-child-overlay"></div>
       </div>
     {/each}
   </div>
