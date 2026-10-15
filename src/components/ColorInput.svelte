@@ -16,7 +16,6 @@
 </script>
 
 <ActionButton
-  isActive={false}
   isSquareVariant={true}
   showPopupUnder={true}
   isTextVariant={true}
@@ -32,7 +31,7 @@
   </PopupContainer>
 
   <div class="flex items-center gap-2">
-    <div class="h-6 w-6 rounded" style="background-color: {value};" />
+    <div class="h-6 w-6 rounded" style="background-color: {value};"></div>
     {title}
   </div>
 </ActionButton>

@@ -38,8 +38,8 @@
       <div
         class="absolute left-0 h-1 bg-fmd-red z-10"
         style={`width: ${Math.ceil((value / max) * 100)}%`}
-      />
-      <div class="absolute left-0 h-1 w-full bg-fmd-red/20 dark:bg-fmd-white/30 z-0" />
+      ></div>
+      <div class="absolute left-0 h-1 w-full bg-fmd-red/20 dark:bg-fmd-white/30 z-0"></div>
     </div>
     {#if showPercentage}
       <div class="text-xs dark:text-white text-right">

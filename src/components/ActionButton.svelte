@@ -21,8 +21,7 @@
         : 'bottom-20'} {rightAlignPopup
         ? '-right-2'
         : '-left-2'} rounded shadow-xl action_button_popup z-30"
-      use:clickOutside
-      on:outclick={() => dispatch("popupDismiss")}
+      use:clickOutside={() => dispatch("popupDismiss")}
     >
       <slot name="popupContent" />
     </div>

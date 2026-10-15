@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { derived, writable } from "svelte/store";
+import { type Readable, type Writable, derived, writable } from "svelte/store";
 import {
   createAudioBarBackground,
   createAudioWaveBackground,
@@ -16,10 +16,16 @@ export const isRecording = derived(
   recordingStartTime,
   ($startTime) => $startTime !== null
 );
-export const recordingDuration = derived(
+export const recordingDuration: Readable<string | null> = derived<
+  Writable<number | null>,
+  string | null
+>(
   recordingStartTime,
   ($startTime, set) => {
-    if (!$startTime) return null;
+    if ($startTime === null) {
+      set(null);
+      return;
+    }
 
     const setDuration = () => {
       const s = Math.floor((performance.now() - $startTime) / 1000);
@@ -74,9 +80,14 @@ export const screenShareState = writable<ScreenShareState>({
   shares: [],
 });
 
-export const activeShare = derived(screenShareState, ($state) => {
-  return $state.shares[$state.activeIndex];
-});
+export const activeShare: Readable<Share | undefined> = derived(
+  screenShareState,
+  ($state) => {
+    return $state.activeIndex === null
+      ? undefined
+      : $state.shares[$state.activeIndex];
+  }
+);
 
 export const displayStream = derived(screenShareState, ($state) => {
   if ($state.activeIndex === null || $state.shares.length === 0) return null;
@@ -114,8 +125,14 @@ export const micState = writable<{
   deviceId?: string | null;
 }>({});
 
-export const micAnalyzer = derived(micState, ($micState) => {
-  if (!$micState.stream) return null;
+export const micAnalyzer: Readable<MicAnalyzerData | null> = derived<
+  typeof micState,
+  MicAnalyzerData | null
+>(micState, ($micState, set) => {
+  if (!$micState.stream) {
+    set(null);
+    return;
+  }
   const $stream = $micState.stream;
   const context = new AudioContext();
   const analyser = context.createAnalyser();
@@ -129,15 +146,22 @@ export const micAnalyzer = derived(micState, ($micState) => {
 
   // analyser.connect(context.destination);
 
-  let freqs = new Uint8Array(analyser.frequencyBinCount);
+  const freqs: Uint8Array<ArrayBuffer> = new Uint8Array(
+    analyser.frequencyBinCount
+  );
 
-  return { freqs, analyser };
+  set({ freqs, analyser });
+
+  return () => {
+    source.disconnect();
+    context.close();
+  };
 });
 
 /**
  * Canvas stream
  */
-export const canvasStream = writable<MediaStream>(null);
+export const canvasStream = writable<MediaStream | null>(null);
 
 /**
  * Canvas sizes
@@ -182,6 +206,12 @@ export type Theme = {
   secondary: string;
   accent: string;
 };
+const themeSchema: z.ZodType<Theme> = z.object({
+  title: z.string(),
+  primary: z.string(),
+  secondary: z.string(),
+  accent: z.string(),
+});
 export const themes: Theme[] = [
   {
     title: "Closed Eyes in the Sun",
@@ -244,10 +274,17 @@ export const activeTheme = (() => {
 })();
 
 export const customTheme = (() => {
-  const initCustomTheme = JSON.parse(localStorage.getItem("customTheme")) || {
-    ...(themes.find((theme) => theme.title === localStorage.getItem("theme")) ||
-      themes[0]),
+  const storedCustomTheme = localStorage.getItem("customTheme");
+  let initCustomTheme: Theme = {
+    ...(themes.find(
+      (theme) => theme.title === localStorage.getItem("theme")
+    ) || themes[0]),
   };
+  if (storedCustomTheme) {
+    try {
+      initCustomTheme = themeSchema.parse(JSON.parse(storedCustomTheme));
+    } catch {}
+  }
 
   const store = writable<Theme>(initCustomTheme);
 
@@ -269,13 +306,18 @@ export const customTheme = (() => {
  * Background/layout drawing stuff
  * ------------------------------
  */
+export type MicAnalyzerData = {
+  freqs: Uint8Array<ArrayBuffer>;
+  analyser: AnalyserNode;
+};
+
 export type DrawArgs = {
-  ctx: CanvasRenderingContext2D;
+  ctx: CanvasRenderingContext2D | undefined;
   theme: Theme;
   canvasSize: CanvasSize;
   activeShare: ScreenShareState["shares"][number] | null | undefined;
   webcamState: WebcamState;
-  micAnalyzer: null | { freqs: Uint8Array; analyser: AnalyserNode };
+  micAnalyzer: MicAnalyzerData | null;
   generalLayoutState: GeneralLayoutState;
   webcamLayoutState: WebcamLayoutState;
   screenLayoutState: ScreenState;
@@ -403,14 +445,17 @@ const generalLayoutStateSchema = z.object({
 type GeneralLayoutState = z.infer<typeof generalLayoutStateSchema>;
 
 export const generalLayoutState = (() => {
-  let initGeneralLayoutState: GeneralLayoutState = {};
+  let initGeneralLayoutState: GeneralLayoutState =
+    generalLayoutStateSchema.parse({});
   try {
-    const storedWebcamState = localStorage.getItem("generalLayoutState");
-    initGeneralLayoutState = generalLayoutStateSchema.parse(
-      storedWebcamState
-        ? JSON.parse(storedWebcamState)
-        : generalLayoutStateSchema.parse({})
+    const storedGeneralLayoutState = localStorage.getItem(
+      "generalLayoutState"
     );
+    if (storedGeneralLayoutState) {
+      initGeneralLayoutState = generalLayoutStateSchema.parse(
+        JSON.parse(storedGeneralLayoutState)
+      );
+    }
   } catch {}
 
   const store = writable<GeneralLayoutState>(initGeneralLayoutState);
@@ -477,14 +522,12 @@ const webcamStateSchema = z.object({
 type WebcamLayoutState = z.infer<typeof webcamStateSchema>;
 
 export const webcamLayoutState = (() => {
-  let initWebcamState: WebcamLayoutState = {};
+  let initWebcamState: WebcamLayoutState = webcamStateSchema.parse({});
   try {
     const storedWebcamState = localStorage.getItem("webcamState");
-    initWebcamState = webcamStateSchema.parse(
-      storedWebcamState
-        ? JSON.parse(storedWebcamState)
-        : webcamStateSchema.parse({})
-    );
+    if (storedWebcamState) {
+      initWebcamState = webcamStateSchema.parse(JSON.parse(storedWebcamState));
+    }
   } catch {}
 
   const store = writable<WebcamLayoutState>(initWebcamState);
@@ -514,19 +557,23 @@ const screenStateSchema = z.object({
     .default(VertAlign.bottom),
   // TODO: border radius?
 });
-type ScreenState = z.infer<typeof webcamStateSchema>;
+type ScreenState = z.infer<typeof screenStateSchema>;
 
 export const screenLayoutState = (() => {
-  let initScreenState: WebcamLayoutState = {
+  const defaultState: ScreenState = {
     horizAlign: HorizAlign.left,
     vertAlign: VertAlign.bottom,
   };
+  let initScreenState: ScreenState = defaultState;
   try {
     const storedScreenState = localStorage.getItem("screenState");
-    initScreenState = webcamStateSchema.parse(JSON.parse(storedScreenState));
+    if (storedScreenState) {
+      const parsed = screenStateSchema.parse(JSON.parse(storedScreenState));
+      initScreenState = { ...defaultState, ...parsed };
+    }
   } catch {}
 
-  const store = writable<WebcamLayoutState>(initScreenState);
+  const store = writable<ScreenState>(initScreenState);
 
   const _set = store.set;
   store.set = (screenState) => {

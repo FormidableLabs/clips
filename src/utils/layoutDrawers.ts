@@ -2,8 +2,9 @@ import type { DrawFn } from "../stores";
 import { HorizAlign, VertAlign, WebcamShape } from "../stores";
 import { circleClip, roundedRectClip } from "./drawUtils";
 
-export const drawWebcam: DrawFn = (args, webcamX, webcamY) => {
-  if (args.webcamState.stream) {
+export const drawWebcam: DrawFn = (args, webcamX = 0, webcamY = 0) => {
+  if (!args.ctx) return;
+  if (args.webcamState.stream && args.webcamState.preview) {
     const {
       ctx,
       webcamState,
@@ -53,7 +54,7 @@ export const drawWebcam: DrawFn = (args, webcamX, webcamY) => {
       ctx.globalCompositeOperation = "source-over";
 
       circleClip(ctx, x0, y0, webcamRadius, () => {
-        ctx.drawImage(webcamState.preview, x0 - _w / 2, y0 - _h / 2, _w, _h);
+        ctx.drawImage(webcamState.preview!, x0 - _w / 2, y0 - _h / 2, _w, _h);
       });
     }
     // Rectangular webcam
@@ -92,7 +93,7 @@ export const drawWebcam: DrawFn = (args, webcamX, webcamY) => {
       ctx.globalCompositeOperation = "source-over";
 
       roundedRectClip(ctx, x0, y0, w, h, r, () => {
-        ctx.drawImage(webcamState.preview, x0, y0, w, h);
+        ctx.drawImage(webcamState.preview!, x0, y0, w, h);
       });
     } // End initial
   }
@@ -102,6 +103,7 @@ export const drawWebcam: DrawFn = (args, webcamX, webcamY) => {
  * Drawing screen share
  */
 export const drawScreenShare: DrawFn = (args) => {
+  if (!args.ctx) return;
   // Screen
   if (args.activeShare && args.activeShare.stream && args.activeShare.preview) {
     const {
@@ -153,7 +155,7 @@ export const drawScreenShare: DrawFn = (args) => {
     }
 
     roundedRectClip(ctx, x0, y0, w, h, r, () => {
-      ctx.drawImage(activeShare.preview, x0, y0, w, h);
+      ctx.drawImage(activeShare.preview!, x0, y0, w, h);
     });
   }
 };
@@ -162,6 +164,7 @@ export const drawScreenShare: DrawFn = (args) => {
  * Draw a simple grid so it's a bit easier to see where we're at.
  */
 export const drawHelperGrid: DrawFn = ({ ctx, canvasSize }) => {
+  if (!ctx) return;
   const { width, height } = canvasSize;
 
   ctx.lineWidth = width / 200;
